@@ -283,7 +283,7 @@ function setShareIcon(control, label, iconClass) {
 function openShare(pose) {
   const link = shareLink(pose);
   const url = encodeURIComponent(link);
-  const title = encodeURIComponent(pose.name + ' · Phanto’s Closet');
+  const title = encodeURIComponent(pose.name + ' · Phanto’s Cosplay');
   const image = encodeURIComponent(new URL(pose.path, location.href).href);
   const options = node('share-options');
   options.replaceChildren();

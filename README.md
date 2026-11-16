@@ -1,4 +1,4 @@
-# Phanto’s Closet
+# Phanto’s Cosplay
 
 Dress for any occasion.
 
