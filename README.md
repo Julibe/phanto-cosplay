@@ -22,7 +22,11 @@ On your server at `https://cosplay.julibe.cloud/`, search and filters are encode
 
 ## Update the catalog
 
-Save the individual PNG sprites in the sibling `squirlce-emojis/` directory. Put each converted WebP in `dist/poses/` with the same filename stem, then run `node catalog.mjs` to regenerate the catalog.
+Save the individual PNG sprites in the sibling `squirlce-emojis/` directory. Put each newly converted WebP in `dist/poses/` with the same filename stem, then run `node catalog.mjs` to regenerate the catalog and move the assets into their prefix folders.
+
+For example, `game-persona-5-joker-posing.webp` is served at `/game/persona-5/game-persona-5-joker-posing.webp`, and `emoji-anxiety-worried.webp` is served at `/emoji/anxiety/emoji-anxiety-worried.webp`. The catalog records each image path. Shared `?pose=` links use IDs and continue to work across file moves.
+
+Publish the complete `dist/` from one commit. Revalidate `index.html` on requests so it can load the matching versioned catalog and scripts. When switching from a previously deployed layout, purge the old HTML cache once.
 
 Use these filename patterns for new sprites.
 

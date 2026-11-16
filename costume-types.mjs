@@ -23,6 +23,12 @@ const groups = [...typeByGroup.keys(), ...untitledGroups].sort((a, b) => b.lengt
 const alreadyTyped = new Set(['festivals', 'music', 'screen']);
 const prefix = 'cosplay-';
 
+export function franchisePrefix(id) {
+  const type = id.split('-', 1)[0];
+  const remainder = id.slice(type.length + 1);
+  return groups.find(group => typeByGroup.get(group) === type && remainder.startsWith(group + '-'));
+}
+
 export function identifyCostume(id) {
   if (!id.startsWith(prefix)) return null;
   const slug = id.slice(prefix.length);

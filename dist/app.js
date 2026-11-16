@@ -78,7 +78,7 @@ const poses = window.phantoCatalog.map(pose => {
   const text = normalize(['Phanto', pose.id, pose.legacyId, pose.previousId, pose.name, pose.category, pose.franchise,
     pose.franchiseType, pose.tags, pose.emotion].filter(Boolean).join(' '));
   const aliases = poseKeywords.filter(([pattern]) => pattern.test(text)).map(([, words]) => words);
-  return { ...pose, path: 'poses/' + pose.id + '.webp', nameSearch: name, text,
+  return { ...pose, nameSearch: name, text,
     keywordSearch: normalize([synonyms[pose.emotion], ...aliases].filter(Boolean).join(' ')) };
 });
 

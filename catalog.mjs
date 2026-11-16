@@ -1,8 +1,8 @@
-import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
+import { writeOrganizedPoses } from './pose-assets.mjs';
 import { identifyCostume } from './costume-types.mjs';
 
 const source = new URL('../squirlce-emojis/', import.meta.url);
-const output = new URL('./dist/catalog.js', import.meta.url);
 const franchiseNames = {
   'dr-seuss': 'Dr. Seuss',
   'gears-of-war': 'Gears of War',
@@ -119,4 +119,4 @@ function order(pose) {
   return index < 0 ? featured.length : index;
 }
 poses.sort((a, b) => order(a) - order(b) || a.name.localeCompare(b.name));
-writeFileSync(output, 'window.phantoCatalog = ' + JSON.stringify(poses) + ';\n');
+writeOrganizedPoses(poses);
