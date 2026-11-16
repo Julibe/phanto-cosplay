@@ -162,6 +162,7 @@ function showMore() {
     image.src = pose.path;
     image.draggable = false;
     picture.setAttribute('aria-label', 'Copy ' + pose.name + ' image');
+    picture.title = 'Copy image';
     picture.addEventListener('click', () => copyImage(pose));
     card.querySelector('h3').textContent = pose.name;
     card.querySelector('p').textContent = pose.franchise || pose.emotion || pose.category;
