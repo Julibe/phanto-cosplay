@@ -17,15 +17,16 @@ const synonyms = {
   Affection: 'love heart cute adorable romantic',
   Sadness: 'sad unhappy crying tears upset',
   Anger: 'mad angry raging rage',
-  Anxiety: 'afraid scared fear worried nervous',
+  Anxiety: 'afraid scared fear worried worry nervous anxious uneasy apprehensive concerned panicked panicky distressed overwhelmed fretful',
   Calm: 'chill peaceful relaxed serene',
-  Confusion: 'confused puzzled',
+  Confusion: 'confused puzzled wondering wonder pondering thinking curious unsure uncertain bewildered questioning baffled perplexed',
   Embarrassment: 'embarrassed blush shy',
-  Playful: 'silly goofy wink tongue cheeky',
-  Skepticism: 'skeptical unimpressed',
+  Neutral: 'neutral expressionless blank straight faced poker face',
+  Playful: 'silly goofy wink tongue cheeky mischievous',
+  Skepticism: 'skeptical unimpressed doubtful suspicious unconvinced',
   Sleepy: 'sleep tired zzz',
   Surprise: 'surprised shock shocked amazed',
-  Tension: 'tense stressed'
+  Tension: 'tense stressed stress jittery pressured'
 };
 const poseKeywords = [
   [/\b(?:laugh\w*|tears of joy|giggl\w*)\b/, 'lol lmao haha laughing giggle cracking up funny hysterical risa carcajada'],
@@ -81,9 +82,26 @@ const poses = window.phantoCatalog.map(pose => {
     keywordSearch: normalize([synonyms[pose.emotion], ...aliases].filter(Boolean).join(' ')) };
 });
 
+const emotionTerms = new Map();
+for (const [emotion, words] of Object.entries(synonyms)) {
+  emotionTerms.set(normalize(emotion), emotion);
+  for (const word of words.split(' ')) {
+    if (word.length > 2) emotionTerms.set(word, emotion);
+  }
+}
+for (const [phrase, emotion] of [
+  ['not sure', 'Confusion'], ['lost in thought', 'Confusion'], ['what if', 'Confusion'],
+  ['on edge', 'Anxiety'], ['a little worried', 'Anxiety'], ['freaking out', 'Anxiety'],
+  ['feeling blue', 'Sadness'], ['stressed out', 'Tension'], ['side eye', 'Skepticism'],
+  ['poker face', 'Neutral'], ['mind blown', 'Surprise']
+]) emotionTerms.set(phrase, emotion);
+
 const searchFiller = new Set(['a', 'an', 'the', 'with', 'of', 'for', 'show', 'me', 'un', 'una', 'con', 'de']);
-function searchScore(pose, phrase, words) {
+function searchScore(pose, phrase, words, emotion) {
   if (pose.nameSearch === phrase) return 100;
+  if (emotion && pose.emotion === emotion) {
+    return pose.nameSearch.startsWith(phrase) ? 55 : 40;
+  }
   let score = pose.nameSearch.startsWith(phrase) ? 15 : 0;
   for (const word of words) {
     if ((' ' + pose.nameSearch + ' ').includes(' ' + word + ' ')) score += 8;
@@ -483,7 +501,10 @@ function render() {
   for (const button of suggestions) {
     button.setAttribute('aria-pressed', String(button.dataset.query === raw));
   }
-  const phrase = normalize(Object.hasOwn(shortcuts, raw) ? shortcuts[raw] : raw);
+  const normalized = normalize(Object.hasOwn(shortcuts, raw) ? shortcuts[raw] : raw);
+  const emotionPhrase = normalized.replace(/^(?:i am|i m|im|i feel|feeling) /, '');
+  const emotion = emotionTerms.get(normalized) ?? emotionTerms.get(emotionPhrase);
+  const phrase = emotion ? emotionPhrase : normalized;
   const terms = phrase.split(' ').filter(Boolean);
   const meaningful = terms.filter(word => !searchFiller.has(word));
   const words = meaningful.length ? meaningful : terms;
@@ -496,7 +517,7 @@ function render() {
   });
   if (raw && !linkedPose) {
     matches = words.length ? matches
-      .map(pose => ({ pose, score: searchScore(pose, phrase, words) }))
+      .map(pose => ({ pose, score: searchScore(pose, phrase, words, emotion) }))
       .filter(result => result.score > 0)
       .sort((first, second) => second.score - first.score)
       .map(result => result.pose) : [];
