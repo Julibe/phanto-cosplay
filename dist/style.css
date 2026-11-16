@@ -22,6 +22,9 @@
 ::-webkit-scrollbar-thumb { background: #bd4385; border: 2px solid var(--plum); border-radius: 999px }
 body {
   isolation: isolate;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
   min-height: 100dvh;
   margin: 0;
   padding-bottom: calc(108px + env(safe-area-inset-bottom, 0px));
@@ -57,6 +60,7 @@ body::after {
   to { opacity: .92; transform: translate3d(-12%, 8%, 0) rotate(-10deg) }
 }
 button, input, select { font: inherit; color: inherit }
+input, textarea, [contenteditable="true"] { -webkit-user-select: text; user-select: text }
 button { background: none }
 button, select { cursor: pointer }
 a { color: inherit }
@@ -134,10 +138,6 @@ h1, h2, h3, .brand { font-family: var(--display); font-weight: 400 }
 .results { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px }
 .results h2 { font-size: 2rem; line-height: 1 }
 .results p { padding: 6px 9px; border: 1px solid var(--line); border-radius: 999px; background: #20154995; color: var(--muted); font-size: .7rem; font-variant-numeric: tabular-nums }
-.result-tools { display: flex; align-items: center; gap: 7px }
-#shuffle { width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 50%; background: #35235c; color: var(--pink) }
-#shuffle:hover:not(:disabled) { border-color: var(--pink); background: #472c6a }
-#shuffle:disabled { opacity: .45; cursor: default }
 #grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 15px }
 .card {
   display: grid;
@@ -232,8 +232,11 @@ h1, h2, h3, .brand { font-family: var(--display); font-weight: 400 }
 .search input::placeholder { color: #c1b3d5; opacity: 1 }
 .search > i { color: var(--pink); font-size: .93rem }
 kbd { color: var(--muted); border: 1px solid var(--line); border-radius: 5px; padding: 1px 5px; font-size: .72rem }
-#filter-toggle, #clear-search { width: 44px; height: 44px; flex: none; border-radius: 50%; color: var(--ink) }
+#filter-toggle, #clear-search, #shuffle { width: 44px; height: 44px; flex: none; border-radius: 50%; color: var(--ink) }
 #filter-toggle { position: relative; background: #49376f }
+#shuffle { background: #0147ba; border: 1px solid #91b6ff70 }
+#shuffle:hover:not(:disabled) { background: #2358c9; border-color: #bed2ff }
+#shuffle:disabled { opacity: .45; cursor: default }
 #clear-search { background: transparent; color: var(--muted) }
 #clear-search:hover { background: #49376f; color: var(--ink) }
 #filter-toggle[data-filtered]::after {

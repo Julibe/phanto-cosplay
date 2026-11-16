@@ -65,10 +65,7 @@
   <section class="picker" aria-label="Find a Phanto">
     <div class="results" id="gallery-results" tabindex="-1">
       <h2 id="heading">All poses</h2>
-      <div class="result-tools">
-        <p id="count" aria-live="polite"></p>
-        <button id="shuffle" class="icon-control" type="button" aria-label="Shuffle results" title="Shuffle results"><i class="fa-solid fa-shuffle" aria-hidden="true"></i></button>
-      </div>
+      <p id="count" aria-live="polite"></p>
     </div>
     <div id="grid" class="grid"></div>
     <div id="empty" class="empty" hidden><p>No Phantos found.</p><button id="reset" type="button">Clear filters</button></div>
@@ -95,6 +92,7 @@
     <input class="min-w-0 grow" id="search" type="search" autocomplete="off" placeholder="Try Pikachu, happy, or :-)" aria-label="Search poses, characters, franchises, and emoticons">
     <kbd aria-hidden="true">/</kbd>
     <button id="clear-search" class="icon-control" type="button" aria-label="Clear search" title="Clear search" hidden><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+    <button id="shuffle" class="icon-control" type="button" aria-label="Shuffle results" title="Shuffle results"><i class="fa-solid fa-shuffle" aria-hidden="true"></i></button>
     <button id="filter-toggle" class="icon-control grid place-items-center rounded-full" type="button" aria-label="Filters" aria-controls="filters" aria-expanded="false" title="Filters"><i class="fa-solid fa-sliders" aria-hidden="true"></i></button>
   </div>
 </section>
