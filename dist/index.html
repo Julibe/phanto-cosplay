@@ -18,6 +18,8 @@
   <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-4-4 4 4 4-4M5 15v4a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-4"/></symbol>
   <symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="m8.2 10.7 7.6-4.4m-7.6 7 7.6 4.4"/></symbol>
   <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24"><path d="M4 7h16M7 12h10m-7 5h4"/><circle cx="8" cy="7" r="2" fill="white"/></symbol>
   <symbol id="i-arrow" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
 </svg>
 <header class="wrap header">
@@ -39,20 +41,25 @@
   </section>
   <section class="picker" aria-label="Find a Phanto">
     <div class="search"><svg class="icon" aria-hidden="true"><use href="#i-search"></use></svg><input id="search" type="search" autocomplete="off" placeholder="Try Pikachu, happy, or :-)" aria-label="Search poses, characters, franchises, and emoticons"><kbd aria-hidden="true">/</kbd></div>
-    <div class="filters">
+    <div class="filters" id="filters" tabindex="-1">
       <div id="categories" class="categories" aria-label="Category"></div>
       <div class="selects">
         <select id="emotion" aria-label="Emotion"><option value="">Any emotion</option></select>
         <select id="franchise" aria-label="Franchise"><option value="">Any franchise</option></select>
       </div>
     </div>
-    <div class="results"><h2 id="heading">All poses</h2><p id="count" aria-live="polite"></p></div>
+    <div class="results" id="gallery-results" tabindex="-1"><h2 id="heading">All poses</h2><p id="count" aria-live="polite"></p></div>
     <div id="grid" class="grid"></div>
     <div id="empty" class="empty" hidden><p>No Phantos found.</p><button id="reset" type="button">Clear filters</button></div>
     <button id="more" class="more" type="button" hidden>More poses <svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg></button>
   </section>
 </main>
 <footer class="wrap footer">Phanto by <a href="https://julibe.com">Julibe</a></footer>
+<nav class="mobile-dock" aria-label="Gallery shortcuts">
+  <a href="#gallery-results"><svg class="icon" aria-hidden="true"><use href="#i-grid"></use></svg>Gallery</a>
+  <a href="#search" id="jump-search"><svg class="icon" aria-hidden="true"><use href="#i-search"></use></svg>Search</a>
+  <a href="#filters"><svg class="icon" aria-hidden="true"><use href="#i-filter"></use></svg>Filters</a>
+</nav>
 <dialog id="share-dialog" aria-labelledby="share-title">
   <div class="dialog-top"><h2 id="share-title">Share Phanto</h2><button id="close-share" type="button" class="icon-control" aria-label="Close sharing" title="Close"><svg class="icon" aria-hidden="true"><use href="#i-close"></use></svg></button></div>
   <p id="share-name"></p>

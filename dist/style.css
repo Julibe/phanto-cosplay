@@ -58,3 +58,127 @@ dialog{width:min(450px,calc(100vw - 32px));padding:24px;background:#21173f;color
   .picture { padding:11px }
   .filters { margin-bottom:19px }
 }
+
+/* Dark showcase and the phone gallery */
+body {
+  background:
+    radial-gradient(ellipse 760px 520px at 92% 350px, #172958 0%, transparent 95%),
+    radial-gradient(ellipse 750px 660px at 0% 520px, #30162f 0%, transparent 92%),
+    #100b2d;
+}
+.hero {
+  border-color:#7654946b;
+  min-height:330px;
+  background:
+    radial-gradient(ellipse at 79% 42%, #5d3d927a, transparent 49%),
+    radial-gradient(ellipse at 8% 100%, #67244f90, transparent 65%),
+    linear-gradient(112deg,#201549 28%,#123272);
+}
+.hero-art::before {
+  content:"";
+  position:absolute;
+  inset:0 4% -1% 7%;
+  background:radial-gradient(ellipse,#f474ba28,transparent 68%);
+}
+.hero-art img {
+  box-shadow:0 13px 30px #0e092878;
+  border:2px solid #f1dcff66;
+}
+.mobile-dock { display:none }
+@media (min-width:1001px) {
+  .hero-art { min-height:270px }
+  .hero-art .center { top:5%; left:29%; width:45%; transform:rotate(-7deg) }
+  .hero-art .left { top:39%; left:2%; transform:rotate(-14deg) }
+  .hero-art .right { top:22%; right:0; transform:rotate(13deg) }
+  .grid { grid-template-columns:repeat(4,minmax(0,1fr)); gap:18px }
+  .card-body { padding:11px 12px }
+}
+@media (max-width:600px) {
+  :root {
+    color-scheme:light;
+    --surface:#ffffff;
+    --line:#e5dcf0;
+    --ink:#201549;
+    --muted:#62547d;
+    --pink:#b80c4d;
+  }
+  body { background:#f3eff9; padding-bottom:calc(86px + env(safe-area-inset-bottom, 0px)) }
+  .wrap { width:calc(100% - 28px) }
+  .header { height:64px }
+  .brand { font-size:20px }
+  .brand img { width:36px; height:36px }
+  .byline { background:#fff; color:#43355e }
+  .hero {
+    grid-template-columns:1fr;
+    grid-template-rows:auto auto;
+    min-height:0;
+    padding:11px 20px 23px;
+    border-radius:29px;
+    border-color:#32205a;
+    box-shadow:0 9px 28px #20154922;
+  }
+  .hero-art {
+    grid-row:1;
+    width:min(100%,335px);
+    min-height:181px;
+    justify-self:center;
+  }
+  .hero-art .center { width:43%; max-width:142px; top:9%; left:28.5%; transform:rotate(-7deg) }
+  .hero-art .side { width:33%; max-width:108px }
+  .hero-art .left { top:24%; left:4%; transform:rotate(-15deg) }
+  .hero-art .right { top:25%; right:4%; transform:rotate(14deg) }
+  .spark.a { top:5%; left:10% }
+  .spark.b { top:5%; right:10% }
+  .spark.c { bottom:9%; right:14% }
+  .hero h1 {
+    color:#fff;
+    font-family:"Bricolage Grotesque",system-ui,sans-serif;
+    font-size:clamp(2.4rem,10vw,3.85rem);
+    line-height:.94;
+  }
+  .hero h1 em { color:#ff8dae }
+  .hero p { margin-top:11px; color:#ede2fe }
+  .picker { margin-top:15px }
+  .search { background:#fff; border-color:#ded3ec; border-radius:18px; min-height:53px }
+  .filters { margin-top:10px; margin-bottom:19px; min-width:0 }
+  .categories { flex-wrap:nowrap; overflow:auto; max-width:100%; padding:3px; scroll-padding-inline:3px }
+  .categories button { flex:none; min-height:44px; border-radius:100px }
+  .categories button[aria-pressed=true] { background:#201549; color:#fff }
+  .selects { width:100%; margin-top:0 }
+  .selects select { flex:1; min-width:0; max-width:calc(50% - 4px); min-height:44px; background:#fff }
+  .results { margin-bottom:10px }
+  .results h2 { font-size:1.45rem }
+  .grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px }
+  .card { background:#fff; border-color:#e3daed; border-radius:21px; box-shadow:0 5px 13px #2816490c }
+  .picture { background:linear-gradient(155deg,#f1e9fa,#e5ddf5); padding:11px }
+  .card:nth-child(4n+2) .picture { background:linear-gradient(155deg,#eaf1ff,#e1e3fa) }
+  .card:nth-child(4n+3) .picture { background:linear-gradient(155deg,#ffe9ef,#f0e0f6) }
+  .copy-mark { width:39px; height:39px; color:#fff; background:#201549ed; border-color:#ffffff80 }
+  .card-body { padding:9px 10px 10px }
+  .actions .icon-control,.dialog-top .icon-control { border-color:#e5dcf0; background:#f4eff9; color:#201549 }
+  .actions .icon-control:hover,.dialog-top .icon-control:hover { background:#fce3f0; color:#8c1545 }
+  .footer { padding-block:24px }
+  dialog { background:#fff; border-color:#ded3ec; box-shadow:0 20px 70px #2015494a }
+  .share-options a:hover,.share-options button:hover,.more:hover { color:#8c1545 }
+  .toast { color:#fff; bottom:calc(86px + env(safe-area-inset-bottom, 0px)) }
+  .mobile-dock {
+    position:fixed; z-index:4; bottom:calc(10px + env(safe-area-inset-bottom, 0px));
+    left:50%; translate:-50% 0; display:grid; grid-template-columns:repeat(3,1fr);
+    gap:3px; width:min(340px,calc(100% - 32px)); padding:5px;
+    border:1px solid #e4daef; border-radius:100px;
+    background:#fffffff5; box-shadow:0 7px 28px #2015492c;
+  }
+  .mobile-dock a {
+    display:flex; justify-content:center; align-items:center; gap:5px;
+    color:#201549; min-width:0; min-height:45px; border-radius:100px;
+    font-size:.78rem; font-weight:700; text-decoration:none;
+  }
+  .mobile-dock a:first-child { background:#201549; color:white }
+  .mobile-dock a:hover,.mobile-dock a:focus-visible { background:#e9e4fa; color:#201549 }
+  .mobile-dock .icon { width:17px; height:17px }
+  #gallery-results,#filters,#search { scroll-margin-block-start:12px }
+}
+@media (max-width:360px) {
+  .hero-art { min-height:145px }
+  .mobile-dock a { gap:4px; font-size:.73rem }
+}

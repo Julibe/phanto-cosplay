@@ -239,6 +239,11 @@ for (const [id, key] of [['franchise', 'franchise'], ['emotion', 'emotion']]) {
   });
 }
 search.addEventListener('input', () => { clearLinkedPose(); render(); });
+node('jump-search').addEventListener('click', event => {
+  event.preventDefault();
+  search.scrollIntoView({ block: 'start' });
+  search.focus({ preventScroll: true });
+});
 node('more').addEventListener('click', () => {
   const firstNewIndex = shown;
   showMore();
