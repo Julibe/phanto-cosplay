@@ -218,8 +218,8 @@ for (const label of categories) {
   button.addEventListener('click', () => {
     clearLinkedPose();
     category = label;
-    if (label !== 'Reactions' && label !== 'All poses') node('emotion').value = '';
-    if (label !== 'Costumes' && label !== 'All poses') node('franchise').value = '';
+    if (label !== 'Reactions') node('emotion').value = '';
+    if (label !== 'Costumes') node('franchise').value = '';
     render();
   });
   node('categories').append(button);

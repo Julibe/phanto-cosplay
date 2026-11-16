@@ -33,8 +33,13 @@ const featured = [
 const poses = readdirSync(source).filter(name => name.endsWith('.png')).map(file => {
   const id = file.slice(0, -4);
   if (id.startsWith('emoji-')) {
-    const [, emotion, ...name] = id.split('-');
-    return { id, name: title(name.join('-')), category: 'Reactions', emotion: title(emotion) };
+    const [, group, ...name] = id.split('-');
+    const category = {
+      accessory: 'Activities', activity: 'Activities', celebration: 'Activities',
+      health: 'Activities', rotation: 'Turnarounds', temperature: 'Activities'
+    }[group] ?? 'Reactions';
+    const emotion = category === 'Reactions' && group !== 'reaction' ? title(group) : '';
+    return { id, name: title(name.join('-')), category, emotion, tags: group };
   }
   if (id.startsWith('cosplay-')) {
     const slug = id.slice(8);
