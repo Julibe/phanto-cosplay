@@ -134,6 +134,10 @@ h1, h2, h3, .brand { font-family: var(--display); font-weight: 400 }
 .results { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px }
 .results h2 { font-size: 2rem; line-height: 1 }
 .results p { padding: 6px 9px; border: 1px solid var(--line); border-radius: 999px; background: #20154995; color: var(--muted); font-size: .7rem; font-variant-numeric: tabular-nums }
+.result-tools { display: flex; align-items: center; gap: 7px }
+#shuffle { width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 50%; background: #35235c; color: var(--pink) }
+#shuffle:hover:not(:disabled) { border-color: var(--pink); background: #472c6a }
+#shuffle:disabled { opacity: .45; cursor: default }
 #grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 15px }
 .card {
   display: grid;
@@ -162,6 +166,7 @@ h1, h2, h3, .brand { font-family: var(--display); font-weight: 400 }
 .card:nth-child(4n+2) .picture { background: radial-gradient(ellipse at 50% 53%, #0147ba47, transparent 73%) }
 .card:nth-child(4n+3) .picture { background: radial-gradient(ellipse at 50% 53%, #fe16592e, transparent 73%) }
 .picture img { width: 100%; height: auto; aspect-ratio: 1; object-fit: contain; transition: transform .2s }
+.picture img:not([src]) { visibility: hidden }
 .picture:hover img, .picture:focus-visible img { transform: scale(1.035) }
 .picture:focus-visible { outline-offset: -4px }
 .copy-mark {

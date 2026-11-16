@@ -42,6 +42,7 @@ const suggestions = [...document.querySelectorAll('[data-query]')];
 const filterToggle = node('filter-toggle');
 const filters = node('filters');
 const clearSearch = node('clear-search');
+const shuffle = node('shuffle');
 const grid = node('grid');
 const shareDialog = node('share-dialog');
 const editor = node('pose-editor');
@@ -53,6 +54,24 @@ const transforms = {
 };
 let edit;
 const pageSize = 30;
+const imageReleaseTimers = new Map();
+const imageWindow = typeof IntersectionObserver === 'function'
+  ? new IntersectionObserver(entries => {
+    for (const { target: image, isIntersecting } of entries) {
+      clearTimeout(imageReleaseTimers.get(image));
+      imageReleaseTimers.delete(image);
+      if (!image.isConnected) continue;
+      if (isIntersecting) {
+        if (!image.hasAttribute('src')) image.src = image.dataset.src;
+      } else if (image.hasAttribute('src')) {
+        imageReleaseTimers.set(image, setTimeout(() => {
+          image.removeAttribute('src');
+          imageReleaseTimers.delete(image);
+        }, 1800));
+      }
+    }
+  }, { rootMargin: '640px 0px' })
+  : null;
 let category = categories[0];
 let matches = [];
 let shown = 0;
@@ -271,12 +290,18 @@ function openShare(pose) {
   shareDialog.showModal();
 }
 
-function showMore() {
-  for (const pose of matches.slice(shown, shown + pageSize)) {
+function showMore(limit = pageSize) {
+  const batch = document.createDocumentFragment();
+  for (const pose of matches.slice(shown, shown + limit)) {
     const card = node('card').content.cloneNode(true);
     const picture = card.querySelector('.picture');
     const image = picture.querySelector('img');
-    image.src = pose.path;
+    if (imageWindow) {
+      image.dataset.src = pose.path;
+      imageWindow.observe(image);
+    } else {
+      image.src = pose.path;
+    }
     image.draggable = false;
     picture.setAttribute('aria-label', 'Copy ' + pose.name + ' image');
     picture.title = 'Copy image';
@@ -293,11 +318,31 @@ function showMore() {
     const share = card.querySelector('.actions button:not(.edit-pose)');
     share.setAttribute('aria-label', 'Share ' + pose.name);
     share.addEventListener('click', () => openShare(pose));
-    grid.append(card);
+    batch.append(card);
   }
+  grid.append(batch);
   shown = grid.children.length;
   node('more').hidden = shown >= matches.length;
 }
+
+function rebuildGallery(limit = pageSize) {
+  imageWindow?.disconnect();
+  for (const timer of imageReleaseTimers.values()) clearTimeout(timer);
+  imageReleaseTimers.clear();
+  grid.replaceChildren();
+  shown = 0;
+  showMore(limit);
+}
+
+shuffle.addEventListener('click', () => {
+  if (matches.length < 2) return;
+  for (let i = matches.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [matches[i], matches[j]] = [matches[j], matches[i]];
+  }
+  rebuildGallery(shown);
+  notify('Poses shuffled.');
+});
 
 let linkedPose = new URL(location.href).searchParams.get('pose');
 if (!poses.some(pose => pose.id === linkedPose)) linkedPose = null;
@@ -326,9 +371,8 @@ function render() {
   node('heading').textContent = linkedPose ? 'Shared pose' : category;
   node('count').textContent = matches.length.toLocaleString() + (matches.length === 1 ? ' pose' : ' poses');
   node('empty').hidden = matches.length > 0;
-  grid.replaceChildren();
-  shown = 0;
-  showMore();
+  shuffle.disabled = matches.length < 2;
+  rebuildGallery();
 }
 
 function clearLinkedPose() {

@@ -11,13 +11,16 @@ const franchiseNames = {
   'hunter-x-hunter': 'Hunter × Hunter',
   'lord-of-the-rings': 'The Lord of the Rings',
   'mega-man': 'Mega Man',
+  'festivals': 'World Festivals',
+  'music': 'Music Genres',
   'ninja-turtles': 'Teenage Mutant Ninja Turtles',
   'pokemon': 'Pokémon',
+  'screen': 'Screen Genres',
   'wall-e': 'WALL-E',
   'wheres-waldo': 'Where’s Waldo?',
   'zelda': 'The Legend of Zelda'
 };
-const groups = ('aladdin animal avatar barney beauty-and-the-beast bleach cardcaptor-sakura castlevania classic-horror classic dc dragon-ball donkey-kong evangelion f-zero final-fantasy god-of-war godzilla halo horizon horror hunter-x-hunter invincible jujutsu-kaisen king-kong kirby lion-king lord-of-the-rings marvel mega-man memes metal-gear metroid minecraft monsters-inc muppets naruto ninja-turtles one-piece pac-man persona pokemon power-rangers ratatouille resident-evil sailor-moon science-fiction sesame-street sonic star-fox star-trek star-wars street-fighter super-mario tomb-raider toy-story transformers wall-e wheres-waldo zelda').split(' ');
+const groups = ('aladdin animal avatar barney beauty-and-the-beast bleach cardcaptor-sakura castlevania christmas classic-horror classic cyberpunk dc dragon-ball donkey-kong evangelion f-zero festivals final-fantasy god-of-war godzilla halloween halo horizon horror hunter-x-hunter invincible jujutsu-kaisen king-kong kirby lion-king lord-of-the-rings marvel mega-man memes metal-gear metroid minecraft monsters-inc muppets music naruto ninja-turtles one-piece pac-man persona pokemon power-rangers ratatouille resident-evil sailor-moon science-fiction screen sesame-street sonic star-fox star-trek star-wars street-fighter super-mario tomb-raider toy-story transformers wall-e wheres-waldo zelda').split(' ');
 
 function title(slug) {
   return slug.split('-').map(word => word[0]?.toUpperCase() + word.slice(1)).join(' ');

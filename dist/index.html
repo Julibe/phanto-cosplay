@@ -63,7 +63,13 @@
     </div>
   </section>
   <section class="picker" aria-label="Find a Phanto">
-    <div class="results" id="gallery-results" tabindex="-1"><h2 id="heading">All poses</h2><p id="count" aria-live="polite"></p></div>
+    <div class="results" id="gallery-results" tabindex="-1">
+      <h2 id="heading">All poses</h2>
+      <div class="result-tools">
+        <p id="count" aria-live="polite"></p>
+        <button id="shuffle" class="icon-control" type="button" aria-label="Shuffle results" title="Shuffle results"><i class="fa-solid fa-shuffle" aria-hidden="true"></i></button>
+      </div>
+    </div>
     <div id="grid" class="grid"></div>
     <div id="empty" class="empty" hidden><p>No Phantos found.</p><button id="reset" type="button">Clear filters</button></div>
     <button id="more" class="more" type="button" hidden>More poses <i class="icon fa-solid fa-chevron-down" aria-hidden="true"></i></button>
