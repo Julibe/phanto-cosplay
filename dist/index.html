@@ -2,32 +2,19 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <meta name="theme-color" content="#100b2d">
 <meta name="description" content="Find, copy, download and share Phanto reactions and costumes.">
 <title>Phanto’s Dress for the Occasion</title>
 <link rel="icon" href="poses/emoji-joy-cheerful.webp">
+<link rel="stylesheet" href="utilities.css">
+<link rel="stylesheet" href="vendor/fontawesome.css">
+<link rel="stylesheet" href="vendor/solid.css">
 <link rel="stylesheet" href="style.css">
 <script src="catalog.js" defer></script>
 <script src="app.js" defer></script>
 </head>
 <body>
-<svg class="icon-definitions" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></symbol>
-  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></symbol>
-  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-4-4 4 4 4-4M5 15v4a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-4"/></symbol>
-  <symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="m8.2 10.7 7.6-4.4m-7.6 7 7.6 4.4"/></symbol>
-  <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
-  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></symbol>
-  <symbol id="i-filter" viewBox="0 0 24 24"><path d="M4 7h16M7 12h10m-7 5h4"/><circle cx="8" cy="7" r="2" fill="white"/></symbol>
-  <symbol id="i-edit" viewBox="0 0 24 24"><path d="m4 16-1 5 5-1L20 8l-4-4ZM14 6l4 4"/></symbol>
-  <symbol id="i-rotate-left" viewBox="0 0 24 24"><path d="M3 5v6h6M3.5 11A8 8 0 1 1 5 17"/></symbol>
-  <symbol id="i-rotate-right" viewBox="0 0 24 24"><path d="M21 5v6h-6m5.5 0A8 8 0 1 0 19 17"/></symbol>
-  <symbol id="i-flip-h" viewBox="0 0 24 24"><path d="M12 3v18M8 6 3 12l5 6ZM16 6l5 6-5 6Z"/></symbol>
-  <symbol id="i-flip-v" viewBox="0 0 24 24"><path d="M3 12h18M6 8l6-5 6 5ZM6 16l6 5 6-5Z"/></symbol>
-  <symbol id="i-reset" viewBox="0 0 24 24"><path d="M4 4v5h5M4.5 9a8 8 0 1 1-.4 5"/></symbol>
-  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
-</svg>
 <header class="wrap header">
   <a class="brand" href="./"><img src="poses/emoji-joy-cheerful.webp" alt="" width="42" height="42"> Phanto’s Closet</a>
   <a class="byline" href="https://julibe.com">by Julibe ↗</a>
@@ -46,28 +33,36 @@
     </div>
   </section>
   <section class="picker" aria-label="Find a Phanto">
-    <div class="search"><svg class="icon" aria-hidden="true"><use href="#i-search"></use></svg><input id="search" type="search" autocomplete="off" placeholder="Try Pikachu, happy, or :-)" aria-label="Search poses, characters, franchises, and emoticons"><kbd aria-hidden="true">/</kbd></div>
-    <div class="filters" id="filters" tabindex="-1">
+    <div class="results" id="gallery-results" tabindex="-1"><h2 id="heading">All poses</h2><p id="count" aria-live="polite"></p></div>
+    <div id="grid" class="grid"></div>
+    <div id="empty" class="empty" hidden><p>No Phantos found.</p><button id="reset" type="button">Clear filters</button></div>
+    <button id="more" class="more" type="button" hidden>More poses <i class="icon fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+  </section>
+</main>
+<footer class="wrap footer">Phanto by <a href="https://julibe.com">Julibe</a></footer>
+<section class="search-dock fixed inset-x-0 z-10 mx-auto grid gap-2" aria-label="Gallery controls">
+    <div class="filters" id="filters" role="region" aria-label="Filter poses" hidden>
       <div id="categories" class="categories" aria-label="Category"></div>
       <div class="selects">
         <select id="emotion" aria-label="Emotion"><option value="">Any emotion</option></select>
         <select id="franchise" aria-label="Franchise"><option value="">Any franchise</option></select>
       </div>
     </div>
-    <div class="results" id="gallery-results" tabindex="-1"><h2 id="heading">All poses</h2><p id="count" aria-live="polite"></p></div>
-    <div id="grid" class="grid"></div>
-    <div id="empty" class="empty" hidden><p>No Phantos found.</p><button id="reset" type="button">Clear filters</button></div>
-    <button id="more" class="more" type="button" hidden>More poses <svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg></button>
-  </section>
-</main>
-<footer class="wrap footer">Phanto by <a href="https://julibe.com">Julibe</a></footer>
-<nav class="mobile-dock" aria-label="Gallery shortcuts">
-  <a href="#gallery-results"><svg class="icon" aria-hidden="true"><use href="#i-grid"></use></svg>Gallery</a>
-  <a href="#search" id="jump-search"><svg class="icon" aria-hidden="true"><use href="#i-search"></use></svg>Search</a>
-  <a href="#filters"><svg class="icon" aria-hidden="true"><use href="#i-filter"></use></svg>Filters</a>
-</nav>
+  <div class="suggestions grid grid-cols-4 gap-1 rounded-full p-1.5" role="group" aria-label="Search suggestions">
+    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-query="happy" aria-pressed="false"><i class="fa-solid fa-face-smile" aria-hidden="true"></i><span>Happy</span></button>
+    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-query="love" aria-pressed="false"><i class="fa-solid fa-heart" aria-hidden="true"></i><span>Love</span></button>
+    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-query="spooky" aria-pressed="false"><i class="fa-solid fa-ghost" aria-hidden="true"></i><span>Spooky</span></button>
+    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-query="costumes" aria-pressed="false"><i class="fa-solid fa-masks-theater" aria-hidden="true"></i><span>Costumes</span></button>
+  </div>
+  <div class="search relative flex items-center gap-3 rounded-full" role="search">
+    <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+    <input class="min-w-0 grow" id="search" type="search" autocomplete="off" placeholder="Try Pikachu, happy, or :-)" aria-label="Search poses, characters, franchises, and emoticons">
+    <kbd aria-hidden="true">/</kbd>
+    <button id="filter-toggle" class="icon-control grid place-items-center rounded-full" type="button" aria-label="Filters" aria-controls="filters" aria-expanded="false" title="Filters"><i class="fa-solid fa-sliders" aria-hidden="true"></i></button>
+  </div>
+</section>
 <dialog id="share-dialog" aria-labelledby="share-title">
-  <div class="dialog-top"><h2 id="share-title">Share Phanto</h2><button id="close-share" type="button" class="icon-control" aria-label="Close sharing" title="Close"><svg class="icon" aria-hidden="true"><use href="#i-close"></use></svg></button></div>
+  <div class="dialog-top"><h2 id="share-title">Share Phanto</h2><button id="close-share" type="button" class="icon-control" aria-label="Close sharing" title="Close"><i class="icon fa-solid fa-xmark" aria-hidden="true"></i></button></div>
   <p id="share-name"></p>
   <div id="share-options" class="share-options"></div>
   <p class="share-note">Use your device’s share menu to send the WebP to apps such as Instagram, TikTok, or your email app. The social and email buttons share a link to this pose.</p>
@@ -75,29 +70,29 @@
 <dialog id="pose-editor" aria-labelledby="editor-title">
   <div class="dialog-top">
     <h2 id="editor-title">Edit pose</h2>
-    <button class="icon-control" id="close-editor" type="button" aria-label="Close editor" title="Close editor"><svg class="icon" aria-hidden="true"><use href="#i-close"></use></svg></button>
+    <button class="icon-control" id="close-editor" type="button" aria-label="Close editor" title="Close editor"><i class="icon fa-solid fa-xmark" aria-hidden="true"></i></button>
   </div>
   <p id="editor-name"></p>
   <div id="editor-preview" class="editor-preview"></div>
   <div class="editor-toolbar" role="group" aria-label="Transform pose">
-    <button type="button" class="icon-control" data-transform="left" aria-label="Rotate left" title="Rotate left"><svg class="icon" aria-hidden="true"><use href="#i-rotate-left"></use></svg></button>
-    <button type="button" class="icon-control" data-transform="right" aria-label="Rotate right" title="Rotate right"><svg class="icon" aria-hidden="true"><use href="#i-rotate-right"></use></svg></button>
-    <button type="button" class="icon-control" data-transform="horizontal" aria-label="Flip horizontally" title="Flip horizontally"><svg class="icon" aria-hidden="true"><use href="#i-flip-h"></use></svg></button>
-    <button type="button" class="icon-control" data-transform="vertical" aria-label="Flip vertically" title="Flip vertically"><svg class="icon" aria-hidden="true"><use href="#i-flip-v"></use></svg></button>
-    <button type="button" class="icon-control" data-transform="reset" aria-label="Reset orientation" title="Reset orientation"><svg class="icon" aria-hidden="true"><use href="#i-reset"></use></svg></button>
+    <button type="button" class="icon-control" data-transform="left" aria-label="Rotate left" title="Rotate left"><i class="icon fa-solid fa-rotate-left" aria-hidden="true"></i></button>
+    <button type="button" class="icon-control" data-transform="right" aria-label="Rotate right" title="Rotate right"><i class="icon fa-solid fa-rotate-right" aria-hidden="true"></i></button>
+    <button type="button" class="icon-control" data-transform="horizontal" aria-label="Flip horizontally" title="Flip horizontally"><i class="icon fa-solid fa-arrows-left-right" aria-hidden="true"></i></button>
+    <button type="button" class="icon-control" data-transform="vertical" aria-label="Flip vertically" title="Flip vertically"><i class="icon fa-solid fa-arrows-up-down" aria-hidden="true"></i></button>
+    <button type="button" class="icon-control" data-transform="reset" aria-label="Reset orientation" title="Reset orientation"><i class="icon fa-solid fa-clock-rotate-left" aria-hidden="true"></i></button>
   </div>
   <div class="editor-output">
-    <button type="button" id="editor-copy"><svg class="icon" aria-hidden="true"><use href="#i-copy"></use></svg>Copy</button>
-    <button type="button" id="editor-download"><svg class="icon" aria-hidden="true"><use href="#i-download"></use></svg>WebP</button>
+    <button type="button" id="editor-copy"><i class="icon fa-solid fa-copy" aria-hidden="true"></i>Copy</button>
+    <button type="button" id="editor-download"><i class="icon fa-solid fa-download" aria-hidden="true"></i>WebP</button>
   </div>
   <p id="editor-status" role="status"></p>
 </dialog>
 <div id="toast" role="status" class="toast" hidden></div>
 <template id="card">
   <article class="card">
-    <button class="picture" type="button"><img alt="" width="320" height="320" decoding="async" loading="lazy"><span class="copy-mark"><svg class="icon" aria-hidden="true"><use href="#i-copy"></use></svg></span></button>
+    <button class="picture" type="button"><img alt="" width="320" height="320" decoding="async" loading="lazy"><span class="copy-mark"><i class="icon fa-solid fa-copy" aria-hidden="true"></i></span></button>
     <div class="card-body"><h3></h3><p></p>
-      <div class="actions"><button class="icon-control edit-pose" type="button" title="Rotate or flip"><svg class="icon" aria-hidden="true"><use href="#i-edit"></use></svg></button><a class="icon-control" download title="Download WebP"><svg class="icon" aria-hidden="true"><use href="#i-download"></use></svg></a><button class="icon-control" type="button" title="Share"><svg class="icon" aria-hidden="true"><use href="#i-share"></use></svg></button></div>
+      <div class="actions"><button class="icon-control edit-pose" type="button" title="Rotate or flip"><i class="icon fa-solid fa-pen" aria-hidden="true"></i></button><a class="icon-control" download title="Download WebP"><i class="icon fa-solid fa-download" aria-hidden="true"></i></a><button class="icon-control" type="button" title="Share"><i class="icon fa-solid fa-share-nodes" aria-hidden="true"></i></button></div>
     </div>
   </article>
 </template>

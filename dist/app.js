@@ -10,7 +10,7 @@ const shortcuts = {
   ':/': 'confusion', ':-/': 'confusion', ':|': 'neutral', '-_-': 'skepticism',
   'b)': 'sunglasses', 'b-)': 'sunglasses', 'zzz': 'sleepy', '^_^': 'joy',
   '😄': 'joy', '😂': 'tears of joy', '😍': 'heart eyes', '😭': 'cry',
-  '😡': 'anger', '😱': 'surprise', '👻': 'phanto'
+  '😡': 'anger', '😱': 'surprise', '👻': 'phanto', spooky: 'horror'
 };
 const synonyms = {
   Joy: 'happy happiness excited joyful smile laugh cheerful',
@@ -38,6 +38,9 @@ const poses = window.phantoCatalog.map(pose => ({
 }));
 const node = id => document.getElementById(id);
 const search = node('search');
+const suggestions = [...document.querySelectorAll('[data-query]')];
+const filterToggle = node('filter-toggle');
+const filters = node('filters');
 const grid = node('grid');
 const shareDialog = node('share-dialog');
 const editor = node('pose-editor');
@@ -255,6 +258,9 @@ if (!poses.some(pose => pose.id === linkedPose)) linkedPose = null;
 
 function render() {
   const raw = search.value.trim().toLowerCase();
+  for (const button of suggestions) {
+    button.setAttribute('aria-pressed', String(button.dataset.query === raw));
+  }
   const query = shortcuts[raw] ?? raw;
   const words = normalize(query).split(' ').filter(Boolean);
   matches = poses.filter(pose => {
@@ -310,29 +316,54 @@ for (const [id, key] of [['franchise', 'franchise'], ['emotion', 'emotion']]) {
   });
 }
 search.addEventListener('input', () => { clearLinkedPose(); render(); });
-node('jump-search').addEventListener('click', event => {
-  event.preventDefault();
-  search.scrollIntoView({ block: 'start' });
-  search.focus({ preventScroll: true });
+for (const button of suggestions) {
+  button.addEventListener('click', () => {
+    clearLinkedPose();
+    category = categories[0];
+    node('emotion').value = node('franchise').value = '';
+    search.value = search.value.trim().toLowerCase() === button.dataset.query ? '' : button.dataset.query;
+    render();
+  });
+}
+
+function setFiltersOpen(open) {
+  filters.hidden = !open;
+  filterToggle.setAttribute('aria-expanded', String(open));
+}
+
+filterToggle.addEventListener('click', () => {
+  const open = filters.hidden;
+  setFiltersOpen(open);
+  if (open) filters.querySelector('[aria-pressed="true"], .categories button').focus({ preventScroll: true });
+});
+document.addEventListener('pointerdown', event => {
+  if (!filters.hidden && !filters.contains(event.target) && !filterToggle.contains(event.target)) {
+    setFiltersOpen(false);
+  }
 });
 node('more').addEventListener('click', () => {
   const firstNewIndex = shown;
   showMore();
-  grid.children[firstNewIndex]?.querySelector('.picture').focus();
+  grid.children[firstNewIndex]?.querySelector('.picture').focus({ preventScroll: true });
 });
 node('reset').addEventListener('click', () => {
   clearLinkedPose();
   category = categories[0];
   search.value = node('emotion').value = node('franchise').value = '';
   render();
-  search.focus();
+  search.focus({ preventScroll: true });
 });
 node('close-share').addEventListener('click', () => shareDialog.close());
 document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && !filters.hidden && !shareDialog.open && !editor.open) {
+    setFiltersOpen(false);
+    filterToggle.focus({ preventScroll: true });
+    return;
+  }
   if (event.key === '/' && !event.ctrlKey && !event.metaKey && !event.altKey
     && !shareDialog.open && !editor.open && !event.target.closest('input, select, textarea, [contenteditable]')) {
     event.preventDefault();
-    search.focus();
+    search.focus({ preventScroll: true });
   }
 });
 render();
