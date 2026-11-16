@@ -462,12 +462,19 @@ function rebuildGallery(limit = pageSize) {
   showMore(limit);
 }
 
+function shufflePoses(list) {
+  for (let i = list.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [list[i], list[j]] = [list[j], list[i]];
+  }
+}
+
+const homeOrder = [...poses];
+shufflePoses(homeOrder);
+
 shuffle.addEventListener('click', () => {
   if (matches.length < 2) return;
-  for (let i = matches.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [matches[i], matches[j]] = [matches[j], matches[i]];
-  }
+  shufflePoses(matches);
   rebuildGallery(shown);
   notify('Poses shuffled.');
 });
@@ -512,7 +519,8 @@ function render() {
   const terms = phrase.split(' ').filter(Boolean);
   const meaningful = terms.filter(word => !searchFiller.has(word));
   const words = meaningful.length ? meaningful : terms;
-  matches = poses.filter(pose => {
+  const browseOrder = !raw && !filtered && !linkedPose ? homeOrder : poses;
+  matches = browseOrder.filter(pose => {
     if (linkedPose) return pose.id === linkedPose;
     return (category === categories[0] || pose.category === category)
       && (!node('emotion').value || pose.emotion === node('emotion').value)
