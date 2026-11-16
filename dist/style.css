@@ -94,7 +94,7 @@ h1, h2, h3, .brand { font-family: var(--display); font-weight: 400 }
 .hero-art {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.8fr) minmax(0, 1fr);
   align-items: center;
   gap: clamp(4px, 1vw, 14px);
   min-width: 0;
@@ -351,12 +351,18 @@ dialog::backdrop { background: #08041bc4 }
   from { opacity: .15; transform: translateX(var(--slide-entry)) }
   to { opacity: 1; transform: translateX(0) }
 }
-.hero-slide .center { animation: hero-float 3.4s ease-in-out infinite alternate }
+.hero-slide .hero-art img {
+  --float-rise: -5px;
+  animation: hero-float 3.5s ease-in-out infinite alternate;
+}
+.hero-slide .center { --float-rise: -9px; animation-delay: -1s }
+.hero-slide .left { animation-delay: -.3s; animation-duration: 3.2s }
+.hero-slide .right { animation-delay: -2.1s; animation-duration: 3.9s }
 @keyframes hero-float {
   from { translate: 0 0 }
-  to { translate: 0 -9px }
+  to { translate: 0 var(--float-rise) }
 }
-.hero-showcase[data-paused] .center { animation-play-state: paused }
+.hero-showcase[data-paused] .hero-art img { animation-play-state: paused }
 .hero-controls { position: relative; z-index: 3; display: flex; justify-content: center; gap: 4px; margin-top: -5px }
 .hero-controls button {
   display: inline-grid;
@@ -379,7 +385,7 @@ dialog::backdrop { background: #08041bc4 }
   .hero-controls button { width: 35px; height: 40px }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero-slide.is-entering, .hero-slide .center { animation: none }
+  .hero-slide.is-entering, .hero-slide .hero-art img { animation: none }
 }
 
 /* Copy confirmation and control transitions */
