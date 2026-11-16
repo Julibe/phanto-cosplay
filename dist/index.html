@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="style.css">
 <script src="catalog.js" defer></script>
 <script src="app.js" defer></script>
+<script src="hero.js" defer></script>
 </head>
 <body>
 <header class="wrap header">
@@ -25,11 +26,39 @@
       <h1>Dress for the <em>Occasion.</em></h1>
       <p>Find a reaction or costume. Tap to copy.</p>
     </div>
-    <div class="hero-art" aria-hidden="true">
-      <span class="spark a">✦</span><span class="spark b">✧</span><span class="spark c">✦</span>
-      <img class="side left" src="poses/cosplay-classic-horror-witch.webp" alt="">
-      <img class="center" src="poses/emoji-joy-cheerful.webp" alt="">
-      <img class="side right" src="poses/cosplay-horror-vampire.webp" alt="">
+    <div class="hero-showcase" role="region" aria-label="Featured Phanto poses" aria-roledescription="carousel">
+      <div class="hero-slides">
+        <div class="hero-slide" role="group" aria-roledescription="slide" aria-label="Spooky Phanto, 1 of 3">
+          <div class="hero-art" aria-hidden="true">
+            <span class="spark a">✦</span><span class="spark b">✧</span><span class="spark c">✦</span>
+            <img class="side left" src="poses/cosplay-classic-horror-witch.webp" alt="">
+            <img class="center" src="poses/emoji-joy-cheerful.webp" alt="">
+            <img class="side right" src="poses/cosplay-horror-vampire.webp" alt="">
+          </div>
+        </div>
+        <div class="hero-slide" role="group" aria-roledescription="slide" aria-label="Phanto reactions, 2 of 3" hidden>
+          <div class="hero-art" aria-hidden="true">
+            <span class="spark a">✦</span><span class="spark b">✧</span><span class="spark c">✦</span>
+            <img class="side left" src="poses/emoji-joy-tears-of-joy.webp" alt="">
+            <img class="center" src="poses/emoji-affection-heart-eyes.webp" alt="">
+            <img class="side right" src="poses/emoji-playful-wink.webp" alt="">
+          </div>
+        </div>
+        <div class="hero-slide" role="group" aria-roledescription="slide" aria-label="Costumed Phanto, 3 of 3" hidden>
+          <div class="hero-art" aria-hidden="true">
+            <span class="spark a">✦</span><span class="spark b">✧</span><span class="spark c">✦</span>
+            <img class="side left" src="poses/cosplay-super-mario-princess-peach.webp" alt="">
+            <img class="center" src="poses/cosplay-pokemon-pikachu.webp" alt="">
+            <img class="side right" src="poses/cosplay-zelda-link.webp" alt="">
+          </div>
+        </div>
+      </div>
+      <div class="hero-controls" role="group" aria-label="Banner controls" hidden>
+        <button type="button" id="hero-previous" aria-label="Previous slide" title="Previous slide"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
+        <button type="button" id="hero-playback" aria-label="Pause slideshow" title="Pause slideshow"><i class="fa-solid fa-pause" aria-hidden="true"></i></button>
+        <button type="button" id="hero-next" aria-label="Next slide" title="Next slide"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <span id="hero-announcement" class="sr-only" role="status"></span>
     </div>
   </section>
   <section class="picker" aria-label="Find a Phanto">

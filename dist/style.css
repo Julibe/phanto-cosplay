@@ -9,7 +9,7 @@
   --pink: #ff85ad;
   --ink: #f3f9fe;
   --muted: #c7b8df;
-  --line: #b396d13d;
+  --line: #b396d155;
   --display: "Bebas Neue", Impact, sans-serif;
   font: 16px "Comfortaa", system-ui, sans-serif;
   scrollbar-gutter: stable;
@@ -111,12 +111,12 @@ h1, h2, h3, .brand { font-family: var(--display); font-weight: 400 }
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 20px;
-  background: #20154936;
+  background: #201549ac;
   -webkit-backdrop-filter: blur(44px) saturate(165%);
   backdrop-filter: blur(44px) saturate(165%);
   transition: border-color .2s, background-color .2s;
 }
-.card:hover, .card:focus-within { border-color: #bb8fd67a; background-color: #3b265044 }
+.card:hover, .card:focus-within { border-color: #bb8fd67a; background-color: #3b2650c2 }
 .picture {
   position: relative;
   display: grid;
@@ -142,7 +142,7 @@ h1, h2, h3, .brand { font-family: var(--display); font-weight: 400 }
   height: 34px;
   border-radius: 50%;
   color: #f0ddff;
-  background: #100b2d7a;
+  background: #100b2dbd;
   font-size: .82rem;
   backdrop-filter: blur(16px);
 }
@@ -178,19 +178,19 @@ h1, h2, h3, .brand { font-family: var(--display); font-weight: 400 }
   padding: 5px;
   border: 1px solid #aa85cb70;
   border-radius: 999px;
-  background: #201549e0;
+  background: #201549f3;
   box-shadow: 0 10px 35px #08031d9e;
   -webkit-backdrop-filter: blur(36px) saturate(150%);
   backdrop-filter: blur(36px) saturate(150%);
 }
-.search { grid-column: 1; grid-row: 1; min-height: 50px; padding: 2px 3px 2px 12px; background: #100b2da1 }
+.search { grid-column: 1; grid-row: 1; min-height: 50px; padding: 2px 3px 2px 12px; background: #100b2de3 }
 .search input { width: 100%; padding-block: 8px; border: 0; background: none }
 .search input:focus-visible { outline: 0 }
 .search:focus-within { box-shadow: inset 0 0 0 1px #b990dd }
 .search input::placeholder { color: #c1b3d5; opacity: 1 }
 .search > i { color: var(--pink); font-size: .93rem }
 kbd { color: var(--muted); border: 1px solid var(--line); border-radius: 5px; padding: 1px 5px; font-size: .72rem }
-#filter-toggle { width: 44px; height: 44px; flex: none; border-radius: 50%; color: var(--ink); background: #6d4f8c43 }
+#filter-toggle { width: 44px; height: 44px; flex: none; border-radius: 50%; color: var(--ink); background: #49376f }
 .suggestions { grid-column: 2; grid-row: 1; padding: 0 }
 .suggestions button { min-height: 46px; padding: 3px 1px; border: 0; color: #e4d4f6; font-size: .63rem; line-height: 1.12 }
 .suggestions i { color: #c5a9ec; font-size: .91rem }
@@ -209,7 +209,7 @@ kbd { color: var(--muted); border: 1px solid var(--line); border-radius: 5px; pa
   overscroll-behavior: contain;
   border-radius: 19px;
   border: 1px solid var(--line);
-  background: #201549ed;
+  background: #201549f8;
   backdrop-filter: blur(36px);
   box-shadow: 0 8px 25px #08031d96;
 }
@@ -239,7 +239,7 @@ dialog {
   padding: 20px;
   border: 1px solid var(--line);
   border-radius: 24px;
-  background: #201549ed;
+  background: #201549f8;
   color: var(--ink);
   -webkit-backdrop-filter: blur(30px);
   backdrop-filter: blur(30px);
@@ -316,4 +316,43 @@ dialog::backdrop { background: #08041bc4 }
 @media (forced-colors: active) {
   * { scrollbar-color: auto }
   .search-dock, .card, .card:hover, .card:focus-within { background: Canvas; border-color: CanvasText }
+}
+
+.hero-showcase { min-width: 0 }
+.hero-slides { display: grid }
+.hero-slide { grid-area: 1 / 1; min-width: 0 }
+.hero-slide.is-entering { animation: hero-enter 560ms cubic-bezier(.18,.75,.24,1) both }
+@keyframes hero-enter {
+  from { opacity: .15; transform: translateX(var(--slide-entry)) }
+  to { opacity: 1; transform: translateX(0) }
+}
+.hero-slide .center { animation: hero-float 3.4s ease-in-out infinite alternate }
+@keyframes hero-float {
+  from { translate: 0 0 }
+  to { translate: 0 -9px }
+}
+.hero-showcase[data-paused] .center { animation-play-state: paused }
+.hero-controls { position: relative; z-index: 3; display: flex; justify-content: center; gap: 4px; margin-top: -5px }
+.hero-controls button {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid #c2a1e158;
+  border-radius: 50%;
+  background: #201549ea;
+  color: var(--ink);
+  font-size: .72rem;
+}
+.hero-controls button:hover { color: var(--pink); border-color: var(--pink) }
+@media (max-width: 640px) {
+  .hero-controls { margin-top: -3px; gap: 0 }
+  .hero-controls button { width: 42px; height: 42px; border-color: transparent; background: #201549d9 }
+}
+@media (max-width: 350px) {
+  .hero-controls button { width: 35px; height: 40px }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-slide.is-entering, .hero-slide .center { animation: none }
 }
