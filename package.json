@@ -1,5 +1,5 @@
 {
-  "name": "phanto-closet",
+  "name": "phanto-cosplay",
   "private": true,
   "scripts": {
     "build:css": "tailwindcss -i tailwind.css -o dist/utilities.css --minify",
