@@ -1,6 +1,6 @@
 const franchiseTypes = {
   anime: 'bleach cardcaptor-sakura chainsaw-man dandadan demon-slayer dragon-ball evangelion frieren hunter-x-hunter jujutsu-kaisen my-hero-academia naruto one-piece reincarnated-as-a-slime sailor-moon solo-leveling',
-  game: 'castlevania donkey-kong f-zero final-fantasy god-of-war halo horizon kirby mega-man metal-gear metroid minecraft pac-man persona pokemon resident-evil sonic star-fox street-fighter super-mario tomb-raider zelda',
+  game: 'castlevania donkey-kong f-zero final-fantasy god-of-war halo horizon kirby mega-man metal-gear metroid minecraft pac-man persona-3 persona-4 persona-5 persona pokemon resident-evil sonic star-fox street-fighter super-mario tomb-raider zelda',
   movie: 'aladdin beauty-and-the-beast godzilla king-kong lion-king lord-of-the-rings monsters-inc ratatouille star-wars toy-story wall-e',
   tv: 'avatar barney muppets power-rangers sesame-street star-trek transformers',
   comics: 'dc invincible marvel ninja-turtles',
