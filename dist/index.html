@@ -20,6 +20,12 @@
   <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
   <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></symbol>
   <symbol id="i-filter" viewBox="0 0 24 24"><path d="M4 7h16M7 12h10m-7 5h4"/><circle cx="8" cy="7" r="2" fill="white"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="m4 16-1 5 5-1L20 8l-4-4ZM14 6l4 4"/></symbol>
+  <symbol id="i-rotate-left" viewBox="0 0 24 24"><path d="M3 5v6h6M3.5 11A8 8 0 1 1 5 17"/></symbol>
+  <symbol id="i-rotate-right" viewBox="0 0 24 24"><path d="M21 5v6h-6m5.5 0A8 8 0 1 0 19 17"/></symbol>
+  <symbol id="i-flip-h" viewBox="0 0 24 24"><path d="M12 3v18M8 6 3 12l5 6ZM16 6l5 6-5 6Z"/></symbol>
+  <symbol id="i-flip-v" viewBox="0 0 24 24"><path d="M3 12h18M6 8l6-5 6 5ZM6 16l6 5 6-5Z"/></symbol>
+  <symbol id="i-reset" viewBox="0 0 24 24"><path d="M4 4v5h5M4.5 9a8 8 0 1 1-.4 5"/></symbol>
   <symbol id="i-arrow" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
 </svg>
 <header class="wrap header">
@@ -66,12 +72,32 @@
   <div id="share-options" class="share-options"></div>
   <p class="share-note">Use your device’s share menu to send the WebP to apps such as Instagram, TikTok, or your email app. The social and email buttons share a link to this pose.</p>
 </dialog>
+<dialog id="pose-editor" aria-labelledby="editor-title">
+  <div class="dialog-top">
+    <h2 id="editor-title">Edit pose</h2>
+    <button class="icon-control" id="close-editor" type="button" aria-label="Close editor" title="Close editor"><svg class="icon" aria-hidden="true"><use href="#i-close"></use></svg></button>
+  </div>
+  <p id="editor-name"></p>
+  <div id="editor-preview" class="editor-preview"></div>
+  <div class="editor-toolbar" role="group" aria-label="Transform pose">
+    <button type="button" class="icon-control" data-transform="left" aria-label="Rotate left" title="Rotate left"><svg class="icon" aria-hidden="true"><use href="#i-rotate-left"></use></svg></button>
+    <button type="button" class="icon-control" data-transform="right" aria-label="Rotate right" title="Rotate right"><svg class="icon" aria-hidden="true"><use href="#i-rotate-right"></use></svg></button>
+    <button type="button" class="icon-control" data-transform="horizontal" aria-label="Flip horizontally" title="Flip horizontally"><svg class="icon" aria-hidden="true"><use href="#i-flip-h"></use></svg></button>
+    <button type="button" class="icon-control" data-transform="vertical" aria-label="Flip vertically" title="Flip vertically"><svg class="icon" aria-hidden="true"><use href="#i-flip-v"></use></svg></button>
+    <button type="button" class="icon-control" data-transform="reset" aria-label="Reset orientation" title="Reset orientation"><svg class="icon" aria-hidden="true"><use href="#i-reset"></use></svg></button>
+  </div>
+  <div class="editor-output">
+    <button type="button" id="editor-copy"><svg class="icon" aria-hidden="true"><use href="#i-copy"></use></svg>Copy</button>
+    <button type="button" id="editor-download"><svg class="icon" aria-hidden="true"><use href="#i-download"></use></svg>WebP</button>
+  </div>
+  <p id="editor-status" role="status"></p>
+</dialog>
 <div id="toast" role="status" class="toast" hidden></div>
 <template id="card">
   <article class="card">
     <button class="picture" type="button"><img alt="" width="320" height="320" decoding="async" loading="lazy"><span class="copy-mark"><svg class="icon" aria-hidden="true"><use href="#i-copy"></use></svg></span></button>
     <div class="card-body"><h3></h3><p></p>
-      <div class="actions"><a class="icon-control" download title="Download WebP"><svg class="icon" aria-hidden="true"><use href="#i-download"></use></svg></a><button class="icon-control" type="button" title="Share"><svg class="icon" aria-hidden="true"><use href="#i-share"></use></svg></button></div>
+      <div class="actions"><button class="icon-control edit-pose" type="button" title="Rotate or flip"><svg class="icon" aria-hidden="true"><use href="#i-edit"></use></svg></button><a class="icon-control" download title="Download WebP"><svg class="icon" aria-hidden="true"><use href="#i-download"></use></svg></a><button class="icon-control" type="button" title="Share"><svg class="icon" aria-hidden="true"><use href="#i-share"></use></svg></button></div>
     </div>
   </article>
 </template>

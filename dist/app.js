@@ -40,6 +40,14 @@ const node = id => document.getElementById(id);
 const search = node('search');
 const grid = node('grid');
 const shareDialog = node('share-dialog');
+const editor = node('pose-editor');
+const transforms = {
+  left: new DOMMatrix([0, -1, 1, 0, 0, 0]),
+  right: new DOMMatrix([0, 1, -1, 0, 0, 0]),
+  horizontal: new DOMMatrix([-1, 0, 0, 1, 0, 0]),
+  vertical: new DOMMatrix([1, 0, 0, -1, 0, 0])
+};
+let edit;
 const pageSize = 30;
 let category = categories[0];
 let matches = [];
@@ -53,31 +61,91 @@ function notify(message) {
   toastTimer = setTimeout(() => { node('toast').hidden = true; }, 3600);
 }
 
-async function asPng(path) {
-  const image = new Image();
-  image.src = path;
+async function encodeImage(image, type, matrix = new DOMMatrix()) {
   await image.decode();
+  const { a, b, c, d } = matrix;
+  const width = image.naturalWidth;
+  const height = image.naturalHeight;
   const canvas = document.createElement('canvas');
-  canvas.width = image.naturalWidth;
-  canvas.height = image.naturalHeight;
-  canvas.getContext('2d').drawImage(image, 0, 0);
+  canvas.width = Math.abs(a) * width + Math.abs(c) * height;
+  canvas.height = Math.abs(b) * width + Math.abs(d) * height;
+  const context = canvas.getContext('2d');
+  context.setTransform(a, b, c, d, canvas.width / 2, canvas.height / 2);
+  context.drawImage(image, -width / 2, -height / 2);
   return new Promise((resolve, reject) => {
-    canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('Could not encode image')), 'image/png');
+    canvas.toBlob(blob => {
+      if (blob?.type === type) resolve(blob);
+      else reject(new Error('Could not encode image'));
+    }, type, .94);
   });
 }
 
-async function copyImage(pose) {
+function poseImage(pose) {
+  const image = new Image();
+  image.src = pose.path;
+  return image;
+}
+
+async function copyImage(pose, renderPng = () => encodeImage(poseImage(pose), 'image/png'), report = notify) {
   if (!navigator.clipboard?.write || !window.ClipboardItem) {
-    notify('Image copy is unavailable here. You can download or share the WebP.');
+    report('Image copy is unavailable here. Download the WebP instead.');
     return;
   }
   try {
-    await navigator.clipboard.write([new ClipboardItem({ 'image/png': asPng(pose.path) })]);
-    notify(pose.name + ' copied!');
+    await navigator.clipboard.write([new ClipboardItem({ 'image/png': renderPng() })]);
+    report(pose.name + ' copied!');
   } catch {
-    notify('Couldn’t copy the image. Try Download or Share.');
+    report('Couldn’t copy the image. Try downloading it.');
   }
 }
+
+function openEditor(pose) {
+  const image = poseImage(pose);
+  image.alt = pose.name;
+  edit = { pose, image, matrix: new DOMMatrix() };
+  node('editor-name').textContent = pose.name;
+  node('editor-status').textContent = '';
+  node('editor-preview').replaceChildren(image);
+  editor.showModal();
+}
+
+function reportEdit(current, message) {
+  if (edit === current && editor.open) node('editor-status').textContent = message;
+}
+
+editor.querySelector('.editor-toolbar').addEventListener('click', event => {
+  const button = event.target.closest('[data-transform]');
+  if (!button) return;
+  const transform = transforms[button.dataset.transform];
+  edit.matrix = transform ? transform.multiply(edit.matrix) : new DOMMatrix();
+  edit.image.style.transform = edit.matrix.toString();
+  reportEdit(edit, transform ? button.getAttribute('aria-label') + ' applied.' : 'Orientation reset.');
+});
+
+node('close-editor').addEventListener('click', () => editor.close());
+node('editor-copy').addEventListener('click', () => {
+  const current = edit;
+  const { image, matrix, pose } = current;
+  copyImage(pose, () => encodeImage(image, 'image/png', matrix), message => reportEdit(current, message));
+});
+node('editor-download').addEventListener('click', async () => {
+  const current = edit;
+  const { image, matrix, pose } = current;
+  try {
+    const blob = await encodeImage(image, 'image/webp', matrix);
+    const href = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = href;
+    link.download = pose.id + '-edited.webp';
+    editor.append(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(href), 10000);
+    reportEdit(current, 'WebP download started.');
+  } catch {
+    reportEdit(current, 'Couldn’t export a WebP in this browser.');
+  }
+});
 
 function shareLink(pose) {
   const url = new URL(location.href);
@@ -170,7 +238,10 @@ function showMore() {
     download.href = pose.path;
     download.download = pose.id + '.webp';
     download.setAttribute('aria-label', 'Download ' + pose.name + ' as WebP');
-    const share = card.querySelector('.actions button');
+    const editButton = card.querySelector('.edit-pose');
+    editButton.setAttribute('aria-label', 'Edit ' + pose.name);
+    editButton.addEventListener('click', () => openEditor(pose));
+    const share = card.querySelector('.actions button:not(.edit-pose)');
     share.setAttribute('aria-label', 'Share ' + pose.name);
     share.addEventListener('click', () => openShare(pose));
     grid.append(card);
@@ -259,7 +330,7 @@ node('reset').addEventListener('click', () => {
 node('close-share').addEventListener('click', () => shareDialog.close());
 document.addEventListener('keydown', event => {
   if (event.key === '/' && !event.ctrlKey && !event.metaKey && !event.altKey
-    && !shareDialog.open && !event.target.closest('input, select, textarea, [contenteditable]')) {
+    && !shareDialog.open && !editor.open && !event.target.closest('input, select, textarea, [contenteditable]')) {
     event.preventDefault();
     search.focus();
   }
