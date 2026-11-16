@@ -89,7 +89,36 @@ function poseImage(pose) {
   return image;
 }
 
-async function copyImage(pose, renderPng = () => encodeImage(poseImage(pose), 'image/png'), report = notify) {
+function celebrateCopy(origin) {
+  if (!origin?.isConnected || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  origin.querySelector('.copy-burst')?.remove();
+  const burst = document.createElement('span');
+  burst.className = 'copy-burst';
+  burst.setAttribute('aria-hidden', 'true');
+  const colors = ['#ff85ad', '#88acff', '#d1afff', '#f3f9fe'];
+  for (let index = 0; index < 14; index++) {
+    const particle = document.createElement('span');
+    const ribbon = index % 2 === 1;
+    const angle = index * Math.PI * 2 / 14;
+    const distance = 35 + index % 3 * 12;
+    particle.className = 'copy-particle ' + (ribbon ? 'copy-ribbon' : 'copy-spark');
+    particle.style.setProperty('--dx', Math.cos(angle) * distance + 'px');
+    particle.style.setProperty('--dy', Math.sin(angle) * distance + 'px');
+    particle.style.setProperty('--spin', (ribbon ? 170 : -65) + index * 24 + 'deg');
+    particle.style.setProperty('--delay', index % 4 * 20 + 'ms');
+    particle.style.color = colors[index % colors.length];
+    if (!ribbon) particle.textContent = '✦';
+    burst.append(particle);
+  }
+  origin.append(burst);
+  setTimeout(() => burst.remove(), 780);
+}
+
+async function copyImage(pose, {
+  origin,
+  renderPng = () => encodeImage(poseImage(pose), 'image/png'),
+  report = notify
+} = {}) {
   if (!navigator.clipboard?.write || !window.ClipboardItem) {
     report('Image copy is unavailable here. Download the WebP instead.');
     return;
@@ -97,6 +126,7 @@ async function copyImage(pose, renderPng = () => encodeImage(poseImage(pose), 'i
   try {
     await navigator.clipboard.write([new ClipboardItem({ 'image/png': renderPng() })]);
     report(pose.name + ' copied!');
+    celebrateCopy(origin);
   } catch {
     report('Couldn’t copy the image. Try downloading it.');
   }
@@ -129,7 +159,11 @@ node('close-editor').addEventListener('click', () => editor.close());
 node('editor-copy').addEventListener('click', () => {
   const current = edit;
   const { image, matrix, pose } = current;
-  copyImage(pose, () => encodeImage(image, 'image/png', matrix), message => reportEdit(current, message));
+  copyImage(pose, {
+    origin: node('editor-copy'),
+    renderPng: () => encodeImage(image, 'image/png', matrix),
+    report: message => reportEdit(current, message)
+  });
 });
 node('editor-download').addEventListener('click', async () => {
   const current = edit;
@@ -158,6 +192,15 @@ function shareLink(pose) {
   return url.href;
 }
 
+function setShareIcon(control, label, iconClass) {
+  const icon = document.createElement('i');
+  icon.className = iconClass;
+  icon.setAttribute('aria-hidden', 'true');
+  control.setAttribute('aria-label', label);
+  control.title = label;
+  control.append(icon);
+}
+
 function openShare(pose) {
   const link = shareLink(pose);
   const url = encodeURIComponent(link);
@@ -166,20 +209,22 @@ function openShare(pose) {
   const options = node('share-options');
   options.replaceChildren();
   node('share-name').textContent = pose.name;
-  const button = (label, action) => {
+  const status = node('share-status');
+  status.textContent = '';
+  const button = (label, icon, action) => {
     const control = document.createElement('button');
     control.type = 'button';
-    control.textContent = label;
+    setShareIcon(control, label, icon);
     control.addEventListener('click', action);
     options.append(control);
     return control;
   };
   if (navigator.share && navigator.canShare) {
-    const native = button('Share WebP file', async () => {
+    const native = button('Share WebP file', 'fa-solid fa-share-nodes', async () => {
       try {
         await navigator.share({ files: [file], title: pose.name });
       } catch (error) {
-        if (error.name !== 'AbortError') notify('File sharing failed. Try downloading the WebP.');
+        if (error.name !== 'AbortError') status.textContent = 'File sharing failed. Try downloading the WebP.';
       }
     });
     let file;
@@ -194,27 +239,27 @@ function openShare(pose) {
       else native.remove();
     }).catch(() => native.remove());
   }
-  if (navigator.clipboard?.writeText) button('Copy link', async () => {
+  if (navigator.clipboard?.writeText) button('Copy link', 'fa-solid fa-link', async () => {
     try {
       await navigator.clipboard.writeText(link);
-      notify('Pose link copied!');
+      status.textContent = 'Pose link copied!';
     } catch {
-      notify('Couldn’t copy the pose link.');
+      status.textContent = 'Couldn’t copy the pose link.';
     }
   });
-  const links = {
-    'WhatsApp': 'https://wa.me/?text=' + title + '%20' + url,
-    'Facebook': 'https://www.facebook.com/sharer/sharer.php?u=' + url,
-    'X': 'https://twitter.com/intent/tweet?text=' + title + '&url=' + url,
-    'Telegram': 'https://t.me/share/url?url=' + url + '&text=' + title,
-    'Pinterest': 'https://pinterest.com/pin/create/button/?url=' + url + '&media=' + image + '&description=' + title,
-    'LinkedIn': 'https://www.linkedin.com/sharing/share-offsite/?url=' + url,
-    'Reddit': 'https://www.reddit.com/submit?url=' + url + '&title=' + title,
-    'Email': 'mailto:?subject=' + title + '&body=' + url
-  };
-  for (const [label, href] of Object.entries(links)) {
+  const links = [
+    ['WhatsApp', 'fa-brands fa-whatsapp', 'https://wa.me/?text=' + title + '%20' + url],
+    ['Facebook', 'fa-brands fa-facebook-f', 'https://www.facebook.com/sharer/sharer.php?u=' + url],
+    ['X', 'fa-brands fa-x-twitter', 'https://twitter.com/intent/tweet?text=' + title + '&url=' + url],
+    ['Telegram', 'fa-brands fa-telegram', 'https://t.me/share/url?url=' + url + '&text=' + title],
+    ['Pinterest', 'fa-brands fa-pinterest-p', 'https://pinterest.com/pin/create/button/?url=' + url + '&media=' + image + '&description=' + title],
+    ['LinkedIn', 'fa-brands fa-linkedin-in', 'https://www.linkedin.com/sharing/share-offsite/?url=' + url],
+    ['Reddit', 'fa-brands fa-reddit-alien', 'https://www.reddit.com/submit?url=' + url + '&title=' + title],
+    ['Email', 'fa-solid fa-envelope', 'mailto:?subject=' + title + '&body=' + url]
+  ];
+  for (const [label, icon, href] of links) {
     const anchor = document.createElement('a');
-    anchor.textContent = label;
+    setShareIcon(anchor, label, icon);
     anchor.href = href;
     if (label !== 'Email') {
       anchor.target = '_blank';
@@ -234,7 +279,7 @@ function showMore() {
     image.draggable = false;
     picture.setAttribute('aria-label', 'Copy ' + pose.name + ' image');
     picture.title = 'Copy image';
-    picture.addEventListener('click', () => copyImage(pose));
+    picture.addEventListener('click', () => copyImage(pose, { origin: picture }));
     card.querySelector('h3').textContent = pose.name;
     card.querySelector('p').textContent = pose.franchise || pose.emotion || pose.category;
     const download = card.querySelector('a');

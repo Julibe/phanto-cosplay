@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="utilities.css">
 <link rel="stylesheet" href="vendor/fontawesome.css">
 <link rel="stylesheet" href="vendor/solid.css">
+<link rel="stylesheet" href="vendor/brands.css">
 <link rel="stylesheet" href="style.css">
 <script src="catalog.js" defer></script>
 <script src="app.js" defer></script>
@@ -24,7 +25,7 @@
   <section class="hero">
     <div class="hero-copy">
       <h1>Dress for the <em>Occasion.</em></h1>
-      <p>Find a reaction or costume. Tap to copy.</p>
+      <p>Tap a pose to copy.</p>
     </div>
     <div class="hero-showcase" role="region" aria-label="Featured Phanto poses" aria-roledescription="carousel">
       <div class="hero-slides">
@@ -94,7 +95,8 @@
   <div class="dialog-top"><h2 id="share-title">Share Phanto</h2><button id="close-share" type="button" class="icon-control" aria-label="Close sharing" title="Close"><i class="icon fa-solid fa-xmark" aria-hidden="true"></i></button></div>
   <p id="share-name"></p>
   <div id="share-options" class="share-options"></div>
-  <p class="share-note">Use your device’s share menu to send the WebP to apps such as Instagram, TikTok, or your email app. The social and email buttons share a link to this pose.</p>
+  <p class="share-note">Social icons share a pose link.</p>
+  <p id="share-status" class="share-note" role="status"></p>
 </dialog>
 <dialog id="pose-editor" aria-labelledby="editor-title">
   <div class="dialog-top">

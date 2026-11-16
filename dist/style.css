@@ -28,21 +28,33 @@ body {
   background: var(--base);
   color: var(--ink);
 }
-body::before {
+body::before, body::after {
   content: "";
   position: fixed;
-  inset: -28vmax;
+  inset: -14vmax;
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 30% 25% at 29% 33%, #fe16593e, transparent),
-    radial-gradient(ellipse 31% 29% at 70% 38%, #0147ba75, transparent),
-    radial-gradient(ellipse 35% 30% at 47% 67%, #5c329d72, transparent);
-  animation: brand-drift 24s ease-in-out infinite alternate;
+    radial-gradient(ellipse 39% 36% at 23% 36%, #fe165966, transparent),
+    radial-gradient(ellipse 44% 41% at 73% 38%, #0147baa6, transparent),
+    radial-gradient(ellipse 45% 38% at 52% 73%, #55328190, transparent);
+  animation: brand-drift 16s ease-in-out infinite alternate;
+}
+body::after {
+  background:
+    radial-gradient(ellipse 46% 37% at 29% 67%, #0147c9c4, transparent),
+    radial-gradient(ellipse 39% 35% at 74% 30%, #fe165979, transparent),
+    radial-gradient(ellipse 37% 40% at 64% 73%, #5b348893, transparent);
+  opacity: .38;
+  animation: brand-shift 19s ease-in-out infinite alternate;
 }
 @keyframes brand-drift {
-  from { transform: translate3d(-7%, -4%, 0) rotate(-6deg) }
-  to { transform: translate3d(8%, 5%, 0) rotate(12deg) }
+  from { transform: translate3d(-8%, -5%, 0) rotate(-6deg) }
+  to { transform: translate3d(12%, 9%, 0) rotate(14deg) }
+}
+@keyframes brand-shift {
+  from { opacity: .05; transform: translate3d(11%, -8%, 0) rotate(11deg) }
+  to { opacity: .92; transform: translate3d(-12%, 8%, 0) rotate(-10deg) }
 }
 button, input, select { font: inherit; color: inherit }
 button { background: none }
@@ -79,7 +91,15 @@ h1, h2, h3, .brand { font-family: var(--display); font-weight: 400 }
 .hero h1 { font-size: clamp(4rem, 8vw, 7rem); line-height: .86; letter-spacing: -.018em }
 .hero h1 em { display: block; color: var(--pink); font-style: normal }
 .hero p { max-width: 38ch; margin-top: 17px; color: #e0d6f4; font-size: .91rem; line-height: 1.65 }
-.hero-art { position: relative; min-width: 0; height: 260px }
+.hero-art {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(4px, 1vw, 14px);
+  min-width: 0;
+  height: 260px;
+}
 .hero-art::before {
   content: "";
   position: absolute;
@@ -89,15 +109,13 @@ h1, h2, h3, .brand { font-family: var(--display); font-weight: 400 }
   background: radial-gradient(ellipse, #8066de72, #49297c4a 57%, transparent 73%);
   transform: rotate(-17deg);
 }
-.hero-art img { position: absolute; object-fit: contain; filter: drop-shadow(0 16px 18px #0c042975) }
-.hero-art .center { z-index: 1; width: 59%; top: 2%; left: 20%; transform: rotate(-5deg) }
-.hero-art .side { width: 37% }
-.hero-art .left { top: 21%; left: -1%; transform: rotate(-16deg) }
-.hero-art .right { top: 27%; right: -1%; transform: rotate(15deg) }
+.hero-art img { position: relative; display: block; width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 12px 15px #0c042975) }
+.hero-art .center { z-index: 1 }
+.hero-art .side { transform: translateY(12px) }
 .spark { position: absolute; z-index: 1; color: #ff9cbd; font-size: 1.5rem }
-.spark.a { left: 17%; top: 7% }
-.spark.b { right: 12%; top: 6%; color: #c9c6ff }
-.spark.c { right: 12%; bottom: 9%; font-size: .8rem }
+.spark.a { left: 12%; top: 5% }
+.spark.b { right: 12%; top: 5%; color: #c9c6ff }
+.spark.c { right: 12%; bottom: 4%; font-size: .8rem }
 
 .picker { margin-top: 28px; overflow-anchor: none }
 .results { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 10px }
@@ -249,7 +267,7 @@ dialog::backdrop { background: #08041bc4 }
 .dialog-top h2 { font-size: 1.85rem }
 .dialog-top button { width: 42px; height: 42px; border-radius: 50%; background: #4b356b80 }
 #share-name, #editor-name { color: var(--muted); font-size: .82rem; margin-top: 3px }
-.share-options { display: flex; flex-wrap: wrap; gap: 7px; margin: 14px 0 }
+.share-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(44px, 1fr)); gap: 7px; margin: 14px 0 }
 .share-options a,.share-options button,.editor-output button,.editor-toolbar button {
   display: inline-flex; align-items: center; justify-content: center; gap: 7px;
   min-width: 44px; min-height: 44px; padding: 6px 11px;
@@ -257,6 +275,8 @@ dialog::backdrop { background: #08041bc4 }
   text-decoration: none; font-size: .77rem;
 }
 .share-options a:hover,.share-options button:hover,.editor-output button:hover,.editor-toolbar button:hover { border-color: var(--pink) }
+.share-options a, .share-options button { min-width: 0; min-height: 48px; padding: 0; font-size: 1.1rem }
+#share-status:not(:empty) { margin-top: 7px; color: var(--pink) }
 .share-note, #editor-status { color: var(--muted); font-size: .75rem; line-height: 1.5 }
 #pose-editor { max-height: calc(100dvh - 24px); overflow: auto }
 .editor-preview { display: grid; place-items: center; aspect-ratio: 1; max-width: min(100%, 320px, 45dvh); margin: 12px auto; overflow: hidden; border-radius: 18px; background: radial-gradient(ellipse, #583c79, #271c50) }
@@ -282,11 +302,8 @@ dialog::backdrop { background: #08041bc4 }
   .hero { min-height: 0; grid-template-columns: 1.06fr 1fr; padding: 18px 13px 18px 16px; border-radius: 22px }
   .hero h1 { font-size: clamp(1.95rem, 8.1vw, 3.6rem); line-height: .94 }
   .hero p { margin-top: 8px; font-size: .66rem; line-height: 1.47 }
-  .hero-art { height: clamp(110px, 34vw, 174px); margin-inline: -7px -2px }
-  .hero-art .center { width: 80%; left: 10%; top: 6% }
-  .hero-art .side { width: 55%; top: 33% }
-  .hero-art .left { left: -10% }
-  .hero-art .right { right: -9% }
+  .hero-art { height: clamp(110px, 28vw, 156px) }
+  .hero-art .side { transform: translateY(6px) }
   .spark.a { display: none }
   .spark.b { right: 10%; font-size: .95rem }
   .spark.c { right: 10% }
@@ -305,12 +322,20 @@ dialog::backdrop { background: #08041bc4 }
   kbd { display: none }
   .toast { bottom: calc(125px + env(safe-area-inset-bottom, 0px)) }
 }
+@media (max-width: 480px) {
+  .hero { grid-template-columns: 1fr; gap: 1px; padding: 15px 15px 11px }
+  .hero h1 { font-size: clamp(2.1rem, 10vw, 3rem) }
+  .hero h1 em { display: inline }
+  .hero p { margin-top: 5px; font-size: .73rem }
+  .hero-slides { max-width: 315px; margin-inline: auto }
+  .hero-art::before { inset: 0 2% }
+}
 @media (max-height: 540px) {
   #pose-editor { padding: 13px }
   .editor-preview { max-width: 32dvh; margin-block: 7px }
 }
 @media (prefers-reduced-motion: reduce) {
-  body::before { animation: none }
+  body::before, body::after { animation: none }
   .card, .picture img { transition: none }
 }
 @media (forced-colors: active) {
@@ -355,4 +380,50 @@ dialog::backdrop { background: #08041bc4 }
 }
 @media (prefers-reduced-motion: reduce) {
   .hero-slide.is-entering, .hero-slide .center { animation: none }
+}
+
+/* Copy confirmation and control transitions */
+.actions .icon-control, .suggestions button, #filter-toggle, .hero-controls button,
+.share-options a, .share-options button, .editor-toolbar button, .editor-output button {
+  transition: background-color .18s, color .18s, border-color .18s;
+}
+dialog[open] { animation: panel-enter 180ms ease-out both }
+.filters:not([hidden]), .toast:not([hidden]) { animation: panel-enter 150ms ease-out both }
+@keyframes panel-enter {
+  from { opacity: 0; transform: translateY(6px) }
+  to { opacity: 1; transform: translateY(0) }
+}
+#editor-copy { position: relative }
+.copy-burst {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.copy-particle {
+  position: absolute;
+  display: block;
+  line-height: 1;
+  animation: copy-burst-out 620ms cubic-bezier(.12,.72,.36,1) var(--delay) both;
+}
+.copy-spark { font: 1.05rem/1 system-ui, sans-serif; text-shadow: 0 0 10px currentColor }
+.copy-ribbon {
+  width: 8px;
+  height: 16px;
+  background: currentColor;
+  clip-path: polygon(15% 0,63% 0,92% 18%,83% 35%,40% 49%,30% 63%,63% 78%,86% 100%,35% 100%,7% 82%,0 62%,27% 45%,59% 31%,64% 20%);
+}
+@keyframes copy-burst-out {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(.3) }
+  20% { opacity: 1 }
+  65% { opacity: .96 }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(var(--spin)) scale(.75) }
+}
+@media (prefers-reduced-motion: reduce) {
+  dialog[open], .filters:not([hidden]), .toast:not([hidden]), .copy-particle { animation: none }
+  .actions .icon-control, .suggestions button, #filter-toggle, .hero-controls button,
+  .share-options a, .share-options button, .editor-toolbar button, .editor-output button { transition: none }
 }
