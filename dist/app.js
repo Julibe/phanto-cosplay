@@ -1,6 +1,6 @@
 'use strict';
 
-const categories = ['All poses', 'Reactions', 'Costumes', 'Animals', 'Memes', 'Activities', 'Turnarounds'];
+const categories = ['All poses', 'Reactions', 'Costumes', 'Animals', 'Memes', 'Holidays', 'Activities', 'Turnarounds'];
 const shortcuts = {
   ':)': 'joy', ':-)': 'joy', ':d': 'joy', ':-d': 'joy', 'xd': 'laugh',
   ';)': 'wink', ';-)': 'wink', ':p': 'tongue', ':-p': 'tongue', ';p': 'wink tongue',
@@ -75,7 +75,7 @@ const normalize = value => value.toLowerCase().normalize('NFD').replace(/\p{Mark
 
 const poses = window.phantoCatalog.map(pose => {
   const name = normalize(pose.name);
-  const text = normalize(['Phanto', pose.id, pose.legacyId, pose.name, pose.category, pose.franchise,
+  const text = normalize(['Phanto', pose.id, pose.legacyId, pose.previousId, pose.name, pose.category, pose.franchise,
     pose.franchiseType, pose.tags, pose.emotion].filter(Boolean).join(' '));
   const aliases = poseKeywords.filter(([pattern]) => pattern.test(text)).map(([, words]) => words);
   return { ...pose, path: 'poses/' + pose.id + '.webp', nameSearch: name, text,
@@ -473,7 +473,11 @@ shuffle.addEventListener('click', () => {
 });
 
 function resolvePose(sharedId) {
-return poses.find(pose => pose.id === sharedId || pose.legacyId === sharedId)?.id ?? null;
+const currentSharedId = sharedId?.replace(/^musing-/, 'music-').replace(/^holyday-/, 'holiday-');
+return poses.find(pose => pose.id === currentSharedId || pose.legacyId === sharedId || pose.previousId === sharedId
+    || (sharedId?.startsWith('screen-') && /^(movie|tv)-/.test(pose.id)
+      && pose.id.replace(/^(movie|tv)-/, 'screen-') === sharedId)
+    || (/^(style|costume)-cyberpunk-/.test(sharedId ?? '') && pose.id === sharedId.replace(/^(style|costume)-/, 'genre-')))?.id ?? null;
 }
 
 let linkedPose = null;
@@ -545,7 +549,7 @@ for (const label of categories) {
     clearLinkedPose();
     category = label;
     if (label !== 'Reactions') node('emotion').value = '';
-    if (label !== 'Costumes') node('franchise').value = node('franchise-type').value = '';
+    if (label !== 'Costumes' && label !== 'Holidays') node('franchise').value = node('franchise-type').value = '';
     render();
   });
   node('categories').append(button);
@@ -557,7 +561,7 @@ for (const [id, key] of [['franchise', 'franchise'], ['franchise-type', 'franchi
   select.addEventListener('change', () => {
     clearLinkedPose();
     if (select.value) {
-      category = id === 'emotion' ? 'Reactions' : 'Costumes';
+      category = id === 'emotion' ? 'Reactions' : categories[0];
       if (id === 'emotion') {
         node('franchise').value = node('franchise-type').value = '';
       } else {

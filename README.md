@@ -22,6 +22,18 @@ On your server at `https://cosplay.julibe.cloud/`, search and filters are encode
 
 ## Update the catalog
 
-The bundled WebPs are resized from the individually named source poses in the sibling `squirlce-emojis/` directory. Keep the slug and place the converted WebP in `dist/poses/`, then run `node catalog.mjs` from this folder to regenerate the catalog from the source filenames.
+Save the individual PNG sprites in the sibling `squirlce-emojis/` directory. Put each converted WebP in `dist/poses/` with the same filename stem, then run `node catalog.mjs` to regenerate the catalog.
+
+Use these filename patterns for new sprites.
+
+- Holidays use `holiday-<holiday>-<action>`.
+- Anime and TV use `anime-<series>-<character>-<action>` and `tv-<series>-<character>-<action>`.
+- Movies, games, comics, and books use their type as the first segment, followed by the franchise, character, and action.
+- Music uses `music-<genre>-<action>`. Film and TV genre sprites use `movie-<genre>-<action>` or `tv-<genre>-<action>`.
+- Cyberpunk genre sprites use `genre-cyberpunk-<character>-<action>`.
+- Standalone costumes, animals, and memes use `costume-`, `animal-`, and `meme-`.
+- General reactions use `emoji-<category>-<emotion>`.
+
+When renaming an existing sprite, record the old stem under the new stem in `pose-renames.json` so old shared links still resolve.
 
 Artwork and character by Julibe.

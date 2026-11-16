@@ -1,9 +1,15 @@
-import { readdirSync, writeFileSync } from 'node:fs';
+import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { identifyCostume } from './costume-types.mjs';
 
 const source = new URL('../squirlce-emojis/', import.meta.url);
 const output = new URL('./dist/catalog.js', import.meta.url);
 const franchiseNames = {
+  'dr-seuss': 'Dr. Seuss',
+  'gears-of-war': 'Gears of War',
+  'k-da': 'K/DA',
+  'league-of-legends': 'League of Legends',
+  'starcraft': 'StarCraft',
+  'world-of-warcraft': 'World of Warcraft',
   'demon-slayer': 'Demon Slayer',
   'frieren': 'Frieren: Beyond Journey’s End',
   'my-hero-academia': 'My Hero Academia',
@@ -37,8 +43,58 @@ const featured = [
   'emoji-joy-tears-of-joy', 'cosplay-zelda-link'
 ];
 
+const renamedPoses = JSON.parse(readFileSync(new URL('./pose-renames.json', import.meta.url), 'utf8'));
+const holidayNames = ['barranquilla-carnival', 'pasto-carnival', 'dia-de-muertos',
+  'lunar-new-year', 'mid-autumn', 'new-year', 'christmas', 'halloween', 'birthday',
+  'carnival', 'diwali', 'eid', 'hanukkah', 'holi', 'nowruz'];
+
 const poses = readdirSync(source).filter(name => name.endsWith('.png')).map(file => {
   const id = file.slice(0, -4);
+  if (id.startsWith('holiday-')) {
+    const slug = id.slice('holiday-'.length);
+    const holiday = holidayNames.find(name => slug.startsWith(name + '-'));
+    if (!holiday) throw new Error('Unknown holiday: ' + id);
+    const franchise = { 'dia-de-muertos': 'Día de Muertos' }[holiday] ?? title(holiday);
+    const previousId = renamedPoses[id];
+    const legacyId = previousId && identifyCostume(previousId)?.legacyId;
+    return { id, previousId, legacyId, category: 'Holidays', franchise, franchiseType: 'Festival',
+      name: title(slug.slice(holiday.length + 1)), tags: franchise };
+  }
+  const genreMatch = /^(music|movie|tv)-(hip-hop|rnb-and-soul|sci-fi|action|adventure|comedy|crime|documentary|drama|fantasy|horror|mystery|romance|thriller|western)-(.+)$/.exec(id)
+    ?? /^(music)-([^-]+)-(.+)$/.exec(id);
+  if (genreMatch) {
+    const [, prefix, genre, action] = genreMatch;
+    const previousId = renamedPoses[id];
+    const franchise = { 'rnb-and-soul': 'R&B and Soul', 'sci-fi': 'Sci-Fi', 'hip-hop': 'Hip-Hop' }[genre] ?? title(genre);
+    const franchiseType = { music: 'Music', movie: 'Movie', tv: 'TV' }[prefix];
+    const category = action.startsWith('wearing-') ? 'Costumes' : 'Activities';
+    return { id, previousId, category, franchise, franchiseType, name: title(action), tags: franchise };
+  }
+  if (id.startsWith('genre-cyberpunk-')) {
+    const previousId = renamedPoses[id];
+    const slug = id.slice('genre-cyberpunk-'.length);
+    const activity = slug.startsWith('phanto-');
+    const name = title(activity ? slug.slice('phanto-'.length) : slug.replace(/-posing$/, ''));
+    return { id, previousId, category: activity ? 'Activities' : 'Costumes',
+      franchise: 'Cyberpunk', franchiseType: 'Genre', name, tags: 'cyberpunk' };
+  }
+  if (/^(animal|meme|costume)-/.test(id)) {
+    const [prefix] = id.split('-');
+    const previousId = renamedPoses[id];
+    const costume = previousId && identifyCostume(previousId);
+    const name = costume?.remainder ?? id.slice(prefix.length + 1).replace(/-posing$/, '');
+    const category = { animal: 'Animals', meme: 'Memes', costume: 'Costumes' }[prefix];
+    return { id, previousId, category, name: title(name), tags: costume?.group };
+  }
+  if (/^(anime|movie|tv|game|comics|book)-/.test(id)) {
+    const previousId = renamedPoses[id];
+    const { group, franchiseType, legacyId, remainder, standalone } =
+      identifyCostume(previousId ?? 'cosplay-' + id);
+    const franchise = standalone ? '' : franchiseNames[group] ?? title(group);
+    const name = previousId ? remainder : remainder.replace(/-posing(?:-([0-9]+))?$/, (_, variant) => variant ? ' pose ' + variant : '');
+    return { id, previousId, legacyId: previousId ? legacyId : undefined, category: 'Costumes',
+      franchise, franchiseType, name: title(name), tags: franchise };
+  }
   if (id.startsWith('emoji-')) {
     const [, group, ...name] = id.split('-');
     const category = {
@@ -59,7 +115,7 @@ const poses = readdirSync(source).filter(name => name.endsWith('.png')).map(file
 });
 
 function order(pose) {
-  const index = featured.indexOf(pose.legacyId ?? pose.id);
+  const index = featured.indexOf(pose.legacyId ?? pose.previousId ?? pose.id);
   return index < 0 ? featured.length : index;
 }
 poses.sort((a, b) => order(a) - order(b) || a.name.localeCompare(b.name));
