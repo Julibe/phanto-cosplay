@@ -38,7 +38,7 @@ const poseKeywords = [
   [/\b(?:blush\w*|bashful|embarrass\w*)\b/, 'shy blush bashful flustered awkward embarrassed timido sonrojado'],
   [/\b(?:deadpan|blank|unimpressed|side eye|skeptic\w*)\b/, 'meh awkward deadpan unimpressed doubtful side eye not impressed suspicious'],
   [/\b(?:scared|fright\w*|terror|horror|spooky|halloween|witch|vampire|dracula|skeleton|sheet ghost|jack o lantern)\b/, 'spooky scary halloween creepy trick or treat horror miedo espeluznante'],
-  [/\b(?:sleep\w*|asleep|yawn\w*|nap\w*|blanket|nose bubble)\b/, 'tired exhausted sleepy dozing bedtime good night nap zzz dormir sueno buenas noches'],
+  [/\b(?:sleep\w*|asleep|yawn\w*|nap(?:s|ping|ped)?|blanket|nose bubble)\b/, 'tired exhausted sleepy dozing bedtime good night nap zzz dormir sueno buenas noches'],
   [/\b(?:surprise\w*|shock\w*|gasp\w*|startl\w*)\b/, 'omg wow startled shocked gasp jaw drop no way sorpresa sorprendido'],
   [/\b(?:meditat\w*|peaceful|relax\w*|zen|calm)\b/, 'breathe mindfulness zen chill peaceful relaxed tranquilo'],
   [/\b(?:doctor|sick|injur\w*|bandag\w*|thermometer|sneez\w*|cold medicine)\b/, 'ill sick unwell get well hurt ouch germ enfermo'],
@@ -69,12 +69,13 @@ const poseKeywords = [
   [/\b(?:peter parker|spider man|spiderman)\b/, 'spiderman spider man peter parker hombre arana']
 ];
 const normalize = value => value.toLowerCase().normalize('NFD').replace(/\p{Mark}/gu, '')
+  .replaceAll('×', 'x')
   .replace(/[^\p{Letter}\p{Number}]+/gu, ' ').trim();
 
 const poses = window.phantoCatalog.map(pose => {
   const name = normalize(pose.name);
   const text = normalize(['Phanto', pose.id, pose.legacyId, pose.name, pose.category, pose.franchise,
-    pose.franchiseType, pose.tags, pose.emotion].filter(Boolean).join(' ')).replace(/ × /g, ' x ');
+    pose.franchiseType, pose.tags, pose.emotion].filter(Boolean).join(' '));
   const aliases = poseKeywords.filter(([pattern]) => pattern.test(text)).map(([, words]) => words);
   return { ...pose, path: 'poses/' + pose.id + '.webp', nameSearch: name, text,
     keywordSearch: normalize([synonyms[pose.emotion], ...aliases].filter(Boolean).join(' ')) };
