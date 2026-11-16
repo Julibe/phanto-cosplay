@@ -1,4 +1,6 @@
-# Phanto’s Dress for the Occasion
+# Phanto’s Closet
+
+Dress for any occasion.
 
 A spooky-cute picker for Phanto’s reactions, costumes, and poses. Search names, characters, franchises, emotions, or keyboard emoticons such as `:-)`, `<3`, and `xD`.
 
