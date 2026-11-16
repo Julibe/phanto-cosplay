@@ -263,12 +263,53 @@ node('editor-download').addEventListener('click', async () => {
   }
 });
 
-function shareLink(pose) {
+const viewParameters = {
+  emotion: 'emotion',
+  franchise: 'franchise',
+  type: 'franchise-type'
+};
+
+function currentViewParams() {
+  if (linkedPose) return { pose: linkedPose };
+  return {
+    q: search.value.trim(),
+    category: category === categories[0] ? '' : category,
+    ...Object.fromEntries(Object.entries(viewParameters).map(([key, id]) => [key, node(id).value]))
+  };
+}
+
+function makeShareLink(params) {
   const url = new URL(location.href);
   url.search = '';
-  url.searchParams.set('pose', pose.id);
   url.hash = '';
+  for (const [key, value] of Object.entries(params)) {
+    if (value) url.searchParams.set(key, value);
+  }
   return url.href;
+}
+
+function syncViewUrl() {
+  clearTimeout(syncViewUrl.timer);
+  syncViewUrl.timer = setTimeout(() => {
+    const url = new URL(location.href);
+    for (const key of ['pose', 'q', 'category', ...Object.keys(viewParameters)]) url.searchParams.delete(key);
+    for (const [key, value] of Object.entries(currentViewParams())) {
+      if (value) url.searchParams.set(key, value);
+    }
+    if (url.href !== location.href) history.replaceState(history.state, '', url);
+  }, 180);
+}
+
+function openViewLink(label, params) {
+  node('view-link-title').textContent = label;
+  node('view-address').value = makeShareLink(params);
+  node('view-link-status').textContent = '';
+  node('view-link-dialog').showModal();
+  node('view-address').select();
+}
+
+function shareLink(pose) {
+  return makeShareLink({ pose: pose.id });
 }
 
 function setShareIcon(control, label, iconClass) {
@@ -325,6 +366,15 @@ function openShare(pose) {
     } catch {
       status.textContent = 'Couldn’t copy the pose link.';
     }
+  });
+  if (pose.category === 'Costumes') button('Share character link', 'fa-solid fa-user', () => {
+    shareDialog.close();
+    openViewLink('Share character', {
+      q: pose.name.replace(/\s+Pose\s+\d+$/i, ''),
+      category: pose.category,
+      franchise: pose.franchise,
+      type: pose.franchiseType
+    });
   });
   const links = [
     ['WhatsApp', 'fa-brands fa-whatsapp', 'https://wa.me/?text=' + title + '%20' + url],
@@ -404,8 +454,24 @@ shuffle.addEventListener('click', () => {
   notify('Poses shuffled.');
 });
 
-const sharedId = new URL(location.href).searchParams.get('pose');
-let linkedPose = poses.find(pose => pose.id === sharedId || pose.legacyId === sharedId)?.id ?? null;
+function resolvePose(sharedId) {
+return poses.find(pose => pose.id === sharedId || pose.legacyId === sharedId)?.id ?? null;
+}
+
+let linkedPose = null;
+function restoreView() {
+  const params = new URL(location.href).searchParams;
+  search.value = params.get('q') ?? '';
+  const requestedCategory = params.get('category');
+  category = categories.includes(requestedCategory) ? requestedCategory : categories[0];
+  for (const [key, id] of Object.entries(viewParameters)) {
+    const select = node(id);
+    const value = params.get(key);
+    select.value = [...select.options].some(option => option.value === value) ? value : '';
+  }
+  linkedPose = resolvePose(params.get('pose'));
+  render();
+}
 
 function render() {
   const raw = search.value.trim().toLowerCase();
@@ -443,14 +509,11 @@ function render() {
   node('empty').hidden = matches.length > 0;
   shuffle.disabled = matches.length < 2;
   rebuildGallery();
+  syncViewUrl();
 }
 
 function clearLinkedPose() {
-  if (!linkedPose) return;
   linkedPose = null;
-  const url = new URL(location.href);
-  url.searchParams.delete('pose');
-  history.replaceState(null, '', url);
 }
 
 for (const label of categories) {
@@ -531,6 +594,19 @@ node('reset').addEventListener('click', () => {
   render();
   search.focus({ preventScroll: true });
 });
+node('share-view').addEventListener('click', () => openViewLink('Share this view', currentViewParams()));
+node('close-view-link').addEventListener('click', () => node('view-link-dialog').close());
+node('copy-view-link').addEventListener('click', async () => {
+  const address = node('view-address');
+  try {
+    await navigator.clipboard.writeText(address.value);
+    node('view-link-status').textContent = 'Link copied!';
+  } catch {
+    address.focus({ preventScroll: true });
+    address.select();
+    node('view-link-status').textContent = 'Copy the selected link.';
+  }
+});
 node('close-share').addEventListener('click', () => shareDialog.close());
 document.addEventListener('keydown', event => {
   if (event.key === 'Escape' && !filters.hidden && !shareDialog.open && !editor.open) {
@@ -544,4 +620,5 @@ document.addEventListener('keydown', event => {
     search.focus({ preventScroll: true });
   }
 });
-render();
+restoreView();
+window.addEventListener('popstate', restoreView);

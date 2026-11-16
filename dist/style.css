@@ -476,3 +476,9 @@ dialog[open] { animation: panel-enter 180ms ease-out both }
   .actions .icon-control, .suggestions button, #filter-toggle, .hero-controls button,
   .share-options a, .share-options button, .editor-toolbar button, .editor-output button { transition: none }
 }
+
+.result-tools, .view-link-field { display: flex; align-items: center; gap: 7px }
+#share-view, #copy-view-link { width: 44px; height: 44px; flex: none; border: 1px solid var(--line); border-radius: 50%; background: #35235c; color: var(--pink) }
+#share-view:hover, #copy-view-link:hover { border-color: var(--pink) }
+.view-link-field { margin-block: 12px 4px }
+#view-address { width: 100%; min-width: 0; padding: 11px; border: 1px solid var(--line); border-radius: 10px; background: var(--base); font-size: .8rem }

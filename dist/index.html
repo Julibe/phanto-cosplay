@@ -67,7 +67,7 @@
   <section class="picker" aria-label="Find a Phanto">
     <div class="results" id="gallery-results" tabindex="-1">
       <h2 id="heading">All poses</h2>
-      <p id="count" aria-live="polite"></p>
+      <div class="result-tools"><p id="count" aria-live="polite"></p><button id="share-view" class="icon-control" type="button" aria-label="Share this view" title="Share this view"><i class="fa-solid fa-link" aria-hidden="true"></i></button></div>
     </div>
     <div id="grid" class="grid"></div>
     <div id="empty" class="empty" hidden><p>No Phantos found.</p><button id="reset" type="button">Clear filters</button></div>
@@ -105,6 +105,17 @@
   <div id="share-options" class="share-options"></div>
   <p class="share-note">Social icons share a pose link.</p>
   <p id="share-status" class="share-note" role="status"></p>
+</dialog>
+<dialog id="view-link-dialog" aria-labelledby="view-link-title">
+  <div class="dialog-top">
+    <h2 id="view-link-title">Share this view</h2>
+    <button id="close-view-link" class="icon-control" type="button" aria-label="Close link dialog"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+  </div>
+  <div class="view-link-field">
+    <input id="view-address" type="url" aria-label="Shareable URL" readonly>
+    <button id="copy-view-link" class="icon-control" type="button" aria-label="Copy URL" title="Copy URL"><i class="fa-solid fa-copy" aria-hidden="true"></i></button>
+  </div>
+  <p id="view-link-status" class="share-note" role="status"></p>
 </dialog>
 <dialog id="pose-editor" aria-labelledby="editor-title">
   <div class="dialog-top">

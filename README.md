@@ -16,6 +16,10 @@ After editing Tailwind classes or updating Font Awesome, run `npm ci` and `npm r
 
 Downloads and native file sharing use WebP. Copy puts the image on the clipboard as PNG. Social buttons share pose links on the server where the app is running.
 
+## Share links
+
+On your server at `https://cosplay.julibe.cloud/`, search and filters are encoded in the URL. Use the link button beside the pose count to copy the current view. For example, `/?q=happy&category=Reactions` opens a filtered search, and `/?pose=emoji-joy-cheerful` opens a single pose. The share menu on a costume also offers a character link.
+
 ## Update the catalog
 
 The bundled WebPs are resized from the individually named source poses in the sibling `squirlce-emojis/` directory. Keep the slug and place the converted WebP in `dist/poses/`, then run `node catalog.mjs` from this folder to regenerate the catalog from the source filenames.
