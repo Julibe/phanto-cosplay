@@ -275,7 +275,7 @@ kbd { color: var(--muted); border: 1px solid var(--line); border-radius: 5px; pa
 .categories, .selects { display: flex; flex-wrap: wrap; gap: 7px }
 .categories button,.selects select { min-height: 42px; padding: 6px 11px; border: 1px solid var(--line); border-radius: 11px; background: #2c2053; font-size: .75rem }
 .categories button[aria-pressed=true] { color: var(--plum); background: var(--pink); font-weight: 700 }
-.selects select { flex: 1; min-width: 0; width: 0 }
+.selects select { flex: 1 1 7.5rem; min-width: 0 }
 .toast {
   position: fixed;
   z-index: 11;

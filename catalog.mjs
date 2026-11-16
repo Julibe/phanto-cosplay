@@ -1,8 +1,13 @@
 import { readdirSync, writeFileSync } from 'node:fs';
+import { identifyCostume } from './costume-types.mjs';
 
 const source = new URL('../squirlce-emojis/', import.meta.url);
 const output = new URL('./dist/catalog.js', import.meta.url);
 const franchiseNames = {
+  'demon-slayer': 'Demon Slayer',
+  'frieren': 'Frieren: Beyond Journey’s End',
+  'my-hero-academia': 'My Hero Academia',
+  'reincarnated-as-a-slime': 'That Time I Got Reincarnated as a Slime',
   'avatar': 'Avatar: The Last Airbender / The Legend of Korra',
   'beauty-and-the-beast': 'Beauty and the Beast',
   'cardcaptor-sakura': 'Cardcaptor Sakura',
@@ -20,7 +25,6 @@ const franchiseNames = {
   'wheres-waldo': 'Where’s Waldo?',
   'zelda': 'The Legend of Zelda'
 };
-const groups = ('aladdin animal avatar barney beauty-and-the-beast bleach cardcaptor-sakura castlevania christmas classic-horror classic cyberpunk dc dragon-ball donkey-kong evangelion f-zero festivals final-fantasy god-of-war godzilla halloween halo horizon horror hunter-x-hunter invincible jujutsu-kaisen king-kong kirby lion-king lord-of-the-rings marvel mega-man memes metal-gear metroid minecraft monsters-inc muppets music naruto ninja-turtles one-piece pac-man persona pokemon power-rangers ratatouille resident-evil sailor-moon science-fiction screen sesame-street sonic star-fox star-trek star-wars street-fighter super-mario tomb-raider toy-story transformers wall-e wheres-waldo zelda').split(' ');
 
 function title(slug) {
   return slug.split('-').map(word => word[0]?.toUpperCase() + word.slice(1)).join(' ');
@@ -45,21 +49,17 @@ const poses = readdirSync(source).filter(name => name.endsWith('.png')).map(file
     return { id, name: title(name.join('-')), category, emotion, tags: group };
   }
   if (id.startsWith('cosplay-')) {
-    const slug = id.slice(8);
-    const group = groups.find(key => slug === key || slug.startsWith(key + '-'));
-    if (!group) throw new Error('Unknown costume group: ' + id);
-    const remainder = slug.slice(group.length + 1).replace(/^\d+-/, '');
+    const { group, franchiseType, legacyId, remainder, standalone } = identifyCostume(id);
     const category = { animal: 'Animals', memes: 'Memes' }[group] ?? 'Costumes';
-    const standalone = ['animal','memes','classic','classic-horror','horror','science-fiction'].includes(group);
     const franchise = standalone ? '' : franchiseNames[group] ?? title(group);
-    return { id, category, franchise, name: title(remainder || group),
+    return { id, legacyId: legacyId === id ? undefined : legacyId, category, franchise, franchiseType, name: title(remainder || group),
       tags: standalone ? title(group) : group.replaceAll('-', ' ') };
   }
   return { id, name: title(id), category: id.startsWith('rotation-') ? 'Turnarounds' : 'Activities' };
 });
 
 function order(pose) {
-  const index = featured.indexOf(pose.id);
+  const index = featured.indexOf(pose.legacyId ?? pose.id);
   return index < 0 ? featured.length : index;
 }
 poses.sort((a, b) => order(a) - order(b) || a.name.localeCompare(b.name));

@@ -10,7 +10,7 @@ const shortcuts = {
   ':/': 'confusion', ':-/': 'confusion', ':|': 'neutral', '-_-': 'skepticism',
   'b)': 'sunglasses', 'b-)': 'sunglasses', 'zzz': 'sleepy', '^_^': 'joy',
   '😄': 'joy', '😂': 'tears of joy', '😍': 'heart eyes', '😭': 'cry',
-  '😡': 'anger', '😱': 'surprise', '👻': 'phanto', spooky: 'horror'
+  '😡': 'anger', '😱': 'surprise', '👻': 'phanto'
 };
 const synonyms = {
   Joy: 'happy happiness excited joyful smile laugh cheerful',
@@ -27,15 +27,73 @@ const synonyms = {
   Surprise: 'surprised shock shocked amazed',
   Tension: 'tense stressed'
 };
+const poseKeywords = [
+  [/\b(?:laugh\w*|tears of joy|giggl\w*)\b/, 'lol lmao haha laughing giggle cracking up funny hysterical risa carcajada'],
+  [/\b(?:smil\w*|cheerful|beaming|delighted|cheering)\b/, 'grin grinning delighted upbeat sunny content sonrisa sonriendo feliz'],
+  [/\b(?:cry\w*|bawl\w*|sob\w*|tearful|crying puddle)\b/, 'crying sobbing weeping tears heartbreak blue llorar llorando triste'],
+  [/\b(?:kiss\w*|smooch\w*)\b/, 'blow a kiss smooch kisses xoxo beso besito'],
+  [/\b(?:heart eyes|hearts|affectionate|holding rose)\b/, 'in love crush smitten adoring heart eyes valentines enamorado corazones'],
+  [/\b(?:angry|annoyed|rage|swearing|frown)\b/, 'irritated grumpy frustrated mad annoyed fed up enojado molesto'],
+  [/\b(?:confused|puzzled|scratching head|head scratch)\b/, 'huh what bewildered unsure puzzled thinking confused confundido'],
+  [/\b(?:blush\w*|bashful|embarrass\w*)\b/, 'shy blush bashful flustered awkward embarrassed timido sonrojado'],
+  [/\b(?:deadpan|blank|unimpressed|side eye|skeptic\w*)\b/, 'meh awkward deadpan unimpressed doubtful side eye not impressed suspicious'],
+  [/\b(?:scared|fright\w*|terror|horror|spooky|halloween|witch|vampire|dracula|skeleton|sheet ghost|jack o lantern)\b/, 'spooky scary halloween creepy trick or treat horror miedo espeluznante'],
+  [/\b(?:sleep\w*|asleep|yawn\w*|nap\w*|blanket|nose bubble)\b/, 'tired exhausted sleepy dozing bedtime good night nap zzz dormir sueno buenas noches'],
+  [/\b(?:surprise\w*|shock\w*|gasp\w*|startl\w*)\b/, 'omg wow startled shocked gasp jaw drop no way sorpresa sorprendido'],
+  [/\b(?:meditat\w*|peaceful|relax\w*|zen|calm)\b/, 'breathe mindfulness zen chill peaceful relaxed tranquilo'],
+  [/\b(?:doctor|sick|injur\w*|bandag\w*|thermometer|sneez\w*|cold medicine)\b/, 'ill sick unwell get well hurt ouch germ enfermo'],
+  [/\b(?:birthday|party hat|blowing cake candles)\b/, 'happy birthday bday hbd cumple cumpleanos fiesta birthday party'],
+  [/\b(?:christmas|santa|reindeer|poinsettia|carol\w*)\b/, 'xmas merry christmas holiday holidays navidad feliz navidad'],
+  [/\b(?:sunglasses|shades|aviators)\b/, 'sunglasses shades cool glasses lentes gafas'],
+  [/\b(?:food|eating|snack\w*|pizza|popcorn|ice cream|chef|cook\w*)\b/, 'food hungry eating snack yummy tasty comida hambre'],
+  [/\b(?:paint\w*|draw\w*|sketch\w*|artist)\b/, 'art artist creative painting drawing arte dibujo'],
+  [/\b(?:wizard|witch|sorcer\w*|magician)\b/, 'magic spellcasting magical fantasy magia'],
+  [/\b(?:robot|droid|android|c 3po|r2 d2)\b/, 'robot droid android mechanical bot'],
+  [/\b(?:reaction|reactions|emoji)\b/, 'reaction emoji expression emoticon sticker'],
+  [/\b(?:cosplay|costumes)\b/, 'cosplay costume costumes dress up disguise outfit disfraz traje'],
+  [/\b(?:teenage mutant ninja turtles|ninja turtles)\b/, 'tmnt ninja turtles tortugas ninja'],
+  [/\b(?:the lord of the rings|lord of the rings)\b/, 'lotr middle earth el senor de los anillos'],
+  [/\b(?:my hero academia)\b/, 'mha bnha boku no hero academia'],
+  [/\b(?:demon slayer)\b/, 'kny kimetsu no yaiba'],
+  [/\b(?:hunter x hunter)\b/, 'hxh hunter hunter'],
+  [/\b(?:avatar the last airbender)\b/, 'atla last airbender'],
+  [/\b(?:jujutsu kaisen)\b/, 'jjk'],
+  [/\b(?:dragon ball)\b/, 'dbz dragonball dragon ball z'],
+  [/\b(?:star wars)\b/, 'starwars sw guerra de las galaxias'],
+  [/\b(?:super mario)\b/, 'mario bros nintendo'],
+  [/\b(?:pokemon)\b/, 'pokémon pokemon pocket monsters'],
+  [/\b(?:darth vader)\b/, 'anakin sith lord'],
+  [/\b(?:grogu)\b/, 'baby yoda the child'],
+  [/\b(?:bruce wayne|batman)\b/, 'dark knight bruce wayne batman'],
+  [/\b(?:clark kent|superman)\b/, 'clark kent man of steel superman'],
+  [/\b(?:peter parker|spider man|spiderman)\b/, 'spiderman spider man peter parker hombre arana']
+];
 const normalize = value => value.toLowerCase().normalize('NFD').replace(/\p{Mark}/gu, '')
   .replace(/[^\p{Letter}\p{Number}]+/gu, ' ').trim();
 
-const poses = window.phantoCatalog.map(pose => ({
-  ...pose,
-  path: 'poses/' + pose.id + '.webp',
-  search: normalize(['Phanto', pose.id, pose.name, pose.category, pose.franchise, pose.tags,
-    pose.emotion, synonyms[pose.emotion]].filter(Boolean).join(' '))
-}));
+const poses = window.phantoCatalog.map(pose => {
+  const name = normalize(pose.name);
+  const text = normalize(['Phanto', pose.id, pose.legacyId, pose.name, pose.category, pose.franchise,
+    pose.franchiseType, pose.tags, pose.emotion].filter(Boolean).join(' ')).replace(/ × /g, ' x ');
+  const aliases = poseKeywords.filter(([pattern]) => pattern.test(text)).map(([, words]) => words);
+  return { ...pose, path: 'poses/' + pose.id + '.webp', nameSearch: name, text,
+    keywordSearch: normalize([synonyms[pose.emotion], ...aliases].filter(Boolean).join(' ')) };
+});
+
+const searchFiller = new Set(['a', 'an', 'the', 'with', 'of', 'for', 'show', 'me', 'un', 'una', 'con', 'de']);
+function searchScore(pose, phrase, words) {
+  if (pose.nameSearch === phrase) return 100;
+  let score = pose.nameSearch.startsWith(phrase) ? 15 : 0;
+  for (const word of words) {
+    if ((' ' + pose.nameSearch + ' ').includes(' ' + word + ' ')) score += 8;
+    else if ((' ' + pose.text + ' ').includes(' ' + word + ' ')) score += 5;
+    else if ((' ' + pose.keywordSearch + ' ').includes(' ' + word + ' ')) score += 3;
+    else if ((' ' + pose.text + ' ' + pose.keywordSearch).includes(' ' + word)) score += 2;
+    else if (word.length >= 3 && (pose.text.includes(word) || pose.keywordSearch.includes(word))) score++;
+    else return 0;
+  }
+  return score;
+}
 const node = id => document.getElementById(id);
 const search = node('search');
 const suggestions = [...document.querySelectorAll('[data-query]')];
@@ -307,7 +365,8 @@ function showMore(limit = pageSize) {
     picture.title = 'Copy image';
     picture.addEventListener('click', () => copyImage(pose, { origin: picture }));
     card.querySelector('h3').textContent = pose.name;
-    card.querySelector('p').textContent = pose.franchise || pose.emotion || pose.category;
+    card.querySelector('p').textContent = [pose.franchiseType, pose.franchise].filter(Boolean).join(' · ')
+      || pose.emotion || pose.category;
     const download = card.querySelector('a');
     download.href = pose.path;
     download.download = pose.id + '.webp';
@@ -344,27 +403,37 @@ shuffle.addEventListener('click', () => {
   notify('Poses shuffled.');
 });
 
-let linkedPose = new URL(location.href).searchParams.get('pose');
-if (!poses.some(pose => pose.id === linkedPose)) linkedPose = null;
+const sharedId = new URL(location.href).searchParams.get('pose');
+let linkedPose = poses.find(pose => pose.id === sharedId || pose.legacyId === sharedId)?.id ?? null;
 
 function render() {
   const raw = search.value.trim().toLowerCase();
-  const filtered = category !== categories[0] || Boolean(node('emotion').value || node('franchise').value);
+  const franchiseType = node('franchise-type').value;
+  const filtered = category !== categories[0] || Boolean(node('emotion').value || node('franchise').value || franchiseType);
   clearSearch.hidden = !search.value;
   filterToggle.toggleAttribute('data-filtered', filtered);
   filterToggle.setAttribute('aria-label', filtered ? 'Filters, active' : 'Filters');
   for (const button of suggestions) {
     button.setAttribute('aria-pressed', String(button.dataset.query === raw));
   }
-  const query = shortcuts[raw] ?? raw;
-  const words = normalize(query).split(' ').filter(Boolean);
+  const phrase = normalize(Object.hasOwn(shortcuts, raw) ? shortcuts[raw] : raw);
+  const terms = phrase.split(' ').filter(Boolean);
+  const meaningful = terms.filter(word => !searchFiller.has(word));
+  const words = meaningful.length ? meaningful : terms;
   matches = poses.filter(pose => {
     if (linkedPose) return pose.id === linkedPose;
     return (category === categories[0] || pose.category === category)
       && (!node('emotion').value || pose.emotion === node('emotion').value)
       && (!node('franchise').value || pose.franchise === node('franchise').value)
-      && (!raw || (words.length && words.every(word => pose.search.includes(word))));
+      && (!franchiseType || pose.franchiseType === franchiseType);
   });
+  if (raw && !linkedPose) {
+    matches = words.length ? matches
+      .map(pose => ({ pose, score: searchScore(pose, phrase, words) }))
+      .filter(result => result.score > 0)
+      .sort((first, second) => second.score - first.score)
+      .map(result => result.pose) : [];
+  }
   for (const button of node('categories').children) {
     button.setAttribute('aria-pressed', String(!linkedPose && button.textContent === category));
   }
@@ -391,12 +460,12 @@ for (const label of categories) {
     clearLinkedPose();
     category = label;
     if (label !== 'Reactions') node('emotion').value = '';
-    if (label !== 'Costumes') node('franchise').value = '';
+    if (label !== 'Costumes') node('franchise').value = node('franchise-type').value = '';
     render();
   });
   node('categories').append(button);
 }
-for (const [id, key] of [['franchise', 'franchise'], ['emotion', 'emotion']]) {
+for (const [id, key] of [['franchise', 'franchise'], ['franchise-type', 'franchiseType'], ['emotion', 'emotion']]) {
   const select = node(id);
   const values = [...new Set(poses.map(pose => pose[key]).filter(Boolean))].sort((a, b) => a.localeCompare(b));
   for (const value of values) select.add(new Option(value, value));
@@ -404,7 +473,16 @@ for (const [id, key] of [['franchise', 'franchise'], ['emotion', 'emotion']]) {
     clearLinkedPose();
     if (select.value) {
       category = id === 'emotion' ? 'Reactions' : 'Costumes';
-      node(id === 'emotion' ? 'franchise' : 'emotion').value = '';
+      if (id === 'emotion') {
+        node('franchise').value = node('franchise-type').value = '';
+      } else {
+        node('emotion').value = '';
+        const type = node('franchise-type').value;
+        const franchise = node('franchise').value;
+        if (type && franchise && !poses.some(pose => pose.franchiseType === type && pose.franchise === franchise)) {
+          node(id === 'franchise' ? 'franchise-type' : 'franchise').value = '';
+        }
+      }
     }
     render();
   });
@@ -419,7 +497,7 @@ for (const button of suggestions) {
   button.addEventListener('click', () => {
     clearLinkedPose();
     category = categories[0];
-    node('emotion').value = node('franchise').value = '';
+    node('emotion').value = node('franchise').value = node('franchise-type').value = '';
     search.value = search.value.trim().toLowerCase() === button.dataset.query ? '' : button.dataset.query;
     render();
   });
@@ -448,7 +526,7 @@ node('more').addEventListener('click', () => {
 node('reset').addEventListener('click', () => {
   clearLinkedPose();
   category = categories[0];
-  search.value = node('emotion').value = node('franchise').value = '';
+  search.value = node('emotion').value = node('franchise').value = node('franchise-type').value = '';
   render();
   search.focus({ preventScroll: true });
 });
