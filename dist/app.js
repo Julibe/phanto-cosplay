@@ -41,6 +41,7 @@ const search = node('search');
 const suggestions = [...document.querySelectorAll('[data-query]')];
 const filterToggle = node('filter-toggle');
 const filters = node('filters');
+const clearSearch = node('clear-search');
 const grid = node('grid');
 const shareDialog = node('share-dialog');
 const editor = node('pose-editor');
@@ -303,6 +304,10 @@ if (!poses.some(pose => pose.id === linkedPose)) linkedPose = null;
 
 function render() {
   const raw = search.value.trim().toLowerCase();
+  const filtered = category !== categories[0] || Boolean(node('emotion').value || node('franchise').value);
+  clearSearch.hidden = !search.value;
+  filterToggle.toggleAttribute('data-filtered', filtered);
+  filterToggle.setAttribute('aria-label', filtered ? 'Filters, active' : 'Filters');
   for (const button of suggestions) {
     button.setAttribute('aria-pressed', String(button.dataset.query === raw));
   }
@@ -361,6 +366,11 @@ for (const [id, key] of [['franchise', 'franchise'], ['emotion', 'emotion']]) {
   });
 }
 search.addEventListener('input', () => { clearLinkedPose(); render(); });
+clearSearch.addEventListener('click', () => {
+  search.value = '';
+  search.focus({ preventScroll: true });
+  render();
+});
 for (const button of suggestions) {
   button.addEventListener('click', () => {
     clearLinkedPose();

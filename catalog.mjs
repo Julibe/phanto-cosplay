@@ -1,6 +1,6 @@
 import { readdirSync, writeFileSync } from 'node:fs';
 
-const source = new URL('../c/', import.meta.url);
+const source = new URL('../squirlce-emojis/', import.meta.url);
 const output = new URL('./dist/catalog.js', import.meta.url);
 const franchiseNames = {
   'avatar': 'Avatar: The Last Airbender / The Legend of Korra',
