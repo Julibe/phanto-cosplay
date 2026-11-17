@@ -78,7 +78,9 @@ const poses = window.phantoCatalog.map(pose => {
   const text = normalize(['Phanto', pose.id, pose.legacyId, pose.previousId, pose.name, pose.category, pose.franchise,
     pose.franchiseType, pose.tags, pose.emotion].filter(Boolean).join(' '));
   const aliases = poseKeywords.filter(([pattern]) => pattern.test(text)).map(([, words]) => words);
-  return { ...pose, nameSearch: name, text,
+  const hasBerry = pose.id.startsWith('berry-');
+  const hasPhanto = !hasBerry || pose.id.split('-').includes('phanto');
+  return { ...pose, hasBerry, hasPhanto, nameSearch: name, text,
     keywordSearch: normalize([synonyms[pose.emotion], ...aliases].filter(Boolean).join(' ')) };
 });
 
@@ -120,6 +122,7 @@ const filterToggle = node('filter-toggle');
 const filters = node('filters');
 const clearSearch = node('clear-search');
 const shuffle = node('shuffle');
+const portalButton = node('berry-portal');
 const grid = node('grid');
 const shareDialog = node('share-dialog');
 const editor = node('pose-editor');
@@ -286,10 +289,37 @@ const viewParameters = {
   franchise: 'franchise',
   type: 'franchise-type'
 };
+let berryPortal = false;
+
+function poseInPortal(pose) {
+  return berryPortal ? pose.hasBerry : pose.hasPhanto;
+}
+
+function setPortal(active) {
+  berryPortal = active;
+  document.body.toggleAttribute('data-berry-portal', active);
+  portalButton.setAttribute('aria-pressed', String(active));
+  node('phanto-intro').hidden = active;
+  node('berry-intro').hidden = !active;
+  document.querySelector('.hero-showcase').hidden = active;
+  node('berry-art').hidden = !active;
+  document.dispatchEvent(new Event('portalchange'));
+  const portalPoses = poses.filter(poseInPortal);
+  for (const button of node('categories').children) {
+    button.hidden = button.textContent !== categories[0] && !portalPoses.some(pose => pose.category === button.textContent);
+  }
+  for (const [id, key] of [['franchise', 'franchise'], ['franchise-type', 'franchiseType'], ['emotion', 'emotion']]) {
+    const select = node(id);
+    const values = [...new Set(portalPoses.map(pose => pose[key]).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+    select.replaceChildren(select.options[0], ...values.map(value => new Option(value, value)));
+  }
+}
 
 function currentViewParams() {
-  if (linkedPose) return { pose: linkedPose };
+  const portal = berryPortal ? 'berry' : '';
+  if (linkedPose) return { pose: linkedPose, portal };
   return {
+    portal,
     q: search.value.trim(),
     category: category === categories[0] ? '' : category,
     ...Object.fromEntries(Object.entries(viewParameters).map(([key, id]) => [key, node(id).value]))
@@ -310,7 +340,7 @@ function syncViewUrl() {
   clearTimeout(syncViewUrl.timer);
   syncViewUrl.timer = setTimeout(() => {
     const url = new URL(location.href);
-    for (const key of ['pose', 'q', 'category', ...Object.keys(viewParameters)]) url.searchParams.delete(key);
+    for (const key of ['pose', 'portal', 'q', 'category', ...Object.keys(viewParameters)]) url.searchParams.delete(key);
     for (const [key, value] of Object.entries(currentViewParams())) {
       if (value) url.searchParams.set(key, value);
     }
@@ -327,7 +357,7 @@ function openViewLink(label, params) {
 }
 
 function shareLink(pose) {
-  return makeShareLink({ pose: pose.id });
+  return makeShareLink({ pose: pose.id, portal: berryPortal ? 'berry' : '' });
 }
 
 function setShareIcon(control, label, iconClass) {
@@ -490,6 +520,9 @@ return poses.find(pose => pose.id === currentSharedId || pose.legacyId === share
 let linkedPose = null;
 function restoreView() {
   const params = new URL(location.href).searchParams;
+  linkedPose = resolvePose(params.get('pose'));
+  const linked = poses.find(pose => pose.id === linkedPose);
+  setPortal(linked ? linked.hasBerry && (!linked.hasPhanto || params.get('portal') === 'berry') : params.get('portal') === 'berry');
   search.value = params.get('q') ?? '';
   const requestedCategory = params.get('category');
   category = categories.includes(requestedCategory) ? requestedCategory : categories[0];
@@ -498,7 +531,6 @@ function restoreView() {
     const value = params.get(key);
     select.value = [...select.options].some(option => option.value === value) ? value : '';
   }
-  linkedPose = resolvePose(params.get('pose'));
   render();
 }
 
@@ -522,7 +554,8 @@ function render() {
   const browseOrder = !raw && !filtered && !linkedPose ? homeOrder : poses;
   matches = browseOrder.filter(pose => {
     if (linkedPose) return pose.id === linkedPose;
-    return (category === categories[0] || pose.category === category)
+    return poseInPortal(pose)
+      && (category === categories[0] || pose.category === category)
       && (!node('emotion').value || pose.emotion === node('emotion').value)
       && (!node('franchise').value || pose.franchise === node('franchise').value)
       && (!franchiseType || pose.franchiseType === franchiseType);
@@ -537,7 +570,7 @@ function render() {
   for (const button of node('categories').children) {
     button.setAttribute('aria-pressed', String(!linkedPose && button.textContent === category));
   }
-  node('heading').textContent = linkedPose ? 'Shared pose' : category;
+  node('heading').textContent = linkedPose ? 'Shared pose' : berryPortal && category === categories[0] ? 'Berry poses' : category;
   node('count').textContent = matches.length.toLocaleString() + (matches.length === 1 ? ' pose' : ' poses');
   node('empty').hidden = matches.length > 0;
   shuffle.disabled = matches.length < 2;
@@ -562,10 +595,8 @@ for (const label of categories) {
   });
   node('categories').append(button);
 }
-for (const [id, key] of [['franchise', 'franchise'], ['franchise-type', 'franchiseType'], ['emotion', 'emotion']]) {
+for (const id of Object.values(viewParameters)) {
   const select = node(id);
-  const values = [...new Set(poses.map(pose => pose[key]).filter(Boolean))].sort((a, b) => a.localeCompare(b));
-  for (const value of values) select.add(new Option(value, value));
   select.addEventListener('change', () => {
     clearLinkedPose();
     if (select.value) {
@@ -584,6 +615,13 @@ for (const [id, key] of [['franchise', 'franchise'], ['franchise-type', 'franchi
     render();
   });
 }
+portalButton.addEventListener('click', () => {
+  clearLinkedPose();
+  category = categories[0];
+  search.value = '';
+  setPortal(!berryPortal);
+  render();
+});
 search.addEventListener('input', () => { clearLinkedPose(); render(); });
 clearSearch.addEventListener('click', () => {
   search.value = '';

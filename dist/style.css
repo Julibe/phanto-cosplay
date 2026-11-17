@@ -482,3 +482,75 @@ dialog[open] { animation: panel-enter 180ms ease-out both }
 #share-view:hover, #copy-view-link:hover { border-color: var(--pink) }
 .view-link-field { margin-block: 12px 4px }
 #view-address { width: 100%; min-width: 0; padding: 11px; border: 1px solid var(--line); border-radius: 10px; background: var(--base); font-size: .8rem }
+
+/* Rival portals */
+.header-actions { display: flex; align-items: center; justify-content: flex-end; gap: 8px }
+#berry-portal {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 42px;
+  padding: 5px 10px;
+  border: 1px solid #ff638a95;
+  border-radius: 999px;
+  background: #7b18398c;
+  color: #ffe8ee;
+  font-size: .78rem;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: background-color .18s, border-color .18s;
+}
+#berry-portal img { object-fit: contain }
+#berry-portal:hover { border-color: #ffa2b9; background: #a62c52 }
+#berry-portal[aria-pressed=true] { border-color: #ff9cad; background: #ff809a; color: #370b16 }
+.berry-art { min-height: 0 }
+.berry-art img { --float-rise: -5px; animation: hero-float 3.6s ease-in-out infinite alternate }
+.berry-art .center { --float-rise: -9px; animation-delay: -.9s }
+.berry-art .right { animation-delay: -1.8s }
+body[data-berry-portal] {
+  --base: #240911;
+  --plum: #4b1220;
+  --line: #f18ea04f;
+  --pink: #ffa2b3;
+  --muted: #e8bbc3;
+  scrollbar-color: #d15569 var(--plum);
+}
+body[data-berry-portal]::before {
+  background: radial-gradient(ellipse 42% 38% at 24% 39%, #ed234a98, transparent),
+    radial-gradient(ellipse 43% 40% at 76% 39%, #b3113aa6, transparent),
+    radial-gradient(ellipse 42% 39% at 53% 74%, #e0552d66, transparent);
+}
+body[data-berry-portal]::after {
+  background: radial-gradient(ellipse 45% 39% at 28% 69%, #a6143999, transparent),
+    radial-gradient(ellipse 38% 35% at 75% 28%, #ff49677a, transparent);
+}
+body[data-berry-portal] .hero {
+  border-color: #ff899c78;
+  background: radial-gradient(ellipse at 79% 80%, #e9355a80, transparent 64%),
+    linear-gradient(115deg, #4b1021, #861d36);
+}
+body[data-berry-portal] .hero-art::before {
+  background: radial-gradient(ellipse, #ff7c8d6e, #86254259 58%, transparent 74%);
+  border-color: #ffc1cd52;
+  box-shadow: 0 0 0 11px #ffa8b717, 0 0 0 22px #ff8ea911;
+}
+body[data-berry-portal] .card { background: linear-gradient(160deg, #712437ba, #41131fdf 72%) }
+body[data-berry-portal] .card .picture { background: radial-gradient(ellipse, #ff697c36, transparent 73%) }
+body[data-berry-portal] .card-body, body[data-berry-portal] .copy-mark { background: #330a14a4 }
+body[data-berry-portal] .search-dock, body[data-berry-portal] dialog,
+body[data-berry-portal] .filters, body[data-berry-portal] .toast { background: #4e1223f3; border-color: #ed879d8c }
+body[data-berry-portal] .search { background: #290a14e3 }
+body[data-berry-portal] .categories button:not([aria-pressed=true]), body[data-berry-portal] .selects select,
+body[data-berry-portal] .results p, body[data-berry-portal] #share-view,
+body[data-berry-portal] #shuffle, body[data-berry-portal] #filter-toggle:not([aria-expanded=true]) { background: #74253e }
+@media (max-width: 480px) {
+  .header-actions { gap: 5px }
+  #berry-portal { padding-inline: 6px; font-size: .72rem }
+  #berry-portal img { width: 21px; height: 21px }
+  .header-actions .byline { padding-inline: 7px; white-space: nowrap }
+  .berry-art { width: min(100%, 315px); margin-inline: auto }
+}
+@media (prefers-reduced-motion: reduce) {
+  .berry-art img { animation: none }
+  #berry-portal { transition: none }
+}

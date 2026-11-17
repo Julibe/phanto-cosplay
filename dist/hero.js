@@ -12,7 +12,7 @@ let timer;
 
 function scheduleSlide() {
   clearTimeout(timer);
-  if (playing && !hovered && !document.hidden && !carousel.contains(document.activeElement)) {
+  if (playing && !hovered && !document.hidden && !carousel.hidden && !carousel.contains(document.activeElement)) {
     timer = setTimeout(() => moveSlide(1), 4600);
   }
 }
@@ -58,6 +58,7 @@ carousel.addEventListener('pointerleave', event => {
 carousel.addEventListener('focusin', scheduleSlide);
 carousel.addEventListener('focusout', () => setTimeout(scheduleSlide, 0));
 document.addEventListener('visibilitychange', scheduleSlide);
+document.addEventListener('portalchange', scheduleSlide);
 motion.addEventListener('change', event => setPlaying(!event.matches));
 controls.hidden = false;
 setPlaying(playing);

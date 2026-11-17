@@ -12,22 +12,32 @@
 <link rel="stylesheet" href="vendor/fontawesome.css">
 <link rel="stylesheet" href="vendor/solid.css">
 <link rel="stylesheet" href="vendor/brands.css">
-<link rel="stylesheet" href="style.css?v=0826c86d62c3">
+<link rel="stylesheet" href="style.css?v=7800f03a9c96">
 <script src="catalog.js?v=295054bf9ba7" defer></script>
-<script src="app.js?v=270945af7079" defer></script>
-<script src="hero.js?v=c27c89a9e0e8" defer></script>
+<script src="app.js?v=96a67e166009" defer></script>
+<script src="hero.js?v=843c5561aa93" defer></script>
 </head>
 <body>
 <header class="wrap header">
   <a class="brand" href="./"><img src="emoji/joy/emoji-joy-cheerful.webp" alt="" width="42" height="42"> Phanto’s Cosplay</a>
-  <a class="byline" href="https://julibe.com">by Julibe ↗</a>
+  <div class="header-actions">
+    <button id="berry-portal" type="button" aria-pressed="false" title="Switch between Phanto and Berry portals">
+      <img src="berry/berry-stern-glare.webp" alt="" width="25" height="25"> Berry
+    </button>
+    <a class="byline" href="https://julibe.com">by Julibe ↗</a>
+  </div>
 </header>
 <main class="wrap">
   <section class="hero">
-    <div class="hero-copy">
+    <div class="hero-copy" id="phanto-intro">
       <h1>Phanto’s <em>Cosplay</em></h1>
       <p class="hero-slogan">Dress for any occasion</p>
       <p class="hero-intro">A little ghost with a big wardrobe. Pick a look for whatever mood is haunting you.</p>
+    </div>
+    <div class="hero-copy" id="berry-intro" hidden>
+      <h1>Berry <em>Angry</em></h1>
+      <p class="hero-slogan">Phanto’s archenemy</p>
+      <p class="hero-intro">Sweet on the outside. Sour about everything.</p>
     </div>
     <div class="hero-showcase" role="region" aria-label="Featured Phanto poses" aria-roledescription="carousel">
       <div class="hero-slides">
@@ -62,6 +72,11 @@
         <button type="button" id="hero-next" aria-label="Next slide" title="Next slide"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
       </div>
       <span id="hero-announcement" class="sr-only" role="status"></span>
+    </div>
+    <div class="hero-art berry-art" id="berry-art" aria-hidden="true" hidden>
+      <img class="side left" src="berry/berry-grumpy-tea.webp" alt="" loading="lazy">
+      <img class="center" src="berry/berry-furious-forward-lunge.webp" alt="" loading="lazy">
+      <img class="side right" src="berry/berry-worried-frown.webp" alt="" loading="lazy">
     </div>
   </section>
   <section class="picker" aria-label="Find a Phanto">
