@@ -298,7 +298,14 @@ function poseInPortal(pose) {
 function setPortal(active) {
   berryPortal = active;
   document.body.toggleAttribute('data-berry-portal', active);
-  portalButton.setAttribute('aria-pressed', String(active));
+  const destination = active ? 'Phanto' : 'Berry';
+  const label = 'Switch to ' + destination + ' portal';
+  portalButton.setAttribute('aria-label', label);
+  portalButton.title = label;
+  portalButton.querySelector('span').textContent = destination;
+  portalButton.querySelector('img').src = active
+    ? 'emoji/joy/emoji-joy-cheerful.webp'
+    : 'berry/berry-stern-glare.webp';
   node('phanto-intro').hidden = active;
   node('berry-intro').hidden = !active;
   document.querySelector('.hero-showcase').hidden = active;
@@ -459,6 +466,7 @@ function showMore(limit = pageSize) {
     } else {
       image.src = pose.path;
     }
+    image.alt = pose.name;
     image.draggable = false;
     picture.setAttribute('aria-label', 'Copy ' + pose.name + ' image');
     picture.title = 'Copy image';
@@ -586,6 +594,7 @@ for (const label of categories) {
   const button = document.createElement('button');
   button.type = 'button';
   button.textContent = label;
+  button.title = label;
   button.addEventListener('click', () => {
     clearLinkedPose();
     category = label;

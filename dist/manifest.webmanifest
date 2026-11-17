@@ -1,0 +1,25 @@
+{
+  "id": "./",
+  "name": "Phanto’s Cosplay",
+  "short_name": "Phanto",
+  "description": "Dress for any occasion. Search and share Phanto and Berry poses.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#100b2d",
+  "theme_color": "#100b2d",
+  "icons": [
+    {
+      "src": "icons/phanto-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/phanto-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

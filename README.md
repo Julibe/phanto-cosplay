@@ -20,6 +20,12 @@ Downloads and native file sharing use WebP. Copy puts the image on the clipboard
 
 On your server at `https://cosplay.julibe.cloud/`, search and filters are encoded in the URL. Use the link button beside the pose count to copy the current view. For example, `/?q=happy&category=Reactions` opens a filtered search, and `/?pose=emoji-joy-cheerful` opens a single pose. The share menu on a costume also offers a character link.
 
+## Install and connect
+
+On HTTPS, use the browser’s **Install app** or **Add to Home Screen** command. Supported browsers may also show an install button in the header. The gallery loads from the server, and offline mode shows a reconnect screen.
+
+`GET /catalog.json` returns the public pose catalog as JSON with `schemaVersion` and `poses`. Each pose has an ID, name, category, and an image `path` relative to the catalog URL. Optional fields include emotion, franchise, and legacy IDs. If a browser app reads the feed from a different origin, configure CORS for `catalog.json` on your server.
+
 ## Update the catalog
 
 Save the individual PNG sprites in the sibling `squirlce-emojis/` directory. Put each newly converted WebP in `dist/poses/` with the same filename stem, then run `node catalog.mjs` to regenerate the catalog and move the assets into their prefix folders.

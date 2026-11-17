@@ -8,23 +8,45 @@
 <meta name="description" content="Dress for any occasion. Find, copy, edit, download, and share Phanto poses.">
 <title>Phanto’s Cosplay</title>
 <link rel="icon" href="emoji/joy/emoji-joy-cheerful.webp">
+<link rel="canonical" href="https://cosplay.julibe.cloud/">
+<link rel="manifest" href="manifest.webmanifest?v=3178970481d5">
+<link rel="apple-touch-icon" href="icons/phanto-192.png">
+<link rel="alternate" type="application/json" href="catalog.json?v=48fc7b46c30b" title="Phanto pose catalog">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Phanto’s Cosplay",
+  "alternateName": "phanto-cosplay",
+  "description": "Dress for any occasion. Find, copy, edit, download, and share Phanto and Berry poses.",
+  "url": "https://cosplay.julibe.cloud/",
+  "image": "https://cosplay.julibe.cloud/icons/phanto-512.png",
+  "applicationCategory": "EntertainmentApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript.",
+  "isAccessibleForFree": true,
+  "creator": { "@type": "Person", "name": "Julibe", "url": "https://julibe.com/" }
+}
+</script>
 <link rel="stylesheet" href="utilities.css?v=2820a670d1e6">
 <link rel="stylesheet" href="vendor/fontawesome.css">
 <link rel="stylesheet" href="vendor/solid.css">
 <link rel="stylesheet" href="vendor/brands.css">
-<link rel="stylesheet" href="style.css?v=7800f03a9c96">
+<link rel="stylesheet" href="style.css?v=7163f19970da">
 <script src="catalog.js?v=295054bf9ba7" defer></script>
-<script src="app.js?v=96a67e166009" defer></script>
+<script src="app.js?v=9d272d0959eb" defer></script>
 <script src="hero.js?v=843c5561aa93" defer></script>
 </head>
 <body>
+<canvas id="portal-background" aria-hidden="true"></canvas>
 <header class="wrap header">
-  <a class="brand" href="./"><img src="emoji/joy/emoji-joy-cheerful.webp" alt="" width="42" height="42"> Phanto’s Cosplay</a>
+  <a class="brand" href="./" aria-label="Phanto’s Cosplay home" title="Phanto’s Cosplay home"><img src="emoji/joy/emoji-joy-cheerful.webp" alt="" width="42" height="42"> Phanto’s Cosplay</a>
   <div class="header-actions">
-    <button id="berry-portal" type="button" aria-pressed="false" title="Switch between Phanto and Berry portals">
-      <img src="berry/berry-stern-glare.webp" alt="" width="25" height="25"> Berry
+    <button id="install-app" class="icon-control" type="button" aria-label="Install Phanto’s Cosplay" title="Install Phanto’s Cosplay" hidden><i class="fa-solid fa-download" aria-hidden="true"></i></button>
+    <button id="berry-portal" type="button" aria-label="Switch to Berry portal" title="Switch to Berry portal">
+      <img src="berry/berry-stern-glare.webp" alt="" width="25" height="25"> <span>Berry</span>
     </button>
-    <a class="byline" href="https://julibe.com">by Julibe ↗</a>
+    <a class="byline" href="https://julibe.com" title="Visit Julibe’s site">by Julibe ↗</a>
   </div>
 </header>
 <main class="wrap">
@@ -147,8 +169,8 @@
     <button type="button" class="icon-control" data-transform="reset" aria-label="Reset orientation" title="Reset orientation"><i class="icon fa-solid fa-clock-rotate-left" aria-hidden="true"></i></button>
   </div>
   <div class="editor-output">
-    <button type="button" id="editor-copy"><i class="icon fa-solid fa-copy" aria-hidden="true"></i>Copy</button>
-    <button type="button" id="editor-download"><i class="icon fa-solid fa-download" aria-hidden="true"></i>WebP</button>
+    <button type="button" id="editor-copy" aria-label="Copy edited image" title="Copy edited image"><i class="icon fa-solid fa-copy" aria-hidden="true"></i>Copy</button>
+    <button type="button" id="editor-download" aria-label="Download edited WebP" title="Download edited WebP"><i class="icon fa-solid fa-download" aria-hidden="true"></i>WebP</button>
   </div>
   <p id="editor-status" role="status"></p>
 </dialog>
@@ -161,5 +183,7 @@
     </div>
   </article>
 </template>
+<script src="background.js?v=f40f80a313da" defer></script>
+<script src="pwa.js?v=40acff4107d2" defer></script>
 </body>
 </html>
