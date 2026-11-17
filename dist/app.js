@@ -666,7 +666,17 @@ for (const id of Object.values(viewParameters)) {
     render();
   });
 }
+let portalReactionTimer;
+portalButton.addEventListener('pointerenter', event => {
+  if (event.pointerType === 'mouse' || event.pointerType === 'pen') portalButton.setAttribute('data-hovering', '');
+});
+for (const type of ['pointerleave', 'pointercancel']) {
+  portalButton.addEventListener(type, () => portalButton.removeAttribute('data-hovering'));
+}
 portalButton.addEventListener('click', () => {
+  clearTimeout(portalReactionTimer);
+  portalButton.setAttribute('data-reacting', '');
+  portalReactionTimer = setTimeout(() => portalButton.removeAttribute('data-reacting'), 900);
   clearLinkedPose();
   category = categories[0];
   search.value = '';
