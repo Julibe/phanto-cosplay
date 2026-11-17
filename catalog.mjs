@@ -129,4 +129,20 @@ function order(pose) {
   return index < 0 ? featured.length : index;
 }
 poses.sort((a, b) => order(a) - order(b) || a.name.localeCompare(b.name));
-writeOrganizedPoses(poses);
+const approvedMemeNames = {
+  'animal-cat-playing-keyboard': 'Keyboard Cat',
+  'emoji-confusion-is-this-a-pigeon': 'Is This a Pigeon?',
+  'emoji-surprise-pikachu-gasp': 'Surprised Pikachu',
+  'emoji-calm-sipping-coffee-amid-flames': 'This Is Fine',
+  'emoji-confidence-smug-bearded-glance': 'Gigachad',
+  'emoji-anger-clenching-in-yellow-sweater': 'Arthur Fist',
+  'emoji-mischief-smirking-by-a-burning-house': 'Disaster Girl'
+};
+writeOrganizedPoses(poses.map(pose => {
+  const approvedName = Object.hasOwn(approvedMemeNames, pose.id) && approvedMemeNames[pose.id];
+  if (approvedName) {
+    return { ...pose, name: approvedName, tags: [pose.tags, 'meme'].filter(Boolean).join(' ') };
+  }
+  if (pose.id === 'costume-food-maki-roll') return { ...pose, name: 'Maki Sushi Roll' };
+  return pose;
+}));
