@@ -206,7 +206,7 @@ function celebrateCopy(origin) {
   const burst = document.createElement('span');
   burst.className = 'copy-burst';
   burst.setAttribute('aria-hidden', 'true');
-  const colors = ['#ff85ad', '#88acff', '#d1afff', '#f3f9fe'];
+  const colors = ['#fff', '#ddd', '#bbb', '#eee'];
   for (let index = 0; index < 14; index++) {
     const particle = document.createElement('span');
     const ribbon = index % 2 === 1;
@@ -313,9 +313,12 @@ function setPortal(active) {
   const label = 'Switch to ' + destination + ' portal';
   portalButton.setAttribute('aria-label', label);
   portalButton.title = label;
-  portalButton.querySelector('img').src = active
+  portalButton.querySelector('.portal-rest').src = active
     ? 'emoji/joy/emoji-joy-cheerful.webp'
     : 'berry/berry-stern-glare.webp';
+  portalButton.querySelector('.portal-reaction').src = active
+    ? 'emoji/playful/emoji-playful-cheeky-wink.webp'
+    : 'berry/berry-furious-forward-lunge.webp';
   node('phanto-intro').hidden = active;
   node('berry-intro').hidden = !active;
   document.querySelector('.hero-showcase').hidden = active;
