@@ -1,6 +1,6 @@
 'use strict';
 
-const categories = ['All poses', 'Reactions', 'Costumes', 'Animals', 'Memes', 'Holidays', 'Activities', 'Turnarounds'];
+const categories = ['All poses', 'Reactions', 'Costumes', 'Animals', 'Holidays', 'Activities', 'Turnarounds'];
 const shortcuts = {
   ':)': 'joy', ':-)': 'joy', ':d': 'joy', ':-d': 'joy', 'xd': 'laugh',
   ';)': 'wink', ';-)': 'wink', ':p': 'tongue', ':-p': 'tongue', ';p': 'wink tongue',

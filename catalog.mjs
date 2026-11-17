@@ -48,7 +48,8 @@ const holidayNames = ['barranquilla-carnival', 'pasto-carnival', 'dia-de-muertos
   'lunar-new-year', 'mid-autumn', 'new-year', 'christmas', 'halloween', 'birthday',
   'carnival', 'diwali', 'eid', 'hanukkah', 'holi', 'nowruz'];
 
-const poses = readdirSync(source).filter(name => name.endsWith('.png')).map(file => {
+const poses = readdirSync(source).filter(name => name.endsWith('.png')
+  && !/^(meme-|cosplay-memes-)/.test(name)).map(file => {
   const id = file.slice(0, -4);
   if (id.startsWith('holiday-')) {
     const slug = id.slice('holiday-'.length);
