@@ -32,7 +32,7 @@
 <link rel="stylesheet" href="vendor/fontawesome.css">
 <link rel="stylesheet" href="vendor/solid.css">
 <link rel="stylesheet" href="vendor/brands.css">
-<link rel="stylesheet" href="style.css?v=57ecf74f6a6a">
+<link rel="stylesheet" href="style.css?v=5b4612f6e1d0">
 <script src="catalog.js?v=a2d1658e0fa8" defer></script>
 <script src="app.js?v=66e467ba7476" defer></script>
 <script src="hero.js?v=843c5561aa93" defer></script>
@@ -124,18 +124,6 @@
         <select id="franchise" aria-label="Franchise"><option value="">Any franchise</option></select>
       </div>
     </div>
-  <div class="suggestions grid gap-1 rounded-full" role="group" aria-label="Portal and pose collections">
-    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-collection="emoji" aria-pressed="false"><i class="fa-solid fa-face-smile" aria-hidden="true"></i><span>Emoji</span></button>
-    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-collection="games" aria-pressed="false"><i class="fa-solid fa-gamepad" aria-hidden="true"></i><span>Games</span></button>
-    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-collection="anime" aria-pressed="false"><i class="fa-solid fa-bolt" aria-hidden="true"></i><span>Anime</span></button>
-    <button id="berry-portal" type="button" aria-label="Switch to Berry portal" title="Switch to Berry portal">
-      <img src="berry/berry-stern-glare.webp" alt="" width="25" height="25"> <span>Berry</span>
-    </button>
-    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-collection="screen" aria-pressed="false"><i class="fa-solid fa-film" aria-hidden="true"></i><span>TV &amp; Movies</span></button>
-    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-collection="holidays" aria-pressed="false"><i class="fa-solid fa-gift" aria-hidden="true"></i><span>Holidays</span></button>
-    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-collection="spooky" aria-pressed="false"><i class="fa-solid fa-ghost" aria-hidden="true"></i><span>Spooky</span></button>
-    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-collection="turnarounds" aria-pressed="false" hidden><i class="fa-solid fa-rotate" aria-hidden="true"></i><span>Turnarounds</span></button>
-  </div>
   <div class="search relative flex items-center gap-3 rounded-full" role="search">
     <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
     <input class="min-w-0 grow" id="search" type="search" autocomplete="off" placeholder="Try worried, wondering, or :-)" aria-label="Search poses, characters, franchises, and emoticons">
@@ -143,6 +131,18 @@
     <button id="clear-search" class="icon-control" type="button" aria-label="Clear search" title="Clear search" hidden><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
     <button id="shuffle" class="icon-control" type="button" aria-label="Shuffle results" title="Shuffle results"><i class="fa-solid fa-shuffle" aria-hidden="true"></i></button>
     <button id="filter-toggle" class="icon-control grid place-items-center rounded-full" type="button" aria-label="Filters" aria-controls="filters" aria-expanded="false" title="Filters"><i class="fa-solid fa-sliders" aria-hidden="true"></i></button>
+  </div>
+  <button id="berry-portal" type="button" aria-label="Switch to Berry portal" title="Switch to Berry portal">
+    <img src="berry/berry-stern-glare.webp" alt="" width="25" height="25"> <span>Berry</span>
+  </button>
+  <div class="suggestions grid gap-1 rounded-full" role="group" aria-label="Pose collections">
+    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-collection="emoji" aria-pressed="false"><i class="fa-solid fa-face-smile" aria-hidden="true"></i><span>Emoji</span></button>
+    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-collection="games" aria-pressed="false"><i class="fa-solid fa-gamepad" aria-hidden="true"></i><span>Games</span></button>
+    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-collection="anime" aria-pressed="false"><i class="fa-solid fa-bolt" aria-hidden="true"></i><span>Anime</span></button>
+    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-collection="screen" aria-pressed="false"><i class="fa-solid fa-film" aria-hidden="true"></i><span>TV &amp; Movies</span></button>
+    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-collection="holidays" aria-pressed="false"><i class="fa-solid fa-gift" aria-hidden="true"></i><span>Holidays</span></button>
+    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-collection="spooky" aria-pressed="false"><i class="fa-solid fa-ghost" aria-hidden="true"></i><span>Spooky</span></button>
+    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-collection="turnarounds" aria-pressed="false" hidden><i class="fa-solid fa-rotate" aria-hidden="true"></i><span>Turnarounds</span></button>
   </div>
 </section>
 <dialog id="share-dialog" aria-labelledby="share-title">
