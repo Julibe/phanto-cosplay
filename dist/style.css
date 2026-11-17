@@ -29,7 +29,7 @@ body {
   -webkit-tap-highlight-color: transparent;
   min-height: 100dvh;
   margin: 0;
-  padding-bottom: calc(155px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: calc(140px + env(safe-area-inset-bottom, 0px));
   background: var(--base);
   color: var(--ink);
 }
@@ -234,7 +234,7 @@ main.wrap { padding-top: clamp(12px, 3vw, 32px) }
 .search-dock {
   bottom: calc(12px + env(safe-area-inset-bottom, 0px));
   width: min(820px, calc(100% - 26px));
-  grid-template-columns: minmax(0, 1fr) 144px minmax(290px, 1.12fr);
+  grid-template-columns: minmax(0, 1fr) 120px minmax(290px, 1.12fr);
   gap: 6px;
   align-items: center;
   padding: 5px;
@@ -304,7 +304,7 @@ kbd { color: var(--muted); border: 1px solid var(--line); border-radius: 5px; pa
   position: fixed;
   z-index: 11;
   left: 50%;
-  bottom: calc(165px + env(safe-area-inset-bottom, 0px));
+  bottom: calc(145px + env(safe-area-inset-bottom, 0px));
   translate: -50% 0;
   width: max-content;
   max-width: calc(100vw - 32px);
@@ -505,10 +505,10 @@ dialog[open] { animation: panel-enter 180ms ease-out both }
   grid-row: 1;
   z-index: 1;
   justify-self: center;
-  width: 144px;
-  height: 144px;
-  margin-block: -47px;
-  translate: 0 -35px;
+  width: 120px;
+  height: 120px;
+  margin-block: -35px;
+  translate: 0 -29px;
   display: grid;
   place-items: center;
   padding: 0;
@@ -544,7 +544,7 @@ dialog[open] { animation: panel-enter 180ms ease-out both }
   visibility: hidden;
 }
 body[data-shader-ready] #portal-background { visibility: visible }
-body[data-berry-portal] #portal-background { filter: blur(12px); scale: 1.04 }
+body[data-berry-portal] #portal-background { filter: blur(38px); scale: 1.12 }
 body[data-shader-ready]::before, body[data-shader-ready]::after { display: none }
 .berry-art { min-height: 0 }
 .berry-art img { --float-rise: -5px; animation: hero-float 3.6s ease-in-out infinite alternate }
@@ -561,7 +561,7 @@ body[data-berry-portal]::after {
     radial-gradient(ellipse 38% 35% at 75% 28%, #ff49677a, transparent);
 }
 @media (max-width: 760px) {
-  body { padding-bottom: calc(260px + env(safe-area-inset-bottom, 0px)) }
+  body { padding-bottom: calc(235px + env(safe-area-inset-bottom, 0px)) }
   .search-dock {
     grid-template-columns: minmax(0, 1fr);
     gap: 4px;
@@ -571,14 +571,14 @@ body[data-berry-portal]::after {
   }
   .suggestions { grid-column: 1; grid-row: 2 }
   .search { grid-column: 1; grid-row: 1; gap: 8px }
-  .toast { bottom: calc(250px + env(safe-area-inset-bottom, 0px)) }
+  .toast { bottom: calc(225px + env(safe-area-inset-bottom, 0px)) }
   #berry-portal {
     position: absolute;
-    top: -114px;
+    top: -90px;
     left: 50%;
     grid-area: auto;
-    width: 132px;
-    height: 132px;
+    width: 108px;
+    height: 108px;
     margin: 0;
     translate: -50% 0;
   }
