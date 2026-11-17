@@ -245,7 +245,7 @@ main.wrap { padding-top: clamp(12px, 3vw, 32px) }
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
 }
-.search { grid-column: 1; grid-row: 1; min-height: 50px; padding: 2px 3px 2px 12px; background: #151515b8; gap: 7px }
+.search { grid-column: 1; grid-row: 1; min-height: 50px; padding: 2px 3px 2px 12px; background: #15151560; gap: 7px }
 .search input { width: 100%; padding-block: 8px; border: 0; background: none }
 .search input::-webkit-search-cancel-button { appearance: none }
 .search:has(#clear-search:not([hidden])) kbd { display: none }
@@ -514,8 +514,9 @@ dialog[open] { animation: panel-enter 180ms ease-out both }
   padding: 0;
   border: 0;
   background: transparent;
-  --portal-glow: #f4f4f4;
+  --portal-glow: #ff526b;
 }
+body[data-berry-portal] #berry-portal { --portal-glow: #e4caff }
 #berry-portal img {
   grid-area: 1 / 1;
   width: 100%;
