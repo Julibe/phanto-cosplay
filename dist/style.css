@@ -213,8 +213,35 @@ h1, h2, h3, .brand { font-family: var(--display); font-weight: 400 }
 .more:hover,.empty button:hover { border-color: var(--pink) }
 .empty { text-align: center; padding: 30px 8px; color: var(--muted) }
 .empty button { margin-top: 10px }
-.footer { padding-block: 20px; color: var(--muted); font-size: .73rem }
-.footer a { text-underline-offset: 3px }
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px 22px;
+  padding-block: 20px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+}
+.footer-credit { display: grid; place-items: center; min-height: 44px }
+.footer-credit img { display: block; width: 108px; height: auto }
+.social-mini-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px }
+.social-mini-nav .bar-link {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 4px;
+  min-width: 44px;
+  min-height: 44px;
+  padding-inline: 6px;
+  border-radius: 12px;
+  background: var(--glass-tint);
+  font-size: .62rem;
+  line-height: 1.2;
+  text-decoration: none;
+}
+.social-mini-nav .bar-link i { font-size: .95rem }
+.social-mini-nav .bar-link:hover, .social-mini-nav .bar-link:focus-visible { background: var(--glass-deep) }
 
 .search-dock {
   bottom: calc(12px + env(safe-area-inset-bottom, 0px));
