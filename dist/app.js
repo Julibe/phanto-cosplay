@@ -313,7 +313,6 @@ function setPortal(active) {
   const label = 'Switch to ' + destination + ' portal';
   portalButton.setAttribute('aria-label', label);
   portalButton.title = label;
-  portalButton.querySelector('span').textContent = destination;
   portalButton.querySelector('img').src = active
     ? 'emoji/joy/emoji-joy-cheerful.webp'
     : 'berry/berry-stern-glare.webp';
