@@ -32,23 +32,13 @@
 <link rel="stylesheet" href="vendor/fontawesome.css">
 <link rel="stylesheet" href="vendor/solid.css">
 <link rel="stylesheet" href="vendor/brands.css">
-<link rel="stylesheet" href="style.css?v=122e0185b473">
+<link rel="stylesheet" href="style.css?v=57ecf74f6a6a">
 <script src="catalog.js?v=6289d4451325" defer></script>
-<script src="app.js?v=0996faea0ebf" defer></script>
+<script src="app.js?v=66e467ba7476" defer></script>
 <script src="hero.js?v=843c5561aa93" defer></script>
 </head>
 <body>
 <canvas id="portal-background" aria-hidden="true"></canvas>
-<header class="wrap header">
-  <a class="brand" href="./" aria-label="Phanto’s Cosplay home" title="Phanto’s Cosplay home"><img src="emoji/joy/emoji-joy-cheerful.webp" alt="" width="42" height="42"> Phanto’s Cosplay</a>
-  <div class="header-actions">
-    <button id="install-app" class="icon-control" type="button" aria-label="Install Phanto’s Cosplay" title="Install Phanto’s Cosplay" hidden><i class="fa-solid fa-download" aria-hidden="true"></i></button>
-    <button id="berry-portal" type="button" aria-label="Switch to Berry portal" title="Switch to Berry portal">
-      <img src="berry/berry-stern-glare.webp" alt="" width="25" height="25"> <span>Berry</span>
-    </button>
-    <a class="byline" href="https://julibe.com" title="Visit Julibe’s site">by Julibe ↗</a>
-  </div>
-</header>
 <main class="wrap">
   <section class="hero">
     <div class="hero-copy" id="phanto-intro">
@@ -63,28 +53,28 @@
     </div>
     <div class="hero-showcase" role="region" aria-label="Featured Phanto poses" aria-roledescription="carousel">
       <div class="hero-slides">
-        <div class="hero-slide" role="group" aria-roledescription="slide" aria-label="Spooky Phanto, 1 of 3">
-          <div class="hero-art" aria-hidden="true">
-            <span class="spark a">✦</span><span class="spark b">✧</span><span class="spark c">✦</span>
-            <img class="side left" src="costume/classic-horror/costume-classic-horror-witch.webp" alt="">
-            <img class="center" src="emoji/joy/emoji-joy-cheerful.webp" alt="">
-            <img class="side right" src="costume/horror/costume-horror-vampire.webp" alt="">
+        <div class="hero-slide" role="group" aria-roledescription="slide" aria-label="Random Phanto emojis, 1 of 3">
+          <div class="hero-art">
+            <span aria-hidden="true" class="spark a">✦</span><span aria-hidden="true" class="spark b">✧</span><span aria-hidden="true" class="spark c">✦</span>
+            <button type="button" class="hero-pose side left" disabled><img alt="" decoding="async"></button>
+            <button type="button" class="hero-pose center" disabled><img alt="" decoding="async"></button>
+            <button type="button" class="hero-pose side right" disabled><img alt="" decoding="async"></button>
           </div>
         </div>
-        <div class="hero-slide" role="group" aria-roledescription="slide" aria-label="Phanto reactions, 2 of 3" hidden>
-          <div class="hero-art" aria-hidden="true">
-            <span class="spark a">✦</span><span class="spark b">✧</span><span class="spark c">✦</span>
-            <img class="side left" src="emoji/joy/emoji-joy-tears-of-joy.webp" alt="">
-            <img class="center" src="emoji/affection/emoji-affection-heart-eyes.webp" alt="">
-            <img class="side right" src="emoji/playful/emoji-playful-wink.webp" alt="">
+        <div class="hero-slide" role="group" aria-roledescription="slide" aria-label="Random Phanto emojis, 2 of 3" hidden>
+          <div class="hero-art">
+            <span aria-hidden="true" class="spark a">✦</span><span aria-hidden="true" class="spark b">✧</span><span aria-hidden="true" class="spark c">✦</span>
+            <button type="button" class="hero-pose side left" disabled><img alt="" decoding="async" loading="lazy"></button>
+            <button type="button" class="hero-pose center" disabled><img alt="" decoding="async" loading="lazy"></button>
+            <button type="button" class="hero-pose side right" disabled><img alt="" decoding="async" loading="lazy"></button>
           </div>
         </div>
-        <div class="hero-slide" role="group" aria-roledescription="slide" aria-label="Costumed Phanto, 3 of 3" hidden>
-          <div class="hero-art" aria-hidden="true">
-            <span class="spark a">✦</span><span class="spark b">✧</span><span class="spark c">✦</span>
-            <img class="side left" src="game/super-mario/game-super-mario-princess-peach-posing.webp" alt="">
-            <img class="center" src="game/pokemon/game-pokemon-pikachu-posing.webp" alt="">
-            <img class="side right" src="game/zelda/game-zelda-link-posing.webp" alt="">
+        <div class="hero-slide" role="group" aria-roledescription="slide" aria-label="Random Phanto emojis, 3 of 3" hidden>
+          <div class="hero-art">
+            <span aria-hidden="true" class="spark a">✦</span><span aria-hidden="true" class="spark b">✧</span><span aria-hidden="true" class="spark c">✦</span>
+            <button type="button" class="hero-pose side left" disabled><img alt="" decoding="async" loading="lazy"></button>
+            <button type="button" class="hero-pose center" disabled><img alt="" decoding="async" loading="lazy"></button>
+            <button type="button" class="hero-pose side right" disabled><img alt="" decoding="async" loading="lazy"></button>
           </div>
         </div>
       </div>
@@ -95,10 +85,10 @@
       </div>
       <span id="hero-announcement" class="sr-only" role="status"></span>
     </div>
-    <div class="hero-art berry-art" id="berry-art" aria-hidden="true" hidden>
-      <img class="side left" src="berry/berry-grumpy-tea.webp" alt="" loading="lazy">
-      <img class="center" src="berry/berry-furious-forward-lunge.webp" alt="" loading="lazy">
-      <img class="side right" src="berry/berry-worried-frown.webp" alt="" loading="lazy">
+    <div class="hero-art berry-art" id="berry-art" hidden>
+      <button type="button" class="hero-pose side left" disabled><img alt="" decoding="async" loading="lazy"></button>
+      <button type="button" class="hero-pose center" disabled><img alt="" decoding="async" loading="lazy"></button>
+      <button type="button" class="hero-pose side right" disabled><img alt="" decoding="async" loading="lazy"></button>
     </div>
   </section>
   <section class="picker" aria-label="Find a Phanto">
@@ -123,6 +113,7 @@
     <a href="https://julibe.com/instagram" target="_blank" rel="noopener noreferrer" class="bar-link" title="See the world through Julibe's lens" aria-label="Julibe's Instagram gallery"><i class="fa-brands fa-instagram" aria-hidden="true"></i><span>Instagram</span></a>
     <a href="mailto:mail@julibe.com" class="bar-link" title="Drop a line to Julibe's inbox" aria-label="Send an email to Julibe"><i class="fa-solid fa-envelope" aria-hidden="true"></i><span>Email</span></a>
   </nav>
+  <button id="install-app" class="icon-control" type="button" aria-label="Install Phanto’s Cosplay" title="Install Phanto’s Cosplay" hidden><i class="fa-solid fa-download" aria-hidden="true"></i></button>
 </footer>
 <section class="search-dock fixed inset-x-0 z-10 mx-auto grid gap-2" aria-label="Gallery controls">
     <div class="filters" id="filters" role="region" aria-label="Filter poses" hidden>
@@ -133,10 +124,13 @@
         <select id="franchise" aria-label="Franchise"><option value="">Any franchise</option></select>
       </div>
     </div>
-  <div class="suggestions grid gap-1 rounded-full" role="group" aria-label="Pose collections">
+  <div class="suggestions grid gap-1 rounded-full" role="group" aria-label="Portal and pose collections">
     <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-collection="emoji" aria-pressed="false"><i class="fa-solid fa-face-smile" aria-hidden="true"></i><span>Emoji</span></button>
     <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-collection="games" aria-pressed="false"><i class="fa-solid fa-gamepad" aria-hidden="true"></i><span>Games</span></button>
     <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-collection="anime" aria-pressed="false"><i class="fa-solid fa-bolt" aria-hidden="true"></i><span>Anime</span></button>
+    <button id="berry-portal" type="button" aria-label="Switch to Berry portal" title="Switch to Berry portal">
+      <img src="berry/berry-stern-glare.webp" alt="" width="25" height="25"> <span>Berry</span>
+    </button>
     <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-collection="screen" aria-pressed="false"><i class="fa-solid fa-film" aria-hidden="true"></i><span>TV &amp; Movies</span></button>
     <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-collection="holidays" aria-pressed="false"><i class="fa-solid fa-gift" aria-hidden="true"></i><span>Holidays</span></button>
     <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-collection="spooky" aria-pressed="false"><i class="fa-solid fa-ghost" aria-hidden="true"></i><span>Spooky</span></button>

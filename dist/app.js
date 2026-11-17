@@ -134,6 +134,7 @@ const clearSearch = node('clear-search');
 const shuffle = node('shuffle');
 const portalButton = node('berry-portal');
 const grid = node('grid');
+const moreButton = node('more');
 const shareDialog = node('share-dialog');
 const editor = node('pose-editor');
 const transforms = {
@@ -160,7 +161,7 @@ const imageWindow = typeof IntersectionObserver === 'function'
         }, 1800));
       }
     }
-  }, { rootMargin: '640px 0px' })
+  }, { rootMargin: '400px 0px' })
   : null;
 let category = categories[0];
 let matches = [];
@@ -322,6 +323,24 @@ function setPortal(active) {
   node('berry-art').hidden = !active;
   document.dispatchEvent(new Event('portalchange'));
   const portalPoses = poses.filter(poseInPortal);
+  const bannerPoses = portalPoses.filter(collections.emoji);
+  shufflePoses(bannerPoses);
+  const artwork = active ? node('berry-art') : document.querySelector('.hero-showcase');
+  artwork.querySelectorAll('.hero-pose').forEach((button, index) => {
+    const pose = bannerPoses[index];
+    button.disabled = !pose;
+    const image = button.querySelector('img');
+    if (!pose) {
+      image.removeAttribute('src');
+      return;
+    }
+    image.src = pose.path;
+    image.alt = pose.name;
+    const label = 'Copy ' + pose.name + ' emoji';
+    button.setAttribute('aria-label', label);
+    button.title = label;
+    button.onclick = () => copyImage(pose, { origin: button });
+  });
   for (const button of suggestions) {
     const key = button.dataset.collection;
     button.hidden = active ? !portalPoses.some(collections[key]) : key === 'turnarounds';
@@ -503,7 +522,7 @@ function showMore(limit = pageSize) {
   }
   grid.append(batch);
   shown = grid.children.length;
-  node('more').hidden = shown >= matches.length;
+  moreButton.hidden = shown >= matches.length;
 }
 
 function rebuildGallery(limit = pageSize) {
@@ -685,7 +704,15 @@ document.addEventListener('pointerdown', event => {
     setFiltersOpen(false);
   }
 });
-node('more').addEventListener('click', () => {
+if (typeof IntersectionObserver === 'function') {
+  const nextBatch = new IntersectionObserver(entries => {
+    if (!moreButton.hidden && document.activeElement !== moreButton && entries.some(entry => entry.isIntersecting)) {
+      showMore();
+    }
+  }, { rootMargin: '0px 0px 160px 0px' });
+  nextBatch.observe(moreButton);
+}
+moreButton.addEventListener('click', () => {
   const firstNewIndex = shown;
   showMore();
   grid.children[firstNewIndex]?.querySelector('.picture').focus({ preventScroll: true });
