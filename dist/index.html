@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
+<meta name="theme-color" content="#100b2d">
+<meta name="application-name" content="phanto-cosplay">
+<meta name="description" content="Dress for any occasion. Find, copy, edit, download, and share Phanto poses.">
+<title>Phanto’s Cosplay</title>
+<link rel="icon" href="emoji/joy/emoji-joy-cheerful.webp">
+<link rel="canonical" href="https://cosplay.julibe.cloud/">
+<link rel="manifest" href="manifest.webmanifest?v=3178970481d5">
+<link rel="apple-touch-icon" href="icons/phanto-192.png">
+<link rel="alternate" type="application/json" href="catalog.json?v=79f7520e9599" title="Phanto pose catalog">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Phanto’s Cosplay",
+  "alternateName": "phanto-cosplay",
+  "description": "Dress for any occasion. Find, copy, edit, download, and share Phanto and Berry poses.",
+  "url": "https://cosplay.julibe.cloud/",
+  "image": "https://cosplay.julibe.cloud/icons/phanto-512.png",
+  "applicationCategory": "EntertainmentApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript.",
+  "isAccessibleForFree": true,
+  "creator": { "@type": "Person", "name": "Julibe", "url": "https://julibe.com/" }
+}
+</script>
+<link rel="stylesheet" href="utilities.css?v=2820a670d1e6">
+<link rel="stylesheet" href="vendor/fontawesome.css">
+<link rel="stylesheet" href="vendor/solid.css">
+<link rel="stylesheet" href="vendor/brands.css">
+<link rel="stylesheet" href="style.css?v=4dc9ba3b60c5">
+<script src="catalog.js?v=6289d4451325" defer></script>
+<script src="app.js?v=0996faea0ebf" defer></script>
+<script src="hero.js?v=843c5561aa93" defer></script>
+</head>
+<body>
+<canvas id="portal-background" aria-hidden="true"></canvas>
+<header class="wrap header">
+  <a class="brand" href="./" aria-label="Phanto’s Cosplay home" title="Phanto’s Cosplay home"><img src="emoji/joy/emoji-joy-cheerful.webp" alt="" width="42" height="42"> Phanto’s Cosplay</a>
+  <div class="header-actions">
+    <button id="install-app" class="icon-control" type="button" aria-label="Install Phanto’s Cosplay" title="Install Phanto’s Cosplay" hidden><i class="fa-solid fa-download" aria-hidden="true"></i></button>
+    <button id="berry-portal" type="button" aria-label="Switch to Berry portal" title="Switch to Berry portal">
+      <img src="berry/berry-stern-glare.webp" alt="" width="25" height="25"> <span>Berry</span>
+    </button>
+    <a class="byline" href="https://julibe.com" title="Visit Julibe’s site">by Julibe ↗</a>
+  </div>
+</header>
+<main class="wrap">
+  <section class="hero">
+    <div class="hero-copy" id="phanto-intro">
+      <h1>Phanto’s <em>Cosplay</em></h1>
+      <p class="hero-slogan">Dress for any occasion</p>
+      <p class="hero-intro">A little ghost with a big wardrobe. Pick a look for whatever mood is haunting you.</p>
+    </div>
+    <div class="hero-copy" id="berry-intro" hidden>
+      <h1>Berry <em>Angry</em></h1>
+      <p class="hero-slogan">Phanto’s archenemy</p>
+      <p class="hero-intro">Sweet on the outside. Sour about everything.</p>
+    </div>
+    <div class="hero-showcase" role="region" aria-label="Featured Phanto poses" aria-roledescription="carousel">
+      <div class="hero-slides">
+        <div class="hero-slide" role="group" aria-roledescription="slide" aria-label="Spooky Phanto, 1 of 3">
+          <div class="hero-art" aria-hidden="true">
+            <span class="spark a">✦</span><span class="spark b">✧</span><span class="spark c">✦</span>
+            <img class="side left" src="costume/classic-horror/costume-classic-horror-witch.webp" alt="">
+            <img class="center" src="emoji/joy/emoji-joy-cheerful.webp" alt="">
+            <img class="side right" src="costume/horror/costume-horror-vampire.webp" alt="">
+          </div>
+        </div>
+        <div class="hero-slide" role="group" aria-roledescription="slide" aria-label="Phanto reactions, 2 of 3" hidden>
+          <div class="hero-art" aria-hidden="true">
+            <span class="spark a">✦</span><span class="spark b">✧</span><span class="spark c">✦</span>
+            <img class="side left" src="emoji/joy/emoji-joy-tears-of-joy.webp" alt="">
+            <img class="center" src="emoji/affection/emoji-affection-heart-eyes.webp" alt="">
+            <img class="side right" src="emoji/playful/emoji-playful-wink.webp" alt="">
+          </div>
+        </div>
+        <div class="hero-slide" role="group" aria-roledescription="slide" aria-label="Costumed Phanto, 3 of 3" hidden>
+          <div class="hero-art" aria-hidden="true">
+            <span class="spark a">✦</span><span class="spark b">✧</span><span class="spark c">✦</span>
+            <img class="side left" src="game/super-mario/game-super-mario-princess-peach-posing.webp" alt="">
+            <img class="center" src="game/pokemon/game-pokemon-pikachu-posing.webp" alt="">
+            <img class="side right" src="game/zelda/game-zelda-link-posing.webp" alt="">
+          </div>
+        </div>
+      </div>
+      <div class="hero-controls" role="group" aria-label="Banner controls" hidden>
+        <button type="button" id="hero-previous" aria-label="Previous slide" title="Previous slide"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
+        <button type="button" id="hero-playback" aria-label="Pause slideshow" title="Pause slideshow"><i class="fa-solid fa-pause" aria-hidden="true"></i></button>
+        <button type="button" id="hero-next" aria-label="Next slide" title="Next slide"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <span id="hero-announcement" class="sr-only" role="status"></span>
+    </div>
+    <div class="hero-art berry-art" id="berry-art" aria-hidden="true" hidden>
+      <img class="side left" src="berry/berry-grumpy-tea.webp" alt="" loading="lazy">
+      <img class="center" src="berry/berry-furious-forward-lunge.webp" alt="" loading="lazy">
+      <img class="side right" src="berry/berry-worried-frown.webp" alt="" loading="lazy">
+    </div>
+  </section>
+  <section class="picker" aria-label="Find a Phanto">
+    <div class="results" id="gallery-results" tabindex="-1">
+      <h2 id="heading">All poses</h2>
+      <div class="result-tools"><p id="count" aria-live="polite"></p><button id="share-view" class="icon-control" type="button" aria-label="Share this view" title="Share this view"><i class="fa-solid fa-link" aria-hidden="true"></i></button></div>
+    </div>
+    <div id="grid" class="grid"></div>
+    <div id="empty" class="empty" hidden><p>No Phantos found.</p><button id="reset" type="button">Clear filters</button></div>
+    <button id="more" class="more" type="button" hidden>More poses <i class="icon fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+  </section>
+</main>
+<footer class="wrap footer">Phanto by <a href="https://julibe.com">Julibe</a></footer>
+<section class="search-dock fixed inset-x-0 z-10 mx-auto grid gap-2" aria-label="Gallery controls">
+    <div class="filters" id="filters" role="region" aria-label="Filter poses" hidden>
+      <div id="categories" class="categories" aria-label="Category"></div>
+      <div class="selects">
+        <select id="emotion" aria-label="Emotion"><option value="">Any emotion</option></select>
+        <select id="franchise-type" aria-label="Franchise type"><option value="">Any type</option></select>
+        <select id="franchise" aria-label="Franchise"><option value="">Any franchise</option></select>
+      </div>
+    </div>
+  <div class="suggestions grid gap-1 rounded-full" role="group" aria-label="Pose collections">
+    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-collection="emoji" aria-pressed="false"><i class="fa-solid fa-face-smile" aria-hidden="true"></i><span>Emoji</span></button>
+    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-collection="games" aria-pressed="false"><i class="fa-solid fa-gamepad" aria-hidden="true"></i><span>Games</span></button>
+    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-collection="anime" aria-pressed="false"><i class="fa-solid fa-bolt" aria-hidden="true"></i><span>Anime</span></button>
+    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-collection="screen" aria-pressed="false"><i class="fa-solid fa-film" aria-hidden="true"></i><span>TV &amp; Movies</span></button>
+    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-collection="holidays" aria-pressed="false"><i class="fa-solid fa-gift" aria-hidden="true"></i><span>Holidays</span></button>
+    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-collection="spooky" aria-pressed="false"><i class="fa-solid fa-ghost" aria-hidden="true"></i><span>Spooky</span></button>
+    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-collection="turnarounds" aria-pressed="false" hidden><i class="fa-solid fa-rotate" aria-hidden="true"></i><span>Turnarounds</span></button>
+  </div>
+  <div class="search relative flex items-center gap-3 rounded-full" role="search">
+    <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+    <input class="min-w-0 grow" id="search" type="search" autocomplete="off" placeholder="Try worried, wondering, or :-)" aria-label="Search poses, characters, franchises, and emoticons">
+    <kbd aria-hidden="true">/</kbd>
+    <button id="clear-search" class="icon-control" type="button" aria-label="Clear search" title="Clear search" hidden><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+    <button id="shuffle" class="icon-control" type="button" aria-label="Shuffle results" title="Shuffle results"><i class="fa-solid fa-shuffle" aria-hidden="true"></i></button>
+    <button id="filter-toggle" class="icon-control grid place-items-center rounded-full" type="button" aria-label="Filters" aria-controls="filters" aria-expanded="false" title="Filters"><i class="fa-solid fa-sliders" aria-hidden="true"></i></button>
+  </div>
+</section>
+<dialog id="share-dialog" aria-labelledby="share-title">
+  <div class="dialog-top"><h2 id="share-title">Share Phanto</h2><button id="close-share" type="button" class="icon-control" aria-label="Close sharing" title="Close"><i class="icon fa-solid fa-xmark" aria-hidden="true"></i></button></div>
+  <p id="share-name"></p>
+  <div id="share-options" class="share-options"></div>
+  <p class="share-note">Social icons share a pose link.</p>
+  <p id="share-status" class="share-note" role="status"></p>
+</dialog>
+<dialog id="view-link-dialog" aria-labelledby="view-link-title">
+  <div class="dialog-top">
+    <h2 id="view-link-title">Share this view</h2>
+    <button id="close-view-link" class="icon-control" type="button" aria-label="Close link dialog"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+  </div>
+  <div class="view-link-field">
+    <input id="view-address" type="url" aria-label="Shareable URL" readonly>
+    <button id="copy-view-link" class="icon-control" type="button" aria-label="Copy URL" title="Copy URL"><i class="fa-solid fa-copy" aria-hidden="true"></i></button>
+  </div>
+  <p id="view-link-status" class="share-note" role="status"></p>
+</dialog>
+<dialog id="pose-editor" aria-labelledby="editor-title">
+  <div class="dialog-top">
+    <h2 id="editor-title">Edit pose</h2>
+    <button class="icon-control" id="close-editor" type="button" aria-label="Close editor" title="Close editor"><i class="icon fa-solid fa-xmark" aria-hidden="true"></i></button>
+  </div>
+  <p id="editor-name"></p>
+  <div id="editor-preview" class="editor-preview"></div>
+  <div class="editor-toolbar" role="group" aria-label="Transform pose">
+    <button type="button" class="icon-control" data-transform="left" aria-label="Rotate left" title="Rotate left"><i class="icon fa-solid fa-rotate-left" aria-hidden="true"></i></button>
+    <button type="button" class="icon-control" data-transform="right" aria-label="Rotate right" title="Rotate right"><i class="icon fa-solid fa-rotate-right" aria-hidden="true"></i></button>
+    <button type="button" class="icon-control" data-transform="horizontal" aria-label="Flip horizontally" title="Flip horizontally"><i class="icon fa-solid fa-arrows-left-right" aria-hidden="true"></i></button>
+    <button type="button" class="icon-control" data-transform="vertical" aria-label="Flip vertically" title="Flip vertically"><i class="icon fa-solid fa-arrows-up-down" aria-hidden="true"></i></button>
+    <button type="button" class="icon-control" data-transform="reset" aria-label="Reset orientation" title="Reset orientation"><i class="icon fa-solid fa-clock-rotate-left" aria-hidden="true"></i></button>
+  </div>
+  <div class="editor-output">
+    <button type="button" id="editor-copy" aria-label="Copy edited image" title="Copy edited image"><i class="icon fa-solid fa-copy" aria-hidden="true"></i>Copy</button>
+    <button type="button" id="editor-download" aria-label="Download edited WebP" title="Download edited WebP"><i class="icon fa-solid fa-download" aria-hidden="true"></i>WebP</button>
+  </div>
+  <p id="editor-status" role="status"></p>
+</dialog>
+<div id="toast" role="status" class="toast" hidden></div>
+<template id="card">
+  <article class="card">
+    <button class="picture" type="button"><img alt="" width="320" height="320" decoding="async" loading="lazy"><span class="copy-mark"><i class="icon fa-solid fa-copy" aria-hidden="true"></i></span></button>
+    <div class="card-body"><div class="pose-meta"><h3></h3><p></p></div>
+      <div class="actions"><button class="icon-control edit-pose" type="button" title="Rotate or flip"><i class="icon fa-solid fa-pen" aria-hidden="true"></i></button><a class="icon-control" download title="Download WebP"><i class="icon fa-solid fa-download" aria-hidden="true"></i></a><button class="icon-control" type="button" title="Share"><i class="icon fa-solid fa-share-nodes" aria-hidden="true"></i></button></div>
+    </div>
+  </article>
+</template>
+<script src="background.js?v=b83542b346d7" defer></script>
+<script src="pwa.js?v=40acff4107d2" defer></script>
+</body>
+</html>
