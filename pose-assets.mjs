@@ -18,7 +18,7 @@ function folderFor(pose) {
   if (!slug.test(pose.id)) throw new Error('Invalid pose ID: ' + pose.id);
   const [type, sub] = pose.id.split('-');
   const remainder = pose.id.slice(type.length + 1);
-  if (type === 'animal' || type === 'meme') return type;
+  if (type === 'animal' || type === 'meme' || type === 'berry') return type;
   const multiwordGenre = ['rnb-and-soul', 'hip-hop', 'sci-fi'].find(part => remainder.startsWith(part + '-'));
   const group = franchisePrefix(pose.id)
     ?? [nameSlug(pose.franchise), pose.tags, multiwordGenre].find(part => part && slug.test(part) && remainder.startsWith(part + '-'))

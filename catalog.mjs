@@ -96,6 +96,13 @@ const poses = readdirSync(source).filter(name => name.endsWith('.png')
     return { id, previousId, legacyId: previousId ? legacyId : undefined, category: 'Costumes',
       franchise, franchiseType, name: title(name), tags: franchise };
   }
+  if (id.startsWith('berry-')) {
+    const action = id.slice('berry-'.length);
+    const rotation = action.startsWith('rotation-');
+    return { id, name: title(rotation ? action.slice('rotation-'.length) : action),
+      category: rotation ? 'Turnarounds' : 'Reactions', franchise: 'Berry Angry',
+      emotion: rotation ? '' : 'Berry Angry', tags: 'berry strawberry' };
+  }
   if (id.startsWith('emoji-')) {
     const [, group, ...name] = id.split('-');
     const category = {
