@@ -59,7 +59,7 @@ float pnoise(vec2 co, float freq, int steps, float persistence) {
 }
 
 // Pure noise-free analytical metaball field for Zen floating blobs
-float computeMetaballField(vec2 p, float time, float t) {
+float computeMetaballField(vec2 p, float time, float t, float aspect) {
     float field = 0.0;
     float hottest = 0.0;
     float count = clamp(uBlobCount, 1.0, 10.0);
@@ -73,18 +73,18 @@ float computeMetaballField(vec2 p, float time, float t) {
         float baseX = sin(time * 0.24 + phase * 2.1) * 0.42 + cos(time * 0.14 - phase) * 0.16;
         float baseY = cos(time * 0.19 + phase * 1.7) * 0.34 + sin(time * 0.11 + phase * 2.9) * 0.12;
 
-        vec2 center = vec2(baseX, baseY);
+        vec2 center = vec2(baseX * mix(1.0, aspect, t), baseY);
         vec2 diff = p - center;
 
         // Narrow the upper half and bend the tip as the flame rises.
         float tip = clamp(diff.y * 4.0, 0.0, 1.0);
         diff.x -= t * tip * tip * 0.085 * sin(time * 2.1 + phase);
-        diff.x *= mix(1.0, 1.12 + tip * 1.55, t);
+        diff.x *= mix(1.0, 1.0 + tip * 1.55, t);
         diff.y *= mix(1.0, mix(0.88, 0.42, tip), t);
 
         float baseRadius = 0.165 + 0.045 * sin(phase * 3.1 + time * 0.35);
-        // Reduce blob size as it transitions into fire so individual fire blobs are clearly separated and visible
-        float radius = baseRadius * mix(1.0, 0.72, t);
+        // Give the fire a wider base while retaining tapered tips.
+        float radius = baseRadius * mix(1.0, 1.18, t);
         // Crisp, tight kernel for sleek, well-defined sculptural blobs
         float distSq = dot(diff, diff) + 0.0022;
         float strength = (radius * radius) / distSq;
@@ -100,7 +100,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     float turb = smoothstep(0.0, 1.0, t);
     float shortEdge = min(iResolution.x, iResolution.y);
     vec2 centered = (fragCoord - 0.5 * iResolution) / shortEdge;
-    float blobField = computeMetaballField(centered, iTime, t);
+    float blobField = computeMetaballField(centered, iTime, t, iResolution.x / shortEdge);
 
     // Violet dominates the backdrop and blobs, with blue and pink drifting across both.
     vec3 deepViolet = vec3(0.19, 0.067, 0.34);
@@ -135,7 +135,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     float noiseTexel = max(0.02, pnoise(firePosition, 10.0, 5, 0.5));
     float turbulence = (noiseTexel - 0.50) * 0.50;
     float flameField = blobField + turbulence * smoothstep(0.14, 0.65, blobField);
-    float flame = smoothstep(0.48, 0.68, flameField);
+    float flame = smoothstep(0.42, 0.66, flameField);
     float heat = clamp((flameField - 0.52) / 0.9, 0.0, 1.35);
     float hotBand = smoothstep(0.11, 0.64, heat);
     float pinkBand = smoothstep(0.22, 0.48, heat) * (1.0 - smoothstep(0.6, 0.92, heat));
