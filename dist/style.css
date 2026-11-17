@@ -525,26 +525,23 @@ dialog[open] { animation: panel-enter 180ms ease-out both }
   width: 78px;
   height: 76px;
   margin-block: -13px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  padding: 4px;
-  font-size: .76rem;
-  border: 1px solid #ff85ada6;
-  border-radius: 999px;
-  background: linear-gradient(150deg, #9d2851, #5c173a);
-  box-shadow: inset 0 1px #ffb9d956, 0 2px 10px #ff3c7338;
-  color: #ffe8ee;
-  font-weight: 700;
-  white-space: nowrap;
-  transition: background-color .18s, border-color .18s;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  --portal-glow: #ff669d;
 }
-#berry-portal img { width: 37px; height: 37px; object-fit: contain }
-#berry-portal:hover { border-color: #ffa2b9; background: #a62c52 }
-body[data-berry-portal] #berry-portal:hover { border-color: #f0d4ff }
-body[data-berry-portal] #berry-portal { border-color: #c39af7; background: linear-gradient(150deg, #6739a0, #35215b); color: #f4e9ff }
+body[data-berry-portal] #berry-portal { --portal-glow: #bd91ff }
+#berry-portal img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  transition: filter .18s;
+}
+#berry-portal:is(:hover, :focus-visible) img {
+  filter: drop-shadow(0 0 8px var(--portal-glow)) drop-shadow(0 0 14px var(--portal-glow));
+}
 #install-app { width: 42px; height: 42px; border: 1px solid var(--line); border-radius: 50%; background: var(--plum); color: var(--pink) }
 #install-app:hover { border-color: var(--pink) }
 #portal-background {
@@ -611,7 +608,7 @@ body[data-berry-portal] #shuffle, body[data-berry-portal] #filter-toggle:not([ar
 }
 @media (prefers-reduced-motion: reduce) {
   .berry-art img { animation: none }
-  #berry-portal { transition: none }
+  #berry-portal img { transition: none }
 }
 
 @media (forced-colors: active) {
