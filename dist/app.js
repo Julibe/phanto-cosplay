@@ -2,6 +2,7 @@
 
 const categories = ['All poses', 'Reactions', 'Costumes', 'Animals', 'Holidays', 'Activities', 'Turnarounds'];
 const collections = {
+  turnarounds: pose => pose.category === 'Turnarounds',
   emoji: pose => pose.category === 'Reactions',
   games: pose => pose.franchiseType === 'Game',
   anime: pose => pose.franchiseType === 'Anime',
@@ -321,6 +322,10 @@ function setPortal(active) {
   node('berry-art').hidden = !active;
   document.dispatchEvent(new Event('portalchange'));
   const portalPoses = poses.filter(poseInPortal);
+  for (const button of suggestions) {
+    const key = button.dataset.collection;
+    button.hidden = active ? !portalPoses.some(collections[key]) : key === 'turnarounds';
+  }
   for (const button of node('categories').children) {
     button.hidden = button.textContent !== categories[0] && !portalPoses.some(pose => pose.category === button.textContent);
   }
@@ -543,7 +548,7 @@ function restoreView() {
   setPortal(linked ? linked.hasBerry && (!linked.hasPhanto || params.get('portal') === 'berry') : params.get('portal') === 'berry');
   search.value = params.get('q') ?? '';
   const requestedCollection = params.get('collection');
-  collection = Object.hasOwn(collections, requestedCollection) ? requestedCollection : '';
+  collection = suggestions.some(button => !button.hidden && button.dataset.collection === requestedCollection) ? requestedCollection : '';
   const requestedCategory = params.get('category');
   category = categories.includes(requestedCategory) ? requestedCategory : categories[0];
   for (const [key, id] of Object.entries(viewParameters)) {

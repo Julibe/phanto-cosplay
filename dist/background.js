@@ -61,6 +61,7 @@ float pnoise(vec2 co, float freq, int steps, float persistence) {
 // Pure noise-free analytical metaball field for Zen floating blobs
 float computeMetaballField(vec2 p, float time, float t) {
     float field = 0.0;
+    float hottest = 0.0;
     float count = clamp(uBlobCount, 1.0, 10.0);
 
     for (int i = 0; i < 10; i++) {
@@ -75,18 +76,22 @@ float computeMetaballField(vec2 p, float time, float t) {
         vec2 center = vec2(baseX, baseY);
         vec2 diff = p - center;
 
-        // Subtle upward flame teardrop taper as blobs ignite, while staying distinct blobs
-        diff.x *= mix(1.0, 1.38, t);
-        diff.y *= mix(1.0, 0.72, t);
+        // Narrow the upper half and bend the tip as the flame rises.
+        float tip = clamp(diff.y * 4.0, 0.0, 1.0);
+        diff.x -= t * tip * tip * 0.085 * sin(time * 2.1 + phase);
+        diff.x *= mix(1.0, 1.12 + tip * 1.55, t);
+        diff.y *= mix(1.0, mix(0.88, 0.42, tip), t);
 
         float baseRadius = 0.165 + 0.045 * sin(phase * 3.1 + time * 0.35);
         // Reduce blob size as it transitions into fire so individual fire blobs are clearly separated and visible
         float radius = baseRadius * mix(1.0, 0.72, t);
         // Crisp, tight kernel for sleek, well-defined sculptural blobs
         float distSq = dot(diff, diff) + 0.0022;
-        field += (radius * radius) / distSq;
+        float strength = (radius * radius) / distSq;
+        field += strength;
+        hottest = max(hottest, strength);
     }
-    return field;
+    return mix(field, hottest, t);
 }
 
 void mainImage(out vec4 fragColor, in vec2 fragCoord) {
@@ -97,24 +102,24 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     vec2 centered = (fragCoord - 0.5 * iResolution) / shortEdge;
     float blobField = computeMetaballField(centered, iTime, t);
 
-    // Blue and pink light drifts slowly through Phanto's violet backdrop.
-    vec3 indigo = vec3(0.052, 0.064, 0.243);
-    vec3 plum = vec3(0.223, 0.046, 0.298);
+    // Violet dominates the backdrop and blobs, with blue and pink drifting across both.
+    vec3 deepViolet = vec3(0.19, 0.067, 0.34);
+    vec3 plum = vec3(0.36, 0.085, 0.49);
     vec3 blue = vec3(0.035, 0.30, 0.86);
     vec3 pink = vec3(0.89, 0.13, 0.53);
     vec2 blueDelta = uv - vec2(0.22 + 0.10 * sin(iTime * 0.16), 0.63);
     vec2 pinkDelta = uv - vec2(0.78, 0.35 + 0.11 * cos(iTime * 0.19));
     float blueGlow = exp(-6.0 * dot(blueDelta, blueDelta));
     float pinkGlow = exp(-7.5 * dot(pinkDelta, pinkDelta));
-    vec3 zenBackdrop = mix(indigo, plum, smoothstep(0.10, 0.90, uv.y));
-    zenBackdrop = mix(zenBackdrop, blue, blueGlow * 0.47);
-    zenBackdrop = mix(zenBackdrop, pink, pinkGlow * 0.33);
+    vec3 zenBackdrop = mix(deepViolet, plum, smoothstep(0.10, 0.90, uv.y));
+    zenBackdrop = mix(zenBackdrop, blue, blueGlow * 0.32);
+    zenBackdrop = mix(zenBackdrop, pink, pinkGlow * 0.23);
 
     float innerDepth = smoothstep(0.72, 1.45, blobField);
     float rim = smoothstep(0.72, 0.78, blobField) * (1.0 - smoothstep(0.78, 0.96, blobField));
     float pinkContour = smoothstep(-0.35, 0.44, centered.x + 0.15 * sin(iTime * 0.21));
     vec3 zenTint = mix(blue, pink, pinkContour);
-    vec3 zenBlob = mix(vec3(0.30, 0.13, 0.51), zenTint, 0.43 + innerDepth * 0.41);
+    vec3 zenBlob = mix(vec3(0.50, 0.18, 0.72), zenTint, 0.18 + innerDepth * 0.29);
     zenBlob = mix(zenBlob, vec3(0.82, 0.57, 0.95), rim * 0.56);
     vec3 zen = mix(zenBackdrop, zenBlob, smoothstep(0.70, 0.745, blobField));
 
@@ -128,10 +133,10 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     firePosition.x += 0.08 * sin(firePosition.y * 5.0 + iTime * 1.8);
     firePosition.y -= iTime * 0.7;
     float noiseTexel = max(0.02, pnoise(firePosition, 10.0, 5, 0.5));
-    float cleanBlob = clamp((blobField - 0.52) / 0.58, 0.0, 1.35);
-    float turbulence = (noiseTexel - 0.38) * 1.15 * smoothstep(0.0, 0.35, blobField);
-    float heat = max(0.0, cleanBlob + turbulence);
-    float flame = smoothstep(0.0, noiseTexel, heat);
+    float turbulence = (noiseTexel - 0.50) * 0.50;
+    float flameField = blobField + turbulence * smoothstep(0.14, 0.65, blobField);
+    float flame = smoothstep(0.48, 0.68, flameField);
+    float heat = clamp((flameField - 0.52) / 0.9, 0.0, 1.35);
     float hotBand = smoothstep(0.11, 0.64, heat);
     float pinkBand = smoothstep(0.22, 0.48, heat) * (1.0 - smoothstep(0.6, 0.92, heat));
     float orangeCore = smoothstep(0.68, 1.30, heat + (noiseTexel - 0.48) * 0.26);
@@ -143,6 +148,8 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     vec2 emberDelta = uv - vec2(0.47, 0.16);
     float emberGlow = exp(-7.0 * dot(emberDelta, emberDelta));
     emberBackdrop = mix(emberBackdrop, vec3(0.79, 0.21, 0.075), emberGlow * 0.4);
+    float halo = smoothstep(0.23, 0.68, flameField) * 0.20;
+    emberBackdrop = mix(emberBackdrop, vec3(0.90, 0.13, 0.19), halo);
     fragColor = vec4(mix(zen, mix(emberBackdrop, fireBlob, flame), turb), 1.0);
 }
 

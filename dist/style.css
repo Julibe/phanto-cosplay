@@ -2,7 +2,7 @@
 
 :root {
   color-scheme: dark;
-  --base: #100b2d;
+  --base: #1b1036;
   --plum: #201549;
   --blue: #0147ba;
   --diva: #fe1659;
@@ -42,16 +42,16 @@ body::before, body::after {
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 39% 36% at 23% 36%, #f343a399, transparent),
-    radial-gradient(ellipse 44% 41% at 73% 38%, #1768e4b8, transparent),
-    radial-gradient(ellipse 45% 38% at 52% 73%, #55328190, transparent);
+    radial-gradient(ellipse 39% 36% at 23% 36%, #e83a9766, transparent),
+    radial-gradient(ellipse 44% 41% at 73% 38%, #2364e27d, transparent),
+    radial-gradient(ellipse 45% 38% at 52% 73%, #743cadb8, transparent);
   animation: brand-drift 16s ease-in-out infinite alternate;
 }
 body::after {
   background:
-    radial-gradient(ellipse 46% 37% at 29% 67%, #0147c9c4, transparent),
-    radial-gradient(ellipse 39% 35% at 74% 30%, #fe165979, transparent),
-    radial-gradient(ellipse 37% 40% at 64% 73%, #5b348893, transparent);
+    radial-gradient(ellipse 46% 37% at 29% 67%, #295fd280, transparent),
+    radial-gradient(ellipse 39% 35% at 74% 30%, #e443a75e, transparent),
+    radial-gradient(ellipse 37% 40% at 64% 73%, #733fa3b0, transparent);
   opacity: .38;
   animation: brand-shift 19s ease-in-out infinite alternate;
 }
@@ -258,7 +258,7 @@ kbd { color: var(--muted); border: 1px solid var(--line); border-radius: 5px; pa
   background: var(--pink);
   box-shadow: 0 0 0 2px var(--plum);
 }
-.suggestions { grid-column: 2; grid-row: 1; grid-template-columns: repeat(6, minmax(0, 1fr)); padding: 0 }
+.suggestions { grid-column: 2; grid-row: 1; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); padding: 0 }
 .suggestions button { min-height: 46px; padding: 3px 1px; border: 0; color: #e4d4f6; font-size: .63rem; line-height: 1.12 }
 .suggestions i { color: #c5a9ec; font-size: .91rem }
 .suggestions button:hover, #filter-toggle:hover { background: #593a795c }
@@ -560,6 +560,9 @@ body[data-berry-portal] .hero-art::before {
   border-color: #ffc1cd52;
   box-shadow: 0 0 0 11px #ffa8b717, 0 0 0 22px #ff8ea911;
 }
+body[data-berry-portal] .suggestions button:not([aria-pressed=true]) i { color: #ffabbc }
+body[data-berry-portal] .suggestions button:hover { background: #8b304e70 }
+body[data-berry-portal] .suggestions button[aria-pressed=true]:hover { background: var(--pink) }
 body[data-berry-portal] .card .picture { background: radial-gradient(ellipse, #ff697c36, transparent 73%) }
 body[data-berry-portal] .card-body, body[data-berry-portal] .copy-mark { background: #330a1455 }
 body[data-berry-portal] .search-dock, body[data-berry-portal] dialog,
