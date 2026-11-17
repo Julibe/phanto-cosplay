@@ -90,91 +90,60 @@ float computeMetaballField(vec2 p, float time, float t) {
 }
 
 void mainImage(out vec4 fragColor, in vec2 fragCoord) {
-    vec2 uv = fragCoord.xy / iResolution.xy;
+    vec2 uv = fragCoord / iResolution;
     float t = clamp(uTransition, 0.0, 1.0);
-
-    // Aspect-corrected centered coordinates for smooth metaballs
-    vec2 centered = (fragCoord.xy - 0.5 * iResolution.xy) / min(iResolution.x, iResolution.y);
-
-    // 1. Zero-noise defined metaball field (Zen = 0.0)
+    float turb = smoothstep(0.0, 1.0, t);
+    float shortEdge = min(iResolution.x, iResolution.y);
+    vec2 centered = (fragCoord - 0.5 * iResolution) / shortEdge;
     float blobField = computeMetaballField(centered, iTime, t);
 
-    // 2. User's exact fire coordinates & procedural noise
-    float gradientStep = 0.2;
+    // Blue and pink light drifts slowly through Phanto's violet backdrop.
+    vec3 indigo = vec3(0.052, 0.064, 0.243);
+    vec3 plum = vec3(0.223, 0.046, 0.298);
+    vec3 blue = vec3(0.035, 0.30, 0.86);
+    vec3 pink = vec3(0.89, 0.13, 0.53);
+    vec2 blueDelta = uv - vec2(0.22 + 0.10 * sin(iTime * 0.16), 0.63);
+    vec2 pinkDelta = uv - vec2(0.78, 0.35 + 0.11 * cos(iTime * 0.19));
+    float blueGlow = exp(-6.0 * dot(blueDelta, blueDelta));
+    float pinkGlow = exp(-7.5 * dot(pinkDelta, pinkDelta));
+    vec3 zenBackdrop = mix(indigo, plum, smoothstep(0.10, 0.90, uv.y));
+    zenBackdrop = mix(zenBackdrop, blue, blueGlow * 0.47);
+    zenBackdrop = mix(zenBackdrop, pink, pinkGlow * 0.33);
 
-    vec2 pos = fragCoord.xy / iResolution.x;
-    pos.x += 0.08 * sin(pos.y * 5.0 + iTime * 1.8);
-    pos.y -= iTime * 0.7;
-
-    float noiseTexel = t > 0.0 ? max(0.02, pnoise(pos, 10.0, 5, 0.5)) : 0.5;
-
-    // 3. THE DEFINED BLOBS THEMSELVES BECOME FIRE BLOBS (Zero overlay):
-    // At t = 0: pure, razor-clean noise-free liquid-satin blobs.
-    // As t -> 1: pnoise turbulence licks outward from the blob edges and dances inside them,
-    // turning each blob into a blazing fire blob while preserving their distinct floating forms.
-    float turb = smoothstep(0.0, 1.0, t);
-
-    // Normalize the blob field into a clean 0..1+ elevation profile (0.72 is the crisp outer boundary)
-    float cleanBlobProfile = clamp((blobField - 0.52) / 0.58, 0.0, 1.35);
-
-    // Perturb the blob boundary with your pnoise so flames lick upward off each blob
-    float fireTurbulence = (noiseTexel - 0.38) * 1.15 * turb;
-    float blobElevation = max(0.0, cleanBlobProfile + fireTurbulence * smoothstep(0.0, 0.35, blobField));
-
-    // 4. Reference Palette -> Exact Fire Colors
-    vec3 colIndigo    = vec3(0.055, 0.075, 0.286); // #0e1349
-    vec3 colTwilight  = vec3(0.141, 0.063, 0.275); // #241046
-    vec3 colRoyal     = vec3(0.204, 0.063, 0.314); // #341050
-    vec3 colPlum      = vec3(0.286, 0.043, 0.216); // #490b37
-    vec3 colVelour    = vec3(0.490, 0.115, 0.440); // Deep satin violet-magenta
-    vec3 colSilkSheen = vec3(0.680, 0.250, 0.650); // Luminous silk highlight
-
-    // Deep midnight-indigo to plum backdrop transitions smoothly into a warm crimson-magenta ember glow (never black)
-    vec3 zenBgBase = mix(
-        mix(colIndigo * 0.78, colTwilight * 0.88, smoothstep(0.0, 0.52, uv.y)),
-        colPlum * 0.88,
-        smoothstep(0.45, 1.0, uv.y)
-    );
-    vec3 fireBgEmber = mix(
-        vec3(0.28, 0.02, 0.12), // Deep crimson-berry base
-        vec3(0.48, 0.05, 0.22), // Rich rose-pink upper glow
-        smoothstep(0.0, 1.0, uv.y)
-    );
-    vec3 zenBgGrad = mix(zenBgBase, fireBgEmber, smoothstep(0.0, 1.0, t));
-
-    // Smooth, sculpted satin shading inside each defined Zen blob (zero hard bands at t = 0)
     float innerDepth = smoothstep(0.72, 1.45, blobField);
-    float rimHighlight = smoothstep(0.72, 0.78, blobField) * (1.0 - smoothstep(0.78, 0.96, blobField));
-    vec3 zenBlobSatin = mix(
-        mix(colRoyal, colPlum, smoothstep(0.15, 0.85, uv.y)),
-        colVelour,
-        innerDepth * 0.85
-    );
-    zenBlobSatin = mix(zenBlobSatin, colSilkSheen, rimHighlight * 0.48 + pow(innerDepth, 1.6) * 0.42);
+    float rim = smoothstep(0.72, 0.78, blobField) * (1.0 - smoothstep(0.78, 0.96, blobField));
+    float pinkContour = smoothstep(-0.35, 0.44, centered.x + 0.15 * sin(iTime * 0.21));
+    vec3 zenTint = mix(blue, pink, pinkContour);
+    vec3 zenBlob = mix(vec3(0.30, 0.13, 0.51), zenTint, 0.43 + innerDepth * 0.41);
+    zenBlob = mix(zenBlob, vec3(0.82, 0.57, 0.95), rim * 0.56);
+    vec3 zen = mix(zenBackdrop, zenBlob, smoothstep(0.70, 0.745, blobField));
 
-    // Crisp anti-aliased silhouette for the defined Zen blobs
-    float zenMask = smoothstep(0.70, 0.745, blobField);
+    if (t <= 0.0) {
+        fragColor = vec4(zen, 1.0);
+        return;
+    }
 
-    // Deep Crimson Red, Scarlet, and Hot Pink fire palette (zero yellow, no black)
-    vec4 fireBright = vec4(1.0, 0.14, 0.12, 1.0);  // Blazing Scarlet-Red core (no yellow)
-    vec4 fireMid    = vec4(0.95, 0.05, 0.36, 1.0); // Vibrant Crimson-Pink middle layer
-    vec4 fireDark   = vec4(0.72, 0.01, 0.14, 1.0); // Deep Blood-Red outer flame
+    // Berry's noise flows upward, shaping scarlet edges, pink ridges, and orange cores.
+    vec2 firePosition = fragCoord / shortEdge;
+    firePosition.x += 0.08 * sin(firePosition.y * 5.0 + iTime * 1.8);
+    firePosition.y -= iTime * 0.7;
+    float noiseTexel = max(0.02, pnoise(firePosition, 10.0, 5, 0.5));
+    float cleanBlob = clamp((blobField - 0.52) / 0.58, 0.0, 1.35);
+    float turbulence = (noiseTexel - 0.38) * 1.15 * smoothstep(0.0, 0.35, blobField);
+    float heat = max(0.0, cleanBlob + turbulence);
+    float flame = smoothstep(0.0, noiseTexel, heat);
+    float hotBand = smoothstep(0.11, 0.64, heat);
+    float pinkBand = smoothstep(0.22, 0.48, heat) * (1.0 - smoothstep(0.6, 0.92, heat));
+    float orangeCore = smoothstep(0.68, 1.30, heat + (noiseTexel - 0.48) * 0.26);
+    vec3 fireBlob = mix(vec3(0.66, 0.027, 0.111), vec3(1.0, 0.13, 0.12), hotBand);
+    fireBlob = mix(fireBlob, vec3(1.0, 0.18, 0.49), pinkBand * 0.73);
+    fireBlob = mix(fireBlob, vec3(1.0, 0.48, 0.13), orangeCore * 0.84);
 
-    float firstStep       = smoothstep(0.0, noiseTexel, blobElevation);
-    float darkerColorStep = smoothstep(0.0, noiseTexel, blobElevation - gradientStep);
-    float darkerColorPath = firstStep - darkerColorStep;
-    vec4 fireBlobColor    = mix(fireBright, fireDark, darkerColorPath);
-
-    float middleColorStep = smoothstep(0.0, noiseTexel, blobElevation - 0.2 * 2.0);
-    fireBlobColor         = mix(fireBlobColor, fireMid, darkerColorStep - middleColorStep);
-    fireBlobColor         = mix(vec4(fireBgEmber, 1.0), fireBlobColor, firstStep);
-
-    // Unified morph of the blobs themselves: defined satin Zen blobs -> roaring stepped fire blobs
-    float activeMask = mix(zenMask, firstStep, turb);
-    vec3 activeBlobRgb = mix(zenBlobSatin, fireBlobColor.rgb, turb);
-
-    vec3 finalRgb = mix(zenBgGrad, activeBlobRgb, activeMask);
-    fragColor = vec4(finalRgb, 1.0);
+    vec3 emberBackdrop = mix(vec3(0.34, 0.049, 0.069), vec3(0.53, 0.064, 0.282), uv.y);
+    vec2 emberDelta = uv - vec2(0.47, 0.16);
+    float emberGlow = exp(-7.0 * dot(emberDelta, emberDelta));
+    emberBackdrop = mix(emberBackdrop, vec3(0.79, 0.21, 0.075), emberGlow * 0.4);
+    fragColor = vec4(mix(zen, mix(emberBackdrop, fireBlob, flame), turb), 1.0);
 }
 
 void main() {

@@ -1,6 +1,15 @@
 'use strict';
 
 const categories = ['All poses', 'Reactions', 'Costumes', 'Animals', 'Holidays', 'Activities', 'Turnarounds'];
+const collections = {
+  emoji: pose => pose.category === 'Reactions',
+  games: pose => pose.franchiseType === 'Game',
+  anime: pose => pose.franchiseType === 'Anime',
+  screen: pose => pose.franchiseType === 'TV' || pose.franchiseType === 'Movie',
+  holidays: pose => pose.category === 'Holidays' || pose.franchiseType === 'Festival',
+  spooky: pose => /\b(?:horror|spooky|halloween|witch|vampire|dracula|skeleton|sheet ghost|jack o lantern)\b/.test(pose.text)
+};
+let collection = '';
 const shortcuts = {
   ':)': 'joy', ':-)': 'joy', ':d': 'joy', ':-d': 'joy', 'xd': 'laugh',
   ';)': 'wink', ';-)': 'wink', ':p': 'tongue', ':-p': 'tongue', ';p': 'wink tongue',
@@ -117,7 +126,7 @@ function searchScore(pose, phrase, words, emotion) {
 }
 const node = id => document.getElementById(id);
 const search = node('search');
-const suggestions = [...document.querySelectorAll('[data-query]')];
+const suggestions = [...document.querySelectorAll('[data-collection]')];
 const filterToggle = node('filter-toggle');
 const filters = node('filters');
 const clearSearch = node('clear-search');
@@ -328,6 +337,7 @@ function currentViewParams() {
   return {
     portal,
     q: search.value.trim(),
+    collection,
     category: category === categories[0] ? '' : category,
     ...Object.fromEntries(Object.entries(viewParameters).map(([key, id]) => [key, node(id).value]))
   };
@@ -347,7 +357,7 @@ function syncViewUrl() {
   clearTimeout(syncViewUrl.timer);
   syncViewUrl.timer = setTimeout(() => {
     const url = new URL(location.href);
-    for (const key of ['pose', 'portal', 'q', 'category', ...Object.keys(viewParameters)]) url.searchParams.delete(key);
+    for (const key of ['pose', 'portal', 'q', 'collection', 'category', ...Object.keys(viewParameters)]) url.searchParams.delete(key);
     for (const [key, value] of Object.entries(currentViewParams())) {
       if (value) url.searchParams.set(key, value);
     }
@@ -532,6 +542,8 @@ function restoreView() {
   const linked = poses.find(pose => pose.id === linkedPose);
   setPortal(linked ? linked.hasBerry && (!linked.hasPhanto || params.get('portal') === 'berry') : params.get('portal') === 'berry');
   search.value = params.get('q') ?? '';
+  const requestedCollection = params.get('collection');
+  collection = Object.hasOwn(collections, requestedCollection) ? requestedCollection : '';
   const requestedCategory = params.get('category');
   category = categories.includes(requestedCategory) ? requestedCategory : categories[0];
   for (const [key, id] of Object.entries(viewParameters)) {
@@ -550,7 +562,7 @@ function render() {
   filterToggle.toggleAttribute('data-filtered', filtered);
   filterToggle.setAttribute('aria-label', filtered ? 'Filters, active' : 'Filters');
   for (const button of suggestions) {
-    button.setAttribute('aria-pressed', String(button.dataset.query === raw));
+    button.setAttribute('aria-pressed', String(!linkedPose && button.dataset.collection === collection));
   }
   const normalized = normalize(Object.hasOwn(shortcuts, raw) ? shortcuts[raw] : raw);
   const emotionPhrase = normalized.replace(/^(?:i am|i m|im|i feel|feeling) /, '');
@@ -559,10 +571,11 @@ function render() {
   const terms = phrase.split(' ').filter(Boolean);
   const meaningful = terms.filter(word => !searchFiller.has(word));
   const words = meaningful.length ? meaningful : terms;
-  const browseOrder = !raw && !filtered && !linkedPose ? homeOrder : poses;
+  const browseOrder = !raw && !filtered && !collection && !linkedPose ? homeOrder : poses;
   matches = browseOrder.filter(pose => {
     if (linkedPose) return pose.id === linkedPose;
     return poseInPortal(pose)
+      && (!collection || collections[collection](pose))
       && (category === categories[0] || pose.category === category)
       && (!node('emotion').value || pose.emotion === node('emotion').value)
       && (!node('franchise').value || pose.franchise === node('franchise').value)
@@ -578,7 +591,9 @@ function render() {
   for (const button of node('categories').children) {
     button.setAttribute('aria-pressed', String(!linkedPose && button.textContent === category));
   }
-  node('heading').textContent = linkedPose ? 'Shared pose' : berryPortal && category === categories[0] ? 'Berry poses' : category;
+  const collectionLabel = suggestions.find(button => button.dataset.collection === collection)?.textContent;
+  const portalLabel = berryPortal && category === categories[0] ? 'Berry poses' : category;
+  node('heading').textContent = linkedPose ? 'Shared pose' : collectionLabel || portalLabel;
   node('count').textContent = matches.length.toLocaleString() + (matches.length === 1 ? ' pose' : ' poses');
   node('empty').hidden = matches.length > 0;
   shuffle.disabled = matches.length < 2;
@@ -597,6 +612,7 @@ for (const label of categories) {
   button.title = label;
   button.addEventListener('click', () => {
     clearLinkedPose();
+    collection = '';
     category = label;
     if (label !== 'Reactions') node('emotion').value = '';
     if (label !== 'Costumes' && label !== 'Holidays') node('franchise').value = node('franchise-type').value = '';
@@ -628,6 +644,7 @@ portalButton.addEventListener('click', () => {
   clearLinkedPose();
   category = categories[0];
   search.value = '';
+  collection = '';
   setPortal(!berryPortal);
   render();
 });
@@ -642,7 +659,8 @@ for (const button of suggestions) {
     clearLinkedPose();
     category = categories[0];
     node('emotion').value = node('franchise').value = node('franchise-type').value = '';
-    search.value = search.value.trim().toLowerCase() === button.dataset.query ? '' : button.dataset.query;
+    collection = collection === button.dataset.collection ? '' : button.dataset.collection;
+    search.value = '';
     render();
   });
 }
@@ -670,6 +688,7 @@ node('more').addEventListener('click', () => {
 node('reset').addEventListener('click', () => {
   clearLinkedPose();
   category = categories[0];
+  collection = '';
   search.value = node('emotion').value = node('franchise').value = node('franchise-type').value = '';
   render();
   search.focus({ preventScroll: true });

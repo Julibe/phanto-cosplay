@@ -32,9 +32,9 @@
 <link rel="stylesheet" href="vendor/fontawesome.css">
 <link rel="stylesheet" href="vendor/solid.css">
 <link rel="stylesheet" href="vendor/brands.css">
-<link rel="stylesheet" href="style.css?v=81df6facca99">
+<link rel="stylesheet" href="style.css?v=633920fb3f35">
 <script src="catalog.js?v=6289d4451325" defer></script>
-<script src="app.js?v=9d272d0959eb" defer></script>
+<script src="app.js?v=bc68cd7f308f" defer></script>
 <script src="hero.js?v=843c5561aa93" defer></script>
 </head>
 <body>
@@ -121,11 +121,13 @@
         <select id="franchise" aria-label="Franchise"><option value="">Any franchise</option></select>
       </div>
     </div>
-  <div class="suggestions grid grid-cols-4 gap-1 rounded-full p-1.5" role="group" aria-label="Search suggestions">
-    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-query="happy" aria-pressed="false"><i class="fa-solid fa-face-smile" aria-hidden="true"></i><span>Happy</span></button>
-    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-query="love" aria-pressed="false"><i class="fa-solid fa-heart" aria-hidden="true"></i><span>Love</span></button>
-    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-query="spooky" aria-pressed="false"><i class="fa-solid fa-ghost" aria-hidden="true"></i><span>Spooky</span></button>
-    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-query="costumes" aria-pressed="false"><i class="fa-solid fa-masks-theater" aria-hidden="true"></i><span>Costumes</span></button>
+  <div class="suggestions grid gap-1 rounded-full" role="group" aria-label="Pose collections">
+    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-collection="emoji" aria-pressed="false"><i class="fa-solid fa-face-smile" aria-hidden="true"></i><span>Emoji</span></button>
+    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-collection="games" aria-pressed="false"><i class="fa-solid fa-gamepad" aria-hidden="true"></i><span>Games</span></button>
+    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-collection="anime" aria-pressed="false"><i class="fa-solid fa-bolt" aria-hidden="true"></i><span>Anime</span></button>
+    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-collection="screen" aria-pressed="false"><i class="fa-solid fa-film" aria-hidden="true"></i><span>TV &amp; Movies</span></button>
+    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-collection="holidays" aria-pressed="false"><i class="fa-solid fa-gift" aria-hidden="true"></i><span>Holidays</span></button>
+    <button class="flex flex-col items-center justify-center gap-1 rounded-full text-xs font-semibold" type="button" data-collection="spooky" aria-pressed="false"><i class="fa-solid fa-ghost" aria-hidden="true"></i><span>Spooky</span></button>
   </div>
   <div class="search relative flex items-center gap-3 rounded-full" role="search">
     <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
@@ -183,7 +185,7 @@
     </div>
   </article>
 </template>
-<script src="background.js?v=f40f80a313da" defer></script>
+<script src="background.js?v=36f27fb4a0f4" defer></script>
 <script src="pwa.js?v=40acff4107d2" defer></script>
 </body>
 </html>
