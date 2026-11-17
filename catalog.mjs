@@ -4,6 +4,8 @@ import { identifyCostume } from './costume-types.mjs';
 
 const source = new URL('../squirlce-emojis/', import.meta.url);
 const franchiseNames = {
+  'studio-ghibli': 'Studio Ghibli',
+  'el-chavo-del-ocho': 'El Chavo del Ocho',
   'dr-seuss': 'Dr. Seuss',
   'gears-of-war': 'Gears of War',
   'k-da': 'K/DA',
@@ -107,7 +109,7 @@ const poses = readdirSync(source).filter(name => name.endsWith('.png')
     const [, group, ...name] = id.split('-');
     const category = {
       accessory: 'Activities', activity: 'Activities', celebration: 'Activities',
-      health: 'Activities', rotation: 'Turnarounds', temperature: 'Activities'
+      health: 'Activities', baking: 'Activities', cooking: 'Activities', eating: 'Activities', rotation: 'Turnarounds', temperature: 'Activities'
     }[group] ?? 'Reactions';
     const emotion = category === 'Reactions' && group !== 'reaction' ? title(group) : '';
     return { id, name: title(name.join('-')), category, emotion, tags: group };
