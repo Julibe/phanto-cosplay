@@ -4,6 +4,12 @@ import { identifyCostume } from './costume-types.mjs';
 
 const source = new URL('../squirlce-emojis/', import.meta.url);
 const franchiseNames = {
+  'house-md': 'House M.D.',
+  'csi': 'CSI',
+  'csi-ny': 'CSI: NY',
+  'csi-miami': 'CSI: Miami',
+  'betty-la-fea': 'Betty la fea',
+  'spongebob-squarepants': 'SpongeBob SquarePants',
   'studio-ghibli': 'Studio Ghibli',
   'el-chavo-del-ocho': 'El Chavo del Ocho',
   'dr-seuss': 'Dr. Seuss',
@@ -87,6 +93,10 @@ const poses = readdirSync(source).filter(name => name.endsWith('.png')
     const costume = previousId && identifyCostume(previousId);
     const name = costume?.remainder ?? id.slice(prefix.length + 1).replace(/-posing$/, '');
     const category = { animal: 'Animals', meme: 'Memes', costume: 'Costumes' }[prefix];
+    if (id.startsWith('costume-sanrio-')) {
+      return { id, category, name: title(id.slice('costume-sanrio-'.length)),
+        franchise: 'Sanrio', tags: 'sanrio hello kitty greeting' };
+    }
     return { id, previousId, category, name: title(name), tags: costume?.group };
   }
   if (/^(anime|movie|tv|game|comics|book)-/.test(id)) {
