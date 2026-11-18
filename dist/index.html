@@ -32,9 +32,9 @@
 <link rel="stylesheet" href="vendor/fontawesome.css">
 <link rel="stylesheet" href="vendor/solid.css">
 <link rel="stylesheet" href="vendor/brands.css">
-<link rel="stylesheet" href="style.css?v=ec59d990eff9">
+<link rel="stylesheet" href="style.css?v=afd156398955">
 <script src="catalog.js?v=3649492430d6" defer></script>
-<script src="app.js?v=8ef3b8c228b3" defer></script>
+<script src="app.js?v=ce01f4f0fb65" defer></script>
 <script src="hero.js?v=76572d35b8ec" defer></script>
 </head>
 <body>
@@ -123,6 +123,11 @@
         <select id="franchise-type" aria-label="Franchise type"><option value="">Any type</option></select>
         <select id="franchise" aria-label="Franchise"><option value="">Any franchise</option></select>
         <select id="sort" aria-label="Sort by release date"><option value="">Featured order</option><option value="newest">Newest first</option><option value="oldest">Oldest first</option></select>
+      </div>
+      <div class="date-range" role="group" aria-label="Release date range">
+        <label><span>From</span><input id="released-from" type="date" aria-label="Released from"></label>
+        <label><span>To</span><input id="released-to" type="date" aria-label="Released to"></label>
+        <button id="clear-dates" type="button" title="Clear dates" aria-label="Clear dates" hidden><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
       </div>
     </div>
   <div class="search relative flex items-center gap-3 rounded-full" role="search">
