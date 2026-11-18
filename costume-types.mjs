@@ -1,8 +1,8 @@
 const franchiseTypes = {
   anime: 'bleach cardcaptor-sakura chainsaw-man dandadan demon-slayer digimon dragon-ball evangelion frieren hunter-x-hunter jujutsu-kaisen my-hero-academia naruto one-piece reincarnated-as-a-slime sailor-moon solo-leveling',
   game: 'castlevania destiny donkey-kong f-zero final-fantasy gears-of-war god-of-war halo horizon k-da kirby league-of-legends mass-effect mega-man metal-gear metroid minecraft pac-man persona-3 persona-4 persona-5 persona pokemon resident-evil sonic star-fox starcraft street-fighter world-of-warcraft super-mario tomb-raider zelda',
-  movie: 'aladdin beauty-and-the-beast godzilla king-kong lion-king lord-of-the-rings monsters-inc ratatouille star-wars studio-ghibli toy-story wall-e',
-  tv: 'avatar barney el-chavo-del-ocho muppets power-rangers sesame-street star-trek transformers',
+  movie: 'aladdin beauty-and-the-beast godzilla jurassic-park king-kong lion-king lord-of-the-rings monsters-inc ratatouille star-wars studio-ghibli toy-story wall-e',
+  tv: 'avatar barney el-chavo-del-ocho muppets power-rangers sesame-street star-trek transformers lost house-md friends steven-universe the-amazing-world-of-gumball breaking-bad betty-la-fea the-sopranos mad-men dexter fleabag succession the-wire csi csi-ny csi-miami the-mentalist the-boys the-big-bang-theory peppa-pig spongebob-squarepants bluey rick-and-morty',
   comics: 'dc invincible marvel ninja-turtles',
   festival: 'christmas festivals halloween',
   music: 'music',
