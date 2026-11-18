@@ -580,9 +580,21 @@ function restoreView() {
   render();
 }
 
+function narrowFranchiseOptions(type) {
+  const select = node('franchise');
+  const available = new Set(poses.filter(pose => poseInPortal(pose) && (!type || pose.franchiseType === type)).map(pose => pose.franchise));
+  for (const option of [...select.options].slice(1)) {
+    const hidden = !available.has(option.value);
+    option.hidden = hidden;
+    option.disabled = hidden;
+  }
+  if (select.value && !available.has(select.value)) select.value = '';
+}
+
 function render() {
   const raw = search.value.trim().toLowerCase();
   const franchiseType = node('franchise-type').value;
+  narrowFranchiseOptions(franchiseType);
   const filtered = category !== categories[0] || Boolean(node('emotion').value || node('franchise').value || franchiseType);
   clearSearch.hidden = !search.value;
   filterToggle.toggleAttribute('data-filtered', filtered);
@@ -651,6 +663,7 @@ for (const id of Object.values(viewParameters)) {
   select.addEventListener('change', () => {
     clearLinkedPose();
     if (select.value) {
+      collection = '';
       category = id === 'emotion' ? 'Reactions' : categories[0];
       if (id === 'emotion') {
         node('franchise').value = node('franchise-type').value = '';

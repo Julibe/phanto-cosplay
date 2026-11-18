@@ -11,21 +11,33 @@
   --glass-tint: #1b1b1b48;
   --glass-deep: #0f0f0f86;
   --glass-glint: #c6c6c620;
-<<<<<<< Updated upstream
-  --glass-blur: blur(56px) saturate(135%);
-=======
   --glass-blur: blur(56px) saturate(160%);
->>>>>>> Stashed changes
   --display: "Bebas Neue", Impact, sans-serif;
   font: 16px "Comfortaa", system-ui, sans-serif;
+  --scroll-thumb: #ffffff3d;
+  --scroll-thumb-hover: #ffffff6b;
+  --scroll-track: #0f0a2440;
   scrollbar-gutter: stable;
-  scrollbar-color: #626262 var(--surface);
-  scrollbar-width: thin;
 }
-* { box-sizing: border-box; scrollbar-color: #626262 var(--surface) }
-::-webkit-scrollbar { width: 10px; height: 8px }
-::-webkit-scrollbar-track { background: var(--surface) }
-::-webkit-scrollbar-thumb { background: #626262; border: 2px solid var(--surface); border-radius: 999px }
+* { box-sizing: border-box }
+@supports not selector(::-webkit-scrollbar) {
+  * { scrollbar-color: var(--scroll-thumb) transparent; scrollbar-width: thin }
+  :root { scrollbar-color: var(--scroll-thumb) var(--scroll-track) }
+}
+::-webkit-scrollbar { width: 12px; height: 12px; background: transparent }
+::-webkit-scrollbar-track { background: var(--scroll-track) }
+:not(:root)::-webkit-scrollbar-track { background: transparent }
+::-webkit-scrollbar-thumb {
+  min-height: 40px;
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background: var(--scroll-thumb) padding-box;
+}
+::-webkit-scrollbar-thumb:hover { background-color: var(--scroll-thumb-hover) }
+::-webkit-scrollbar-thumb:active { background-color: #ffffff8f }
+::-webkit-scrollbar-corner { background: transparent }
+::-webkit-scrollbar-button { display: none; width: 0; height: 0 }
+body[data-berry-portal] { --scroll-thumb: #ff8a9c4d; --scroll-thumb-hover: #ff8a9c8c; --scroll-track: #24091140 }
 body {
   isolation: isolate;
   -webkit-user-select: none;
@@ -247,14 +259,6 @@ main.wrap { padding-top: clamp(12px, 3vw, 32px) }
   padding: 5px;
   border: 1px solid #a6a6a685;
   border-radius: 999px;
-<<<<<<< Updated upstream
-  background: var(--glass-tint);
-  box-shadow: inset 0 1px #e3e3e32b, 0 10px 35px #0606069e;
-  -webkit-backdrop-filter: var(--glass-blur);
-  backdrop-filter: var(--glass-blur);
-}
-.search { grid-column: 1; grid-row: 1; min-height: 50px; padding: 2px 3px 2px 12px; background: #15151560; gap: 7px }
-=======
   background: #16161619;
   box-shadow: inset 0 1px #e3e3e32b, 0 10px 35px #0606065c;
   -webkit-backdrop-filter: var(--glass-blur);
@@ -271,7 +275,6 @@ main.wrap { padding-top: clamp(12px, 3vw, 32px) }
   mix-blend-mode: soft-light;
 }
 .search { grid-column: 1; grid-row: 1; min-height: 50px; padding: 2px 3px 2px 12px; background: #15151522; gap: 7px }
->>>>>>> Stashed changes
 .search input { width: 100%; padding-block: 8px; border: 0; background: none }
 .search input::-webkit-search-cancel-button { appearance: none }
 .search:has(#clear-search:not([hidden])) kbd { display: none }
@@ -281,21 +284,12 @@ main.wrap { padding-top: clamp(12px, 3vw, 32px) }
 .search > i { color: var(--accent); font-size: .93rem }
 kbd { color: var(--muted); border: 1px solid var(--line); border-radius: 5px; padding: 1px 5px; font-size: .72rem }
 #filter-toggle, #clear-search, #shuffle { width: 44px; height: 44px; flex: none; border-radius: 50%; color: var(--ink) }
-<<<<<<< Updated upstream
-#filter-toggle { position: relative; background: #3f3f3f }
-#shuffle { background: #404040; border: 1px solid #b3b3b370 }
-#shuffle:hover:not(:disabled) { background: #555555; border-color: #d1d1d1 }
-#shuffle:disabled { opacity: .45; cursor: default }
-#clear-search { background: transparent; color: var(--muted) }
-#clear-search:hover { background: #3f3f3f; color: var(--ink) }
-=======
 #filter-toggle { position: relative; background: var(--dock-control) }
 #shuffle { background: var(--dock-control); border: 1px solid #ffffff30 }
 #shuffle:hover:not(:disabled) { background: var(--dock-control-active); border-color: #ffffff62 }
 #shuffle:disabled { opacity: .45; cursor: default }
 #clear-search { background: transparent; color: var(--muted) }
 #clear-search:hover { background: var(--dock-control-active); color: var(--ink) }
->>>>>>> Stashed changes
 #filter-toggle[data-filtered]::after {
   content: "";
   position: absolute;
@@ -310,13 +304,8 @@ kbd { color: var(--muted); border: 1px solid var(--line); border-radius: 5px; pa
 .suggestions { grid-column: 3; grid-row: 1; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); padding: 0 }
 .suggestions button { min-height: 46px; padding: 3px 1px; border: 0; color: #dadada; font-size: .63rem; line-height: 1.12 }
 .suggestions i { color: #b4b4b4; font-size: .91rem }
-<<<<<<< Updated upstream
-.suggestions button:hover, #filter-toggle:hover { background: #4545455c }
-.suggestions button[aria-pressed=true], #filter-toggle[aria-expanded=true] { background: var(--accent); color: var(--surface) }
-=======
 .suggestions button:hover, #filter-toggle:hover { background: var(--dock-control) }
 .suggestions button[aria-pressed=true], #filter-toggle[aria-expanded=true] { background: var(--dock-control-active); color: var(--ink); box-shadow: inset 0 0 0 1px #ffffff56 }
->>>>>>> Stashed changes
 .suggestions button[aria-pressed=true] i { color: inherit }
 .filters {
   display: grid;
@@ -331,7 +320,7 @@ kbd { color: var(--muted); border: 1px solid var(--line); border-radius: 5px; pa
   overscroll-behavior: contain;
   border-radius: 19px;
   border: 1px solid var(--line);
-  background: var(--glass-deep);
+  background: #15112be8;
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
   box-shadow: 0 8px 25px #06060696;
@@ -339,7 +328,28 @@ kbd { color: var(--muted); border: 1px solid var(--line); border-radius: 5px; pa
 .categories, .selects { display: flex; flex-wrap: wrap; gap: 7px }
 .categories button,.selects select { min-height: 42px; padding: 6px 11px; border: 1px solid var(--line); border-radius: 11px; background: #262626; font-size: .75rem }
 .categories button[aria-pressed=true] { color: var(--surface); background: var(--accent); font-weight: 700 }
-.selects select { flex: 1 1 7.5rem; min-width: 0 }
+.selects select {
+  flex: 1 1 7.5rem;
+  min-width: 0;
+  -webkit-appearance: none;
+  appearance: none;
+  padding-inline-end: 34px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-color: #ffffff30;
+  background: #2a2540 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%23e6e6e6' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 13px center / 11px 7px;
+  color: var(--ink);
+  transition: background-color .15s ease, border-color .15s ease;
+}
+.selects select:hover { background-color: #342e4d; border-color: #ffffff52 }
+.selects select:focus-visible { outline: 2px solid #ffffffb0; outline-offset: 2px }
+.selects select:has(option:checked:not([value=""])) { background-color: #3f3860; border-color: #ffffff70; font-weight: 700 }
+.selects option { background: #1d1730; color: var(--ink); font-weight: 400 }
+.selects option[value=""] { color: var(--muted) }
+body[data-berry-portal] .filters { background: #220c14e8 }
+body[data-berry-portal] .selects select { background-color: #3a1820 }
+body[data-berry-portal] .selects option { background: #2a1016 }
 .toast {
   position: fixed;
   z-index: 11;
@@ -548,11 +558,7 @@ dialog[open] { animation: panel-enter 180ms ease-out both }
   width: 120px;
   height: 120px;
   margin-block: -35px;
-<<<<<<< Updated upstream
-  translate: 0 -29px;
-=======
   translate: 0 -17px;
->>>>>>> Stashed changes
   display: grid;
   place-items: center;
   padding: 0;
@@ -560,11 +566,7 @@ dialog[open] { animation: panel-enter 180ms ease-out both }
   background: transparent;
   --portal-glow: #ff526b;
 }
-<<<<<<< Updated upstream
-body[data-berry-portal] #berry-portal { --portal-glow: #e4caff }
-=======
 body[data-berry-portal] #berry-portal { --portal-glow: #ab55ff }
->>>>>>> Stashed changes
 #berry-portal img {
   grid-area: 1 / 1;
   width: 100%;
@@ -623,11 +625,7 @@ body[data-berry-portal]::after {
   .toast { bottom: calc(225px + env(safe-area-inset-bottom, 0px)) }
   #berry-portal {
     position: absolute;
-<<<<<<< Updated upstream
-    top: -90px;
-=======
     top: -81px;
->>>>>>> Stashed changes
     left: 50%;
     grid-area: auto;
     width: 108px;
