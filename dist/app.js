@@ -97,7 +97,10 @@ const poses = window.phantoCatalog.map(pose => {
   const hasBerry = pose.id.startsWith('berry-');
   const hasPhanto = !hasBerry || pose.id.split('-').includes('phanto');
   const isNew = Boolean(newestRelease) && Date.parse(pose.released) >= newSince;
-  return { ...pose, hasBerry, hasPhanto, isNew, nameSearch: name, text: isNew ? text + ' new latest' : text,
+  const releasedAt = pose.released ? new Date(pose.released) : null;
+  const releasedDay = releasedAt ? [releasedAt.getFullYear(), String(releasedAt.getMonth() + 1).padStart(2, '0'),
+    String(releasedAt.getDate()).padStart(2, '0')].join('-') : '';
+  return { ...pose, hasBerry, hasPhanto, isNew, releasedDay, nameSearch: name, text: isNew ? text + ' new latest' : text,
     keywordSearch: normalize([synonyms[pose.emotion], ...aliases].filter(Boolean).join(' ')) };
 });
 
@@ -373,6 +376,8 @@ function currentViewParams() {
     collection,
     category: category === categories[0] ? '' : category,
     sort: node('sort').value,
+    from: node('released-from').value,
+    to: node('released-to').value,
     ...Object.fromEntries(Object.entries(viewParameters).map(([key, id]) => [key, node(id).value]))
   };
 }
@@ -391,7 +396,7 @@ function syncViewUrl() {
   clearTimeout(syncViewUrl.timer);
   syncViewUrl.timer = setTimeout(() => {
     const url = new URL(location.href);
-    for (const key of ['pose', 'portal', 'q', 'collection', 'category', 'sort', ...Object.keys(viewParameters)]) url.searchParams.delete(key);
+    for (const key of ['pose', 'portal', 'q', 'collection', 'category', 'sort', 'from', 'to', ...Object.keys(viewParameters)]) url.searchParams.delete(key);
     for (const [key, value] of Object.entries(currentViewParams())) {
       if (value) url.searchParams.set(key, value);
     }
@@ -583,6 +588,9 @@ function restoreView() {
   const requestedCategory = params.get('category');
   category = categories.includes(requestedCategory) ? requestedCategory : categories[0];
   node('sort').value = ['newest', 'oldest'].includes(params.get('sort')) ? params.get('sort') : '';
+  for (const [key, id] of [['from', 'released-from'], ['to', 'released-to']]) {
+    node(id).value = /^\d{4}-\d{2}-\d{2}$/.test(params.get(key) ?? '') ? params.get(key) : '';
+  }
   for (const [key, id] of Object.entries(viewParameters)) {
     const select = node(id);
     const value = params.get(key);
@@ -606,7 +614,12 @@ function render() {
   const raw = search.value.trim().toLowerCase();
   const franchiseType = node('franchise-type').value;
   narrowFranchiseOptions(franchiseType);
-  const filtered = category !== categories[0] || Boolean(node('emotion').value || node('franchise').value || franchiseType);
+  let releasedFrom = node('released-from').value;
+  let releasedTo = node('released-to').value;
+  if (releasedFrom && releasedTo && releasedFrom > releasedTo) [releasedFrom, releasedTo] = [releasedTo, releasedFrom];
+  node('clear-dates').hidden = !releasedFrom && !releasedTo;
+  const filtered = category !== categories[0] || Boolean(node('emotion').value || node('franchise').value || franchiseType
+    || releasedFrom || releasedTo);
   clearSearch.hidden = !search.value;
   filterToggle.toggleAttribute('data-filtered', filtered);
   filterToggle.setAttribute('aria-label', filtered ? 'Filters, active' : 'Filters');
@@ -628,7 +641,9 @@ function render() {
       && (category === categories[0] || pose.category === category)
       && (!node('emotion').value || pose.emotion === node('emotion').value)
       && (!node('franchise').value || pose.franchise === node('franchise').value)
-      && (!franchiseType || pose.franchiseType === franchiseType);
+      && (!franchiseType || pose.franchiseType === franchiseType)
+      && (!releasedFrom || (pose.releasedDay && pose.releasedDay >= releasedFrom))
+      && (!releasedTo || (pose.releasedDay && pose.releasedDay <= releasedTo));
   });
   if (raw && !linkedPose) {
     matches = words.length ? matches
@@ -697,6 +712,20 @@ for (const id of Object.values(viewParameters)) {
   });
 }
 node('sort').addEventListener('change', () => { clearLinkedPose(); render(); });
+for (const id of ['released-from', 'released-to']) {
+  node(id).addEventListener('change', () => { clearLinkedPose(); render(); });
+}
+node('clear-dates').addEventListener('click', () => {
+  node('released-from').value = node('released-to').value = '';
+  render();
+});
+{
+  const days = poses.map(pose => pose.releasedDay).filter(Boolean).sort();
+  for (const id of ['released-from', 'released-to']) {
+    node(id).min = days[0] ?? '';
+    node(id).max = days.at(-1) ?? '';
+  }
+}
 let portalReactionTimer;
 portalButton.addEventListener('pointerenter', event => {
   if (event.pointerType === 'mouse' || event.pointerType === 'pen') portalButton.setAttribute('data-hovering', '');
@@ -765,6 +794,7 @@ node('reset').addEventListener('click', () => {
   category = categories[0];
   collection = '';
   search.value = node('emotion').value = node('franchise').value = node('franchise-type').value = '';
+  node('released-from').value = node('released-to').value = node('sort').value = '';
   render();
   search.focus({ preventScroll: true });
 });
