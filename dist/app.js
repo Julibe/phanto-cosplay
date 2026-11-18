@@ -206,7 +206,7 @@ function celebrateCopy(origin) {
   const burst = document.createElement('span');
   burst.className = 'copy-burst';
   burst.setAttribute('aria-hidden', 'true');
-  const colors = ['#ff85ad', '#88acff', '#d1afff', '#f3f9fe'];
+  const colors = ['#fff', '#ddd', '#bbb', '#eee'];
   for (let index = 0; index < 14; index++) {
     const particle = document.createElement('span');
     const ribbon = index % 2 === 1;
@@ -313,10 +313,12 @@ function setPortal(active) {
   const label = 'Switch to ' + destination + ' portal';
   portalButton.setAttribute('aria-label', label);
   portalButton.title = label;
-  portalButton.querySelector('span').textContent = destination;
-  portalButton.querySelector('img').src = active
+  portalButton.querySelector('.portal-rest').src = active
     ? 'emoji/joy/emoji-joy-cheerful.webp'
     : 'berry/berry-stern-glare.webp';
+  portalButton.querySelector('.portal-reaction').src = active
+    ? 'emoji/playful/emoji-playful-cheeky-wink.webp'
+    : 'berry/berry-furious-forward-lunge.webp';
   node('phanto-intro').hidden = active;
   node('berry-intro').hidden = !active;
   document.querySelector('.hero-showcase').hidden = active;
@@ -664,7 +666,17 @@ for (const id of Object.values(viewParameters)) {
     render();
   });
 }
+let portalReactionTimer;
+portalButton.addEventListener('pointerenter', event => {
+  if (event.pointerType === 'mouse' || event.pointerType === 'pen') portalButton.setAttribute('data-hovering', '');
+});
+for (const type of ['pointerleave', 'pointercancel']) {
+  portalButton.addEventListener(type, () => portalButton.removeAttribute('data-hovering'));
+}
 portalButton.addEventListener('click', () => {
+  clearTimeout(portalReactionTimer);
+  portalButton.setAttribute('data-reacting', '');
+  portalReactionTimer = setTimeout(() => portalButton.removeAttribute('data-reacting'), 900);
   clearLinkedPose();
   category = categories[0];
   search.value = '';
