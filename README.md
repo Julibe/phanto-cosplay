@@ -46,4 +46,8 @@ Use these filename patterns for new sprites.
 
 When renaming an existing sprite, record the old stem under the new stem in `pose-renames.json` so old shared links still resolve.
 
+## Release dates
+
+Each pose has a `released` time (ISO 8601, UTC) in the catalog, and the app's filter panel can sort by **Newest first** or **Oldest first** (`?sort=newest` / `?sort=oldest`). Dates live in `release-dates.json`, keyed by pose ID. When the catalog is regenerated, a pose without an entry gets the date its WebP first appeared in git history, or the current time if it is brand new. Edit a value in `release-dates.json` and run `node pose-assets.mjs` to change when a look counts as released.
+
 Artwork and character by Julibe.
