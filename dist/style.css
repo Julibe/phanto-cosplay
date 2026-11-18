@@ -196,6 +196,21 @@ main.wrap { padding-top: clamp(12px, 3vw, 32px) }
   font-size: .82rem;
   backdrop-filter: blur(16px);
 }
+.new-tag {
+  position: absolute;
+  top: 9px;
+  left: 9px;
+  padding: 4px 10px 3px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ff7ab6, #a66bff);
+  box-shadow: 0 2px 10px #a66bff80, inset 0 1px #ffffff59;
+  color: #fff;
+  font: 1rem/1 var(--display);
+  letter-spacing: .06em;
+  pointer-events: none;
+}
+.new-tag[hidden] { display: none }
+body[data-berry-portal] .new-tag { background: linear-gradient(135deg, #ff9b4a, #ff3d5e); box-shadow: 0 2px 10px #ff3d5e80, inset 0 1px #ffffff59 }
 .picture:is(:hover,:focus-visible) .copy-mark { background: var(--accent); color: var(--surface) }
 .card-body {
   display: flex;
@@ -345,6 +360,39 @@ kbd { color: var(--muted); border: 1px solid var(--line); border-radius: 5px; pa
 .selects select:hover { background-color: #342e4d; border-color: #ffffff52 }
 .selects select:focus-visible { outline: 2px solid #ffffffb0; outline-offset: 2px }
 .selects select:has(option:checked:not([value=""])) { background-color: #3f3860; border-color: #ffffff70; font-weight: 700 }
+.date-range { display: flex; flex-wrap: wrap; align-items: center; gap: 7px }
+.date-range label {
+  display: flex;
+  flex: 1 1 9rem;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 42px;
+  padding: 0 6px 0 12px;
+  border: 1px solid #ffffff30;
+  border-radius: 11px;
+  background: #2a2540;
+  font-size: .75rem;
+}
+.date-range label:hover { background: #342e4d; border-color: #ffffff52 }
+.date-range span { color: var(--muted); font-weight: 700 }
+.date-range input {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  color-scheme: dark;
+  font: inherit;
+}
+.date-range input:focus-visible { outline: none }
+.date-range label:focus-within { outline: 2px solid #ffffffb0; outline-offset: 2px }
+.date-range input::-webkit-calendar-picker-indicator { opacity: .8; cursor: pointer }
+#clear-dates { width: 42px; height: 42px; flex: none; border: 1px solid #ffffff30; border-radius: 50%; background: #2a2540; color: var(--muted) }
+#clear-dates:hover { background: #342e4d; color: var(--ink) }
+#clear-dates[hidden] { display: none }
+body[data-berry-portal] .date-range label, body[data-berry-portal] #clear-dates { background: #3a1820 }
 .selects option { background: #1d1730; color: var(--ink); font-weight: 400 }
 .selects option[value=""] { color: var(--muted) }
 body[data-berry-portal] .filters { background: #220c14e8 }
