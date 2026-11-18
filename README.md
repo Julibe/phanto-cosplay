@@ -50,4 +50,6 @@ When renaming an existing sprite, record the old stem under the new stem in `pos
 
 Each pose has a `released` time (ISO 8601, UTC) in the catalog, and the app's filter panel can sort by **Newest first** or **Oldest first** (`?sort=newest` / `?sort=oldest`). Dates live in `release-dates.json`, keyed by pose ID. When the catalog is regenerated, a pose without an entry gets the date its WebP first appeared in git history, or the current time if it is brand new. Edit a value in `release-dates.json` and run `node pose-assets.mjs` to change when a look counts as released.
 
+Cards in the newest batch show a **New** tag: any pose released within 6 hours of the most recent release (`newWindowHours` in `dist/app.js`). The tag moves to each new batch automatically when the catalog is regenerated, and searching `new` lists them.
+
 Artwork and character by Julibe.
