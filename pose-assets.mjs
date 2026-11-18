@@ -2,6 +2,7 @@ import { existsSync, mkdirSync, readFileSync, renameSync, statSync, writeFileSyn
 import { pathToFileURL } from 'node:url';
 import { franchisePrefix } from './costume-types.mjs';
 import { versionAssets } from './version-assets.mjs';
+import { assignReleaseDates } from './release-dates.mjs';
 
 const root = new URL('./dist/', import.meta.url);
 const catalog = new URL('catalog.js', root);
@@ -57,7 +58,7 @@ export function writeOrganizedPoses(poses) {
     mkdirSync(new URL('./', target), { recursive: true });
     renameSync(previous, target);
   }
-  writeFileSync(catalog, prefix + JSON.stringify(moves.map(({ pose }) => pose)) + ';\n');
+  writeFileSync(catalog, prefix + JSON.stringify(assignReleaseDates(moves.map(({ pose }) => pose))) + ';\n');
   writeFileSync(index, html);
   versionAssets();
   console.log('Verified and organized ' + moves.length + ' WebP assets.');
