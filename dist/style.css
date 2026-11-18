@@ -11,7 +11,11 @@
   --glass-tint: #1b1b1b48;
   --glass-deep: #0f0f0f86;
   --glass-glint: #c6c6c620;
+<<<<<<< Updated upstream
   --glass-blur: blur(56px) saturate(135%);
+=======
+  --glass-blur: blur(56px) saturate(160%);
+>>>>>>> Stashed changes
   --display: "Bebas Neue", Impact, sans-serif;
   font: 16px "Comfortaa", system-ui, sans-serif;
   scrollbar-gutter: stable;
@@ -135,6 +139,7 @@ main.wrap { padding-top: clamp(12px, 3vw, 32px) }
 .results p { padding: 6px 9px; border: 1px solid var(--line); border-radius: 999px; background: #1b1b1b95; color: var(--muted); font-size: .7rem; font-variant-numeric: tabular-nums }
 #grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 15px }
 .card {
+  position: relative;
   display: grid;
   grid-template-rows: auto 1fr;
   min-width: 0;
@@ -232,6 +237,8 @@ main.wrap { padding-top: clamp(12px, 3vw, 32px) }
 .social-mini-nav .bar-link:hover, .social-mini-nav .bar-link:focus-visible { background: var(--glass-deep) }
 
 .search-dock {
+  --dock-control: #ffffff12;
+  --dock-control-active: #ffffff2e;
   bottom: calc(12px + env(safe-area-inset-bottom, 0px));
   width: min(820px, calc(100% - 26px));
   grid-template-columns: minmax(0, 1fr) 120px minmax(290px, 1.12fr);
@@ -240,12 +247,31 @@ main.wrap { padding-top: clamp(12px, 3vw, 32px) }
   padding: 5px;
   border: 1px solid #a6a6a685;
   border-radius: 999px;
+<<<<<<< Updated upstream
   background: var(--glass-tint);
   box-shadow: inset 0 1px #e3e3e32b, 0 10px 35px #0606069e;
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
 }
 .search { grid-column: 1; grid-row: 1; min-height: 50px; padding: 2px 3px 2px 12px; background: #15151560; gap: 7px }
+=======
+  background: #16161619;
+  box-shadow: inset 0 1px #e3e3e32b, 0 10px 35px #0606065c;
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+}
+.hero::before, .card::before, .search-dock::before, .filters::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(135deg, #ffffff38, transparent 63%, #00000022);
+  mix-blend-mode: soft-light;
+}
+.search { grid-column: 1; grid-row: 1; min-height: 50px; padding: 2px 3px 2px 12px; background: #15151522; gap: 7px }
+>>>>>>> Stashed changes
 .search input { width: 100%; padding-block: 8px; border: 0; background: none }
 .search input::-webkit-search-cancel-button { appearance: none }
 .search:has(#clear-search:not([hidden])) kbd { display: none }
@@ -255,12 +281,21 @@ main.wrap { padding-top: clamp(12px, 3vw, 32px) }
 .search > i { color: var(--accent); font-size: .93rem }
 kbd { color: var(--muted); border: 1px solid var(--line); border-radius: 5px; padding: 1px 5px; font-size: .72rem }
 #filter-toggle, #clear-search, #shuffle { width: 44px; height: 44px; flex: none; border-radius: 50%; color: var(--ink) }
+<<<<<<< Updated upstream
 #filter-toggle { position: relative; background: #3f3f3f }
 #shuffle { background: #404040; border: 1px solid #b3b3b370 }
 #shuffle:hover:not(:disabled) { background: #555555; border-color: #d1d1d1 }
 #shuffle:disabled { opacity: .45; cursor: default }
 #clear-search { background: transparent; color: var(--muted) }
 #clear-search:hover { background: #3f3f3f; color: var(--ink) }
+=======
+#filter-toggle { position: relative; background: var(--dock-control) }
+#shuffle { background: var(--dock-control); border: 1px solid #ffffff30 }
+#shuffle:hover:not(:disabled) { background: var(--dock-control-active); border-color: #ffffff62 }
+#shuffle:disabled { opacity: .45; cursor: default }
+#clear-search { background: transparent; color: var(--muted) }
+#clear-search:hover { background: var(--dock-control-active); color: var(--ink) }
+>>>>>>> Stashed changes
 #filter-toggle[data-filtered]::after {
   content: "";
   position: absolute;
@@ -275,8 +310,13 @@ kbd { color: var(--muted); border: 1px solid var(--line); border-radius: 5px; pa
 .suggestions { grid-column: 3; grid-row: 1; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); padding: 0 }
 .suggestions button { min-height: 46px; padding: 3px 1px; border: 0; color: #dadada; font-size: .63rem; line-height: 1.12 }
 .suggestions i { color: #b4b4b4; font-size: .91rem }
+<<<<<<< Updated upstream
 .suggestions button:hover, #filter-toggle:hover { background: #4545455c }
 .suggestions button[aria-pressed=true], #filter-toggle[aria-expanded=true] { background: var(--accent); color: var(--surface) }
+=======
+.suggestions button:hover, #filter-toggle:hover { background: var(--dock-control) }
+.suggestions button[aria-pressed=true], #filter-toggle[aria-expanded=true] { background: var(--dock-control-active); color: var(--ink); box-shadow: inset 0 0 0 1px #ffffff56 }
+>>>>>>> Stashed changes
 .suggestions button[aria-pressed=true] i { color: inherit }
 .filters {
   display: grid;
@@ -508,7 +548,11 @@ dialog[open] { animation: panel-enter 180ms ease-out both }
   width: 120px;
   height: 120px;
   margin-block: -35px;
+<<<<<<< Updated upstream
   translate: 0 -29px;
+=======
+  translate: 0 -17px;
+>>>>>>> Stashed changes
   display: grid;
   place-items: center;
   padding: 0;
@@ -516,7 +560,11 @@ dialog[open] { animation: panel-enter 180ms ease-out both }
   background: transparent;
   --portal-glow: #ff526b;
 }
+<<<<<<< Updated upstream
 body[data-berry-portal] #berry-portal { --portal-glow: #e4caff }
+=======
+body[data-berry-portal] #berry-portal { --portal-glow: #ab55ff }
+>>>>>>> Stashed changes
 #berry-portal img {
   grid-area: 1 / 1;
   width: 100%;
@@ -575,7 +623,11 @@ body[data-berry-portal]::after {
   .toast { bottom: calc(225px + env(safe-area-inset-bottom, 0px)) }
   #berry-portal {
     position: absolute;
+<<<<<<< Updated upstream
     top: -90px;
+=======
+    top: -81px;
+>>>>>>> Stashed changes
     left: 50%;
     grid-area: auto;
     width: 108px;
