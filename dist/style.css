@@ -196,6 +196,21 @@ main.wrap { padding-top: clamp(12px, 3vw, 32px) }
   font-size: .82rem;
   backdrop-filter: blur(16px);
 }
+.new-tag {
+  position: absolute;
+  top: 9px;
+  left: 9px;
+  padding: 4px 10px 3px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ff7ab6, #a66bff);
+  box-shadow: 0 2px 10px #a66bff80, inset 0 1px #ffffff59;
+  color: #fff;
+  font: 1rem/1 var(--display);
+  letter-spacing: .06em;
+  pointer-events: none;
+}
+.new-tag[hidden] { display: none }
+body[data-berry-portal] .new-tag { background: linear-gradient(135deg, #ff9b4a, #ff3d5e); box-shadow: 0 2px 10px #ff3d5e80, inset 0 1px #ffffff59 }
 .picture:is(:hover,:focus-visible) .copy-mark { background: var(--accent); color: var(--surface) }
 .card-body {
   display: flex;

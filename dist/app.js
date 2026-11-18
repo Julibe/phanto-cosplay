@@ -84,6 +84,11 @@ const normalize = value => value.toLowerCase().normalize('NFD').replace(/\p{Mark
   .replace(/[^\p{Letter}\p{Number}]+/gu, ' ').trim();
 
 const releaseDate = new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+// Poses released within this many hours of the newest release get a "New" tag,
+// so the tag moves to each new batch automatically when the catalog is regenerated.
+const newWindowHours = 6;
+const newestRelease = Math.max(0, ...window.phantoCatalog.map(pose => Date.parse(pose.released) || 0));
+const newSince = newestRelease - newWindowHours * 3600e3;
 const poses = window.phantoCatalog.map(pose => {
   const name = normalize(pose.name);
   const text = normalize(['Phanto', pose.id, pose.legacyId, pose.previousId, pose.name, pose.category, pose.franchise,
@@ -91,7 +96,8 @@ const poses = window.phantoCatalog.map(pose => {
   const aliases = poseKeywords.filter(([pattern]) => pattern.test(text)).map(([, words]) => words);
   const hasBerry = pose.id.startsWith('berry-');
   const hasPhanto = !hasBerry || pose.id.split('-').includes('phanto');
-  return { ...pose, hasBerry, hasPhanto, nameSearch: name, text,
+  const isNew = Boolean(newestRelease) && Date.parse(pose.released) >= newSince;
+  return { ...pose, hasBerry, hasPhanto, isNew, nameSearch: name, text: isNew ? text + ' new latest' : text,
     keywordSearch: normalize([synonyms[pose.emotion], ...aliases].filter(Boolean).join(' ')) };
 });
 
@@ -510,6 +516,7 @@ function showMore(limit = pageSize) {
     picture.title = 'Copy image';
     picture.addEventListener('click', () => copyImage(pose, { origin: picture }));
     card.querySelector('h3').textContent = pose.name;
+    card.querySelector('.new-tag').hidden = !pose.isNew;
     const subtitle = [pose.franchiseType, pose.franchise].filter(Boolean).join(' · ') || pose.emotion || pose.category;
     const released = node('sort').value && pose.released ? releaseDate.format(new Date(pose.released)) : '';
     card.querySelector('p').textContent = released ? subtitle + ' · ' + released : subtitle;
