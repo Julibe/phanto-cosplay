@@ -83,6 +83,7 @@ const normalize = value => value.toLowerCase().normalize('NFD').replace(/\p{Mark
   .replaceAll('×', 'x')
   .replace(/[^\p{Letter}\p{Number}]+/gu, ' ').trim();
 
+const releaseDate = new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
 const poses = window.phantoCatalog.map(pose => {
   const name = normalize(pose.name);
   const text = normalize(['Phanto', pose.id, pose.legacyId, pose.previousId, pose.name, pose.category, pose.franchise,
@@ -365,6 +366,7 @@ function currentViewParams() {
     q: search.value.trim(),
     collection,
     category: category === categories[0] ? '' : category,
+    sort: node('sort').value,
     ...Object.fromEntries(Object.entries(viewParameters).map(([key, id]) => [key, node(id).value]))
   };
 }
@@ -383,7 +385,7 @@ function syncViewUrl() {
   clearTimeout(syncViewUrl.timer);
   syncViewUrl.timer = setTimeout(() => {
     const url = new URL(location.href);
-    for (const key of ['pose', 'portal', 'q', 'collection', 'category', ...Object.keys(viewParameters)]) url.searchParams.delete(key);
+    for (const key of ['pose', 'portal', 'q', 'collection', 'category', 'sort', ...Object.keys(viewParameters)]) url.searchParams.delete(key);
     for (const [key, value] of Object.entries(currentViewParams())) {
       if (value) url.searchParams.set(key, value);
     }
@@ -508,8 +510,9 @@ function showMore(limit = pageSize) {
     picture.title = 'Copy image';
     picture.addEventListener('click', () => copyImage(pose, { origin: picture }));
     card.querySelector('h3').textContent = pose.name;
-    card.querySelector('p').textContent = [pose.franchiseType, pose.franchise].filter(Boolean).join(' · ')
-      || pose.emotion || pose.category;
+    const subtitle = [pose.franchiseType, pose.franchise].filter(Boolean).join(' · ') || pose.emotion || pose.category;
+    const released = node('sort').value && pose.released ? releaseDate.format(new Date(pose.released)) : '';
+    card.querySelector('p').textContent = released ? subtitle + ' · ' + released : subtitle;
     const download = card.querySelector('a');
     download.href = pose.path;
     download.download = pose.id + '.webp';
@@ -572,6 +575,7 @@ function restoreView() {
   collection = suggestions.some(button => !button.hidden && button.dataset.collection === requestedCollection) ? requestedCollection : '';
   const requestedCategory = params.get('category');
   category = categories.includes(requestedCategory) ? requestedCategory : categories[0];
+  node('sort').value = ['newest', 'oldest'].includes(params.get('sort')) ? params.get('sort') : '';
   for (const [key, id] of Object.entries(viewParameters)) {
     const select = node(id);
     const value = params.get(key);
@@ -626,6 +630,12 @@ function render() {
       .sort((first, second) => second.score - first.score)
       .map(result => result.pose) : [];
   }
+  const sortOrder = node('sort').value;
+  if (sortOrder && !linkedPose) {
+    const direction = sortOrder === 'oldest' ? 1 : -1;
+    matches = [...matches].sort((first, second) =>
+      direction * (first.released ?? '').localeCompare(second.released ?? '') || first.name.localeCompare(second.name));
+  }
   for (const button of node('categories').children) {
     button.setAttribute('aria-pressed', String(!linkedPose && button.textContent === category));
   }
@@ -679,6 +689,7 @@ for (const id of Object.values(viewParameters)) {
     render();
   });
 }
+node('sort').addEventListener('change', () => { clearLinkedPose(); render(); });
 let portalReactionTimer;
 portalButton.addEventListener('pointerenter', event => {
   if (event.pointerType === 'mouse' || event.pointerType === 'pen') portalButton.setAttribute('data-hovering', '');
