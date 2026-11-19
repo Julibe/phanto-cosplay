@@ -1,5 +1,5 @@
 """Duplicate scan. Roles compared separately: dist webps, sprite pngs, grid pngs."""
-import glob, os, json, hashlib, collections
+import glob, os, sys, json, hashlib, collections
 from PIL import Image
 import numpy as np
 
@@ -46,7 +46,8 @@ def info(p):
 
 
 report = {}
-for role, files in ROLES.items():
+for role in (sys.argv[1:] or list(ROLES)):
+    files = ROLES[role]
     data = {}
     for p in files:
         data[p.replace('\\', '/')] = info(p)
@@ -70,4 +71,4 @@ for role, files in ROLES.items():
             near.append({'a': p, 'b': q, 'ham': int(ham[j]), 'ham256': h16, 'thumbdiff': round(diff, 2)})
     report[role] = {'count': len(data), 'groups': groups, 'near': near}
     print(role, len(data), {k: len(v) for k, v in groups.items()}, 'near', len(near), flush=True)
-json.dump(report, open(OUT + '/dups.json', 'w'), indent=1)
+    json.dump(report[role], open(OUT + '/dups-%s.json' % role, 'w'), indent=1)
