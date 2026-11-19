@@ -2,7 +2,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { writeOrganizedPoses } from './pose-assets.mjs';
 import { identifyCostume } from './costume-types.mjs';
 
-const source = new URL('../squirlce-emojis/', import.meta.url);
+const source = new URL('../squirlce/squirlce-emojis/', import.meta.url);
 const franchiseNames = {
   'house-md': 'House M.D.',
   'csi': 'CSI',
