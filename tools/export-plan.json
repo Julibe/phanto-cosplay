@@ -1,0 +1,45 @@
+{
+ "phanto-grid-01.png": {
+  "21": "emoji-activity-hula-hoop",
+  "24": "emoji-playful-laughing-wink",
+  "31": "emoji-playful-goofy-tongue",
+  "32": "emoji-surprise-starstruck",
+  "33": "emoji-affection-blowing-kiss",
+  "34": "emoji-affection-kiss-with-heart",
+  "42": "emoji-calm-serene-closed-eyes",
+  "43": "emoji-accessory-angel-halo"
+ },
+ "phanto-grid-02.png": {
+  "01": "holiday-birthday-cake-and-party-hat",
+  "03": "emoji-affection-heart-eyes",
+  "11": "emoji-joy-big-open-smile",
+  "12": "emoji-playful-wink-and-tongue",
+  "13": "emoji-joy-cheering",
+  "21": "emoji-reaction-rainbow-breath",
+  "23": "emoji-activity-eating-popcorn",
+  "24": "emoji-temperature-shivering-in-ice-cube",
+  "32": "emoji-accessory-gaming-controller",
+  "42": "costume-science-fiction-robot",
+  "44": "costume-classic-astronaut"
+ },
+ "phanto-grid-06.png": {
+  "00": "emoji-calm-serene",
+  "01": "emoji-joy-tears-of-joy",
+  "10": "emoji-calm-content-smile",
+  "11": "emoji-joy-delighted-wink",
+  "20": "emoji-sadness-near-tears",
+  "21": "emoji-sleepy-yawning",
+  "22": "emoji-calm-content",
+  "24": "emoji-anxiety-shocked-with-sweat",
+  "30": "emoji-joy-tears-of-laughter",
+  "31": "emoji-sadness-loud-crying",
+  "32": "emoji-sadness-crying-puddle",
+  "33": "emoji-surprise-shocked-scream",
+  "34": "emoji-anger-frustrated-red-steam",
+  "40": "emoji-health-bandaged-injury",
+  "41": "emoji-health-nausea",
+  "42": "emoji-health-vomiting",
+  "43": "emoji-health-sneezing-into-tissue",
+  "44": "emoji-health-fever-flush"
+ }
+}

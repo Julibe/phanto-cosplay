@@ -1,0 +1,256 @@
+{
+ "count": 3636,
+ "groups": {
+  "sha": [],
+  "pix": [],
+  "trim": [],
+  "trim256": []
+ },
+ "near": [
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/berry/berry-deeply-frustrated.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/berry/berry-silent-rage.webp",
+   "ham": 4,
+   "ham256": 50,
+   "thumbdiff": 11.62
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/berry/berry-disappointed-frown.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/berry/berry-narrow-eyed-stare.webp",
+   "ham": 2,
+   "ham256": 43,
+   "thumbdiff": 9.92
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/berry/berry-disappointed-frown.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/berry/berry-silent-rage.webp",
+   "ham": 4,
+   "ham256": 62,
+   "thumbdiff": 11.19
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/berry/berry-disappointed-frown.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/berry/berry-simmering-rage.webp",
+   "ham": 4,
+   "ham256": 46,
+   "thumbdiff": 12.63
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/berry/berry-narrow-eyed-stare.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/berry/berry-silent-rage.webp",
+   "ham": 4,
+   "ham256": 57,
+   "thumbdiff": 12.59
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/berry/berry-narrow-eyed-stare.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/berry/berry-simmering-rage.webp",
+   "ham": 4,
+   "ham256": 47,
+   "thumbdiff": 11.47
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/comics/invincible/comics-invincible-omni-man-posing-02.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/comics/invincible/comics-invincible-omni-man-posing-03.webp",
+   "ham": 0,
+   "ham256": 0,
+   "thumbdiff": 0.57
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/comics/marvel/comics-marvel-blade-posing-02.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/comics/marvel/comics-marvel-blade-posing.webp",
+   "ham": 1,
+   "ham256": 10,
+   "thumbdiff": 3.76
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/comics/marvel/comics-marvel-cable-posing-02.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/comics/marvel/comics-marvel-cable-posing.webp",
+   "ham": 0,
+   "ham256": 5,
+   "thumbdiff": 4.05
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/comics/marvel/comics-marvel-crystal-posing-02.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/comics/marvel/comics-marvel-crystal-posing.webp",
+   "ham": 0,
+   "ham256": 3,
+   "thumbdiff": 3.54
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/comics/marvel/comics-marvel-cyclops-posing-02.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/comics/marvel/comics-marvel-cyclops-posing.webp",
+   "ham": 1,
+   "ham256": 5,
+   "thumbdiff": 2.51
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/comics/marvel/comics-marvel-gambit-posing-02.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/comics/marvel/comics-marvel-gambit-posing.webp",
+   "ham": 1,
+   "ham256": 4,
+   "thumbdiff": 3.09
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/comics/marvel/comics-marvel-human-torch-posing-02.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/comics/marvel/comics-marvel-human-torch-posing.webp",
+   "ham": 1,
+   "ham256": 9,
+   "thumbdiff": 2.76
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/comics/marvel/comics-marvel-jubilee-posing-02.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/comics/marvel/comics-marvel-jubilee-posing.webp",
+   "ham": 1,
+   "ham256": 2,
+   "thumbdiff": 2.3
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/comics/marvel/comics-marvel-silver-surfer-posing-02.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/comics/marvel/comics-marvel-silver-surfer-posing.webp",
+   "ham": 1,
+   "ham256": 2,
+   "thumbdiff": 2.29
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/comics/marvel/comics-marvel-spider-gwen-posing-02.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/comics/marvel/comics-marvel-spider-gwen-posing.webp",
+   "ham": 1,
+   "ham256": 4,
+   "thumbdiff": 2.37
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/comics/marvel/comics-marvel-storm-posing-02.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/comics/marvel/comics-marvel-storm-posing.webp",
+   "ham": 0,
+   "ham256": 5,
+   "thumbdiff": 2.31
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/comics/marvel/comics-marvel-the-thing-posing-02.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/comics/marvel/comics-marvel-the-thing-posing.webp",
+   "ham": 0,
+   "ham256": 6,
+   "thumbdiff": 3.57
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/comics/marvel/comics-marvel-x-23-posing-02.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/comics/marvel/comics-marvel-x-23-posing.webp",
+   "ham": 1,
+   "ham256": 6,
+   "thumbdiff": 3.87
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/emoji/activity/emoji-activity-fishing.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/emoji/affection/emoji-affection-holding-rose.webp",
+   "ham": 4,
+   "ham256": 71,
+   "thumbdiff": 20.13
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/emoji/activity/emoji-activity-playing-with-toy-car.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/emoji/playful/emoji-playful-mischievous.webp",
+   "ham": 4,
+   "ham256": 82,
+   "thumbdiff": 25.57
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/emoji/calm/emoji-calm-small-smile.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/emoji/neutral/emoji-neutral-neutral.webp",
+   "ham": 4,
+   "ham256": 43,
+   "thumbdiff": 10.21
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/emoji/calm/emoji-calm-small-smile.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/emoji/rotation/emoji-rotation-front-serene.webp",
+   "ham": 3,
+   "ham256": 53,
+   "thumbdiff": 12.56
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/emoji/calm/emoji-calm-small-smile.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/emoji/skepticism/emoji-skepticism-deadpan.webp",
+   "ham": 4,
+   "ham256": 60,
+   "thumbdiff": 11.93
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/emoji/disappointment/emoji-disappointment-looking-away-sad.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/emoji/disappointment/emoji-disappointment-sad-side-glance.webp",
+   "ham": 3,
+   "ham256": 39,
+   "thumbdiff": 10.99
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/emoji/expressions/emoji-expressions-anxious.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/emoji/expressions/emoji-expressions-tear.webp",
+   "ham": 4,
+   "ham256": 48,
+   "thumbdiff": 15.94
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/emoji/expressions/emoji-expressions-sad.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/emoji/expressions/emoji-expressions-tear.webp",
+   "ham": 4,
+   "ham256": 47,
+   "thumbdiff": 14.71
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/emoji/neutral/emoji-neutral-neutral.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/emoji/rotation/emoji-rotation-front-serene.webp",
+   "ham": 3,
+   "ham256": 52,
+   "thumbdiff": 13.85
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/emoji/neutral/emoji-neutral-neutral.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/emoji/skepticism/emoji-skepticism-deadpan.webp",
+   "ham": 4,
+   "ham256": 51,
+   "thumbdiff": 8.31
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/emoji/rotation/emoji-rotation-front-serene.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/emoji/skepticism/emoji-skepticism-deadpan.webp",
+   "ham": 3,
+   "ham256": 63,
+   "thumbdiff": 15.68
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/game/donkey-kong/game-donkey-kong-donkey-kong-posing-02.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/game/donkey-kong/game-donkey-kong-donkey-kong-posing.webp",
+   "ham": 0,
+   "ham256": 1,
+   "thumbdiff": 1.84
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/game/super-mario/game-super-mario-princess-peach-posing-02.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/game/super-mario/game-super-mario-princess-peach-posing-03.webp",
+   "ham": 0,
+   "ham256": 1,
+   "thumbdiff": 0.68
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/game/super-mario/game-super-mario-princess-peach-posing-02.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/game/super-mario/game-super-mario-princess-peach-posing.webp",
+   "ham": 0,
+   "ham256": 3,
+   "thumbdiff": 1.76
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/game/super-mario/game-super-mario-princess-peach-posing-03.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/game/super-mario/game-super-mario-princess-peach-posing.webp",
+   "ham": 0,
+   "ham256": 2,
+   "thumbdiff": 1.74
+  },
+  {
+   "a": "A:/julibe/phanto/emojis/App/dist/movie/star-wars/movie-star-wars-padme-amidala-posing-02.webp",
+   "b": "A:/julibe/phanto/emojis/App/dist/movie/star-wars/movie-star-wars-padme-amidala-posing.webp",
+   "ham": 3,
+   "ham256": 2,
+   "thumbdiff": 3.54
+  }
+ ]
+}
