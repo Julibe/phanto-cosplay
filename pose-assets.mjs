@@ -20,7 +20,7 @@ function folderFor(pose) {
   const [type, sub] = pose.id.split('-');
   const remainder = pose.id.slice(type.length + 1);
   if (type === 'animal' || type === 'meme' || type === 'berry') return type;
-  const multiwordGenre = ['rnb-and-soul', 'hip-hop', 'sci-fi'].find(part => remainder.startsWith(part + '-'));
+  const multiwordGenre = ['rnb-and-soul', 'hip-hop', 'sci-fi', 'science-fiction'].find(part => remainder.startsWith(part + '-'));
   const group = franchisePrefix(pose.id)
     ?? [nameSlug(pose.franchise), pose.tags, multiwordGenre].find(part => part && slug.test(part) && remainder.startsWith(part + '-'))
     ?? sub;
