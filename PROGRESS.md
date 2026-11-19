@@ -1,41 +1,25 @@
-# Asset maintenance progress (paused 2026-11-18)
+# Asset maintenance progress (updated 2026-11-19)
 
 ## Done
-- Synced `main` with origin (fast-forward to 180ad1e: CSS conflict fix, scrollbar, filter dropdowns, release dates). No conflict markers in `dist/style.css`.
-- Branches: only `main` exists locally, and there are no stashes. `origin/claude/project-thread-s4arhq` was fully merged, so I deleted it.
-- Worktrees I left in place: `../.catalog-release`, `outputs/portal-switch-publish-61930332`, `outputs/random-gallery-publish`, and one in a Codex temp folder. All their HEADs are in main. The portal-switch worktree has uncommitted CSS, but every added line already exists in main.
-- Names and placement (`tools/names.mjs`): every dist WebP sits at its catalog path. All sprite stems are valid slugs with known prefixes. The only dist WebP not in the catalog is `icons/logo-horizontal-by.webp`, which is a UI asset.
-- Dist duplicates (`tools/dup.py`): 3,636 WebPs. No exact byte, pixel, trimmed or trimmed+rescaled duplicates. 35 near pairs by perceptual hash (dHash ≤4), not yet reviewed. These are likely pose variants, so nothing has been moved.
+- `main` is synced with origin. Only `main` exists locally.
+- Grids: I re-checked every sheet that `tools/match.py` flagged, using `tools/rematch.py`, a colour-invariant match against `squirlce-emojis`, and confirmed by eye.
+  - These were already fully split: grids 03, 04, 05, 07, 08, 10-bonus and `collections/phanto-sesame-street`, where every cell has an exact sprite. The old flag was a background or colour artefact. `collections/phanto-muppets-original-5x5` is also complete: all 25 characters exist as `-posing` and `-posing-02`, and the 1254 px size only mis-cuts the boxes.
+  - Exported: all 37 unmatched cells of `phanto-grid-01`, `-02` and `-06`. These are earlier renders, each exported as its own sprite. `tools/export-plan.json` maps cell to base, and `tools/export_cells.py` writes `<base>-pose-NN` with the next free number and never overwrites. grid-01 r2c4 became `emoji-playful-laughing-wink`. None were skipped as exact or trim duplicates.
+- Export spec: 1024 PNG (trimmed, fit to 840, centred) and a 320 RGBA WebP, LANCZOS, quality 88, method 4. `tools/q.py` found that setting reproduces existing exports byte for byte.
+- Cell extraction removes slivers of neighbouring cells that are baked into the sheets. It cuts a 6 px edge band before labelling, drops small edge-touching parts, and drops specks under 0.15% of the body.
+- `catalog.mjs` now reads `../squirlce/squirlce-emojis/`. `pose-assets.mjs` treats `science-fiction` as a multiword group, so new `costume-science-fiction-*` variants sit next to the originals.
+- Catalog: 3,672 assets, and all paths resolve locally over HTTP. The 37 new sprites are released 2026-11-19 and carry the New tag.
+- Duplicates (`tools/dup.py <role>`, results in `tools/dups-<role>.json`):
+  - Grids: 156 sheets with no duplicates. The dHash hits are layout noise.
+  - Dist: no exact duplicates, and 35 near pairs left to decide.
+  - Sprites: 7 exact duplicates. These are the pre-rename `meme-*` PNGs of the approved memes, now moved to `squirlce/.review/squirlce-emojis/`.
+  - Details are in `squirlce/.review/REVIEW.md`, with a copy in `tools/REVIEW.md`. Nothing was deleted.
 
-## Inventory
-- Grids: 156 sheets in `squirlce/squicle-grids` (12 top level, 137 in `collections/`, 7 in `collections/partial/`).
-- Sprites: 3,660 PNGs in `squirlce/squirlce-emojis`. Every PNG has a dist WebP except the 25 `meme-*` PNGs, which `catalog.mjs` excludes on purpose.
-- Path note: `catalog.mjs` reads `../squirlce-emojis/`, but the folder now lives at `A:/julibe/phanto/emojis/squirlce/squirlce-emojis`. Before running it, point it there with a junction or a path change.
-- Node needs `git` on PATH for `release-dates.mjs`. On this PC git only comes with GitHub Desktop: `C:\Users\Julibe\AppData\Local\GitHubDesktop\app-3.6.11\resources\app\git\cmd`.
+## Open
+- Decide the 35 near pairs in REVIEW.md. About 17 are effectively the same image (`-posing` vs `-posing-02`, thumbdiff under 5), and the rest are real pose variants.
+- 18 non-duplicate `meme-*` PNGs remain in `squirlce-emojis`. They're excluded from the catalog on purpose.
 
-## Export spec (observed)
-- 1024×1024 PNG sprites (from 5120² 5×5 sheets) → 320×320 RGBA WebP. 2,443 of them.
-- Most 1024 PNGs are trimmed, scaled to fit an 840 px box and centred, which leaves a margin of about 92 px. 122 PNGs fill the full canvas.
-- 256×256 PNG sprites (from 1280² sheets) → 256×256 WebP at the same size, with raw cell margins. 1,192 of them.
-- WebP quality and method are not determined yet. `tools/q.py` brute-forces quality, method and resampling against existing exports, but it didn't finish.
-
-## Grid status (`tools/match.py`, results in `tools/gridmatch.json`)
-Each cell is trimmed and compared to the nearest sprite (RMS on a 24 px signature). Already-split sheets score below 0.06.
-- Already split: every `collections/**` sheet, `phanto-grid-09-costumes`, `-11-anime-3d` and `-12-anime-3d`.
-- Likely unsplit, with the number of cells above 0.06:
-  - `phanto-grid-03`, `-04`, `-05`, `-07`, `-08`: 25 of 25 each
-  - `phanto-grid-06`: 18
-  - `phanto-grid-02`: 11
-  - `phanto-grid-01`: 8
-  - `phanto-grid-10-bonus`: 4
-- Check by eye:
-  - `phanto-muppets-original-5x5` (1254², 24 cells off): probably the odd size breaking the cell boxes, since PENDING.md says it was recovered.
-  - `phanto-sesame-street` (1 cell off).
-  - The early `phanto-grid-0x` sheets may simply be older drafts of poses that were later re-made. Before exporting, check each unmatched cell visually against `export/` (213 PNGs) as well.
-
-## Resume steps
-1. Add `C:\...\GitHubDesktop\...\git\cmd` to PATH, then `git pull origin main`.
-2. Create a venv with `pillow numpy`. Run `tools/scan.py`, which writes `sprites.json`, then `tools/match.py`. Inspect the unmatched cells of the sheets listed above.
-3. Finish `tools/q.py` to get the WebP quality. Export new sprites as 1024 PNGs (trim, fit 840, centre) and 320 WebPs to `dist/poses/`, named with the README patterns.
-4. Run `tools/dup.py` for the sprite and grid roles; only the dist role finished. Move flagged files to `.review/` and write `.review/REVIEW.md`.
-5. Run `node catalog.mjs` with the sprite path fixed, then `npm run build`. Serve `dist/` and check that every catalog path resolves.
+## Notes
+- Node needs `git` on PATH for `release-dates.mjs`: `C:\Users\Julibe\AppData\Local\GitHubDesktop\app-3.6.11\resources\app\git\cmd`.
+- Python tools need `pillow numpy scipy` (and `imagehash`, optional).
+- When editing `.mjs` files from PowerShell 5.1, preserve the UTF-8 encoding: `Get-Content`/`Set-Content` turn "Día" into mojibake.
