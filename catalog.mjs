@@ -122,7 +122,7 @@ const poses = readdirSync(source).filter(name => name.endsWith('.png')
       health: 'Activities', baking: 'Activities', cooking: 'Activities', eating: 'Activities', rotation: 'Turnarounds', temperature: 'Activities'
     }[group] ?? 'Reactions';
     const emotion = category === 'Reactions' && group !== 'reaction' ? title(group) : '';
-    return { id, name: title(name.join('-')), category, emotion, tags: group };
+    return { id, previousId: renamedPoses[id], name: title(name.join('-')), category, emotion, tags: group };
   }
   if (id.startsWith('cosplay-')) {
     const { group, franchiseType, legacyId, remainder, standalone } = identifyCostume(id);
