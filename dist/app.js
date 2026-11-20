@@ -570,7 +570,7 @@ shuffle.addEventListener('click', () => {
 
 function resolvePose(sharedId) {
 const currentSharedId = sharedId?.replace(/^musing-/, 'music-').replace(/^holyday-/, 'holiday-');
-return poses.find(pose => pose.id === currentSharedId || pose.legacyId === sharedId || pose.previousId === sharedId
+return poses.find(pose => pose.id === currentSharedId || pose.legacyId === sharedId || pose.previousId === sharedId || pose.aliases?.includes(sharedId)
     || (sharedId?.startsWith('screen-') && /^(movie|tv)-/.test(pose.id)
       && pose.id.replace(/^(movie|tv)-/, 'screen-') === sharedId)
     || (/^(style|costume)-cyberpunk-/.test(sharedId ?? '') && pose.id === sharedId.replace(/^(style|costume)-/, 'genre-')))?.id ?? null;

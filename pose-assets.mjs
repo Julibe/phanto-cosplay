@@ -43,7 +43,7 @@ export function writeOrganizedPoses(poses) {
   });
   const byId = new Map(moves.map(({ pose }) => [pose.id, pose.path]));
   for (const { pose } of moves) {
-    for (const alias of [pose.previousId, pose.legacyId]) {
+    for (const alias of [pose.previousId, pose.legacyId, ...(pose.aliases ?? [])]) {
       if (alias && !byId.has(alias)) byId.set(alias, pose.path);
     }
   }

@@ -4,6 +4,7 @@ from PIL import Image
 import numpy as np
 
 OUT = os.path.dirname(os.path.abspath(__file__))
+NEAR_BITS = 12  # max differing bits of 256 for a near pair
 ROLES = {
     'dist': glob.glob('A:/julibe/phanto/emojis/App/dist/**/*.webp', recursive=True),
     'sprites': glob.glob('A:/julibe/phanto/emojis/squirlce/squirlce-emojis/*.png'),
@@ -59,16 +60,18 @@ for role in (sys.argv[1:] or list(ROLES)):
     # perceptual near matches (only pairs not already exact-ish)
     exact = {frozenset(v) for k in groups for v in groups[k]}
     ps = list(data)
-    H = np.array([data[p]['dh'] for p in ps], dtype=np.uint64)
+    # Filter on the 256-bit dHash (16x16). The 64-bit one (8x8) is too coarse for this art:
+    # every Phanto shares one body, so different faces collapsed to the same hash.
+    M64 = (1 << 64) - 1
+    H = np.array([[(data[p]['dh16'] >> (64 * k)) & M64 for k in range(4)] for p in ps], dtype=np.uint64)
     near = []
     for i, p in enumerate(ps):
-        x = np.bitwise_xor(H[i + 1:], H[i])
-        ham = np.array([bin(int(v)).count('1') for v in x])
-        for j in np.nonzero(ham <= 4)[0]:
+        ham = np.bitwise_count(np.bitwise_xor(H[i + 1:], H[i])).sum(1)
+        for j in np.nonzero(ham <= NEAR_BITS)[0]:
             q = ps[i + 1 + j]
-            h16 = bin(data[p]['dh16'] ^ data[q]['dh16']).count('1')
+            h8 = bin(data[p]['dh'] ^ data[q]['dh']).count('1')
             diff = float(np.abs(data[p]['thumb'] - data[q]['thumb']).mean())
-            near.append({'a': p, 'b': q, 'ham': int(ham[j]), 'ham256': h16, 'thumbdiff': round(diff, 2)})
+            near.append({'a': p, 'b': q, 'ham': h8, 'ham256': int(ham[j]), 'thumbdiff': round(diff, 2)})
     report[role] = {'count': len(data), 'groups': groups, 'near': near}
     print(role, len(data), {k: len(v) for k, v in groups.items()}, 'near', len(near), flush=True)
     json.dump(report[role], open(OUT + '/dups-%s.json' % role, 'w'), indent=1)
