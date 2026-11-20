@@ -336,7 +336,8 @@ kbd { color: var(--muted); border: 1px solid var(--line); border-radius: 5px; pa
   overscroll-behavior: contain;
   border-radius: 19px;
   border: 1px solid var(--line);
-  background: #15112be8;
+  /* Nested inside the blurred dock, so its own blur cannot apply: white glass over the violet base keeps it readable */
+  background: linear-gradient(#ffffff1f, #ffffff1f), #1b1036f0;
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
   box-shadow: 0 8px 25px #100b2d96;
@@ -354,13 +355,13 @@ kbd { color: var(--muted); border: 1px solid var(--line); border-radius: 5px; pa
   text-overflow: ellipsis;
   white-space: nowrap;
   border-color: #ffffff30;
-  background: #2a2540 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%23e6e6e6' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 13px center / 11px 7px;
+  background: #ffffff1f url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%23e6e6e6' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 13px center / 11px 7px;
   color: var(--ink);
   transition: background-color .15s ease, border-color .15s ease;
 }
-.selects select:hover { background-color: #342e4d; border-color: #ffffff52 }
+.selects select:hover { background-color: #ffffff2e; border-color: #ffffff52 }
 .selects select:focus-visible { outline: 2px solid #ffffff; outline-offset: 2px }
-.selects select:has(option:checked:not([value=""])) { background-color: #3f3860; border-color: #ffffff70; font-weight: 700 }
+.selects select:has(option:checked:not([value=""])) { background-color: #ffffff3d; border-color: #ffffff70; font-weight: 700 }
 .date-range { display: flex; flex-wrap: wrap; align-items: center; gap: 7px }
 .date-range label {
   display: flex;
@@ -372,10 +373,10 @@ kbd { color: var(--muted); border: 1px solid var(--line); border-radius: 5px; pa
   padding: 0 6px 0 12px;
   border: 1px solid #ffffff30;
   border-radius: 11px;
-  background: #2a2540;
+  background: #ffffff1f;
   font-size: .75rem;
 }
-.date-range label:hover { background: #342e4d; border-color: #ffffff52 }
+.date-range label:hover { background: #ffffff2e; border-color: #ffffff52 }
 .date-range span { color: var(--muted); font-weight: 700 }
 .date-range input {
   flex: 1;
@@ -390,15 +391,13 @@ kbd { color: var(--muted); border: 1px solid var(--line); border-radius: 5px; pa
 .date-range input:focus-visible { outline: none }
 .date-range label:focus-within { outline: 2px solid #ffffff; outline-offset: 2px }
 .date-range input::-webkit-calendar-picker-indicator { opacity: .8; cursor: pointer }
-#clear-dates { width: 42px; height: 42px; flex: none; border: 1px solid #ffffff30; border-radius: 50%; background: #2a2540; color: var(--muted) }
-#clear-dates:hover { background: #342e4d; color: var(--ink) }
+#clear-dates { width: 42px; height: 42px; flex: none; border: 1px solid #ffffff30; border-radius: 50%; background: #ffffff1f; color: var(--muted) }
+#clear-dates:hover { background: #ffffff2e; color: var(--ink) }
 #clear-dates[hidden] { display: none }
-body[data-berry-portal] .date-range label, body[data-berry-portal] #clear-dates { background: #3a1820 }
 .selects option { background: #1d1730; color: var(--ink); font-weight: 400 }
 .selects option[value=""] { color: var(--muted) }
-body[data-berry-portal] .filters { background: #220c14e8 }
-body[data-berry-portal] .selects select { background-color: #3a1820 }
 body[data-berry-portal] .selects option { background: #2a1016 }
+body[data-berry-portal] .filters { background: linear-gradient(#ffffff1f, #ffffff1f), #240911f0 }
 .toast {
   position: fixed;
   z-index: 11;
@@ -528,16 +527,16 @@ dialog::backdrop { background: #100b2d67; backdrop-filter: blur(14px) }
   width: 36px;
   height: 36px;
   padding: 0;
-  border: 1px solid #ffffff3c;
+  border: 1px solid #ffffff6b;
   border-radius: 50%;
-  background: #100b2d8c;
+  background: #ffffff33;
   color: var(--ink);
   font-size: .72rem;
 }
 .hero-controls button:hover { color: var(--accent); border-color: var(--accent) }
 @media (max-width: 640px) {
   .hero-controls { margin-top: -3px; gap: 0 }
-  .hero-controls button { width: 42px; height: 42px; border-color: transparent; background: #100b2d8c }
+  .hero-controls button { width: 42px; height: 42px; background: #ffffff33 }
 }
 @media (max-width: 350px) {
   .hero-controls button { width: 35px; height: 40px }
