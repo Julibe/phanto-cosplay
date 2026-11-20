@@ -51,7 +51,12 @@ const featured = [
   'emoji-joy-tears-of-joy', 'cosplay-zelda-link'
 ];
 
-const renamedPoses = JSON.parse(readFileSync(new URL('./pose-renames.json', import.meta.url), 'utf8'));
+// pose-renames.json maps new id -> old id, or new id -> [old id, ...more old ids that should open this pose]
+const renamedPoses = {};
+const extraAliases = {};
+for (const [id, old] of Object.entries(JSON.parse(readFileSync(new URL('./pose-renames.json', import.meta.url), 'utf8')))) {
+  [renamedPoses[id], ...extraAliases[id]] = [old].flat();
+}
 const holidayNames = ['barranquilla-carnival', 'pasto-carnival', 'dia-de-muertos',
   'lunar-new-year', 'mid-autumn', 'new-year', 'christmas', 'halloween', 'birthday',
   'carnival', 'diwali', 'eid', 'hanukkah', 'holi', 'nowruz'];
@@ -148,7 +153,7 @@ const approvedMemeNames = {
   'emoji-anger-clenching-in-yellow-sweater': 'Arthur Fist',
   'emoji-mischief-smirking-by-a-burning-house': 'Disaster Girl'
 };
-writeOrganizedPoses(poses.map(pose => {
+writeOrganizedPoses(poses.map(pose => extraAliases[pose.id]?.length ? { ...pose, aliases: extraAliases[pose.id] } : pose).map(pose => {
   const approvedName = Object.hasOwn(approvedMemeNames, pose.id) && approvedMemeNames[pose.id];
   if (approvedName) {
     return { ...pose, name: approvedName, tags: [pose.tags, 'meme'].filter(Boolean).join(' ') };
