@@ -138,7 +138,7 @@ main.wrap { padding-top: clamp(12px, 3vw, 32px) }
 .hero-pose { position: relative; display: grid; place-items: center; min-width: 0; height: 100%; border: 0; padding: 0; background: transparent }
 .hero-pose img:not([src]) { visibility: hidden }
 .hero-pose:hover:not(:disabled) img { filter: drop-shadow(0 10px 14px var(--accent)) }
-.hero-art img { position: relative; display: block; width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 12px 15px #100b2d75) }
+.hero-art img { position: relative; display: block; width: 100%; height: 100%; min-height: 0; object-fit: contain; filter: drop-shadow(0 12px 15px #100b2d75) }
 .hero-art .center { z-index: 1 }
 .hero-art .side { transform: translateY(12px) }
 .spark { pointer-events: none; position: absolute; z-index: 1; color: #ffffffc4; font-size: 1.5rem }
@@ -500,7 +500,8 @@ dialog::backdrop { background: #100b2d67; backdrop-filter: blur(14px) }
   .search-dock, .card, .card:hover, .card:focus-within { background: Canvas; border-color: CanvasText }
 }
 
-.hero-showcase { min-width: 0 }
+.hero-showcase { min-width: 0; width: 100%; max-width: 640px; justify-self: end }
+.berry-art { width: 100%; max-width: 640px; justify-self: end }
 .hero-slides { display: grid }
 .hero-slide { grid-area: 1 / 1; min-width: 0 }
 .hero-slide.is-entering { animation: hero-enter 560ms cubic-bezier(.18,.75,.24,1) both }
