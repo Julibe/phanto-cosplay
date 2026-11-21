@@ -1,0 +1,9 @@
+# Allow other websites to read the JSON API, the catalog and the pose images (Netlify / Cloudflare Pages).
+/api/*
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: GET, HEAD, OPTIONS
+/catalog.json
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: GET, HEAD, OPTIONS
+/*.webp
+  Access-Control-Allow-Origin: *

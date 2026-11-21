@@ -24,7 +24,7 @@ On your server at `https://cosplay.julibe.cloud/`, search and filters are encode
 
 On HTTPS, use the browser’s **Install app** or **Add to Home Screen** command. Supported browsers may also show an install button in the header. The gallery loads from the server, and offline mode shows a reconnect screen.
 
-`GET /catalog.json` returns the public pose catalog as JSON with `schemaVersion` and `poses`. Each pose has an ID, name, category, and an image `path` relative to the catalog URL. Optional fields include emotion, franchise, and legacy IDs. If a browser app reads the feed from a different origin, configure CORS for `catalog.json` on your server.
+`GET /catalog.json` returns the public pose catalog as JSON with `schemaVersion` and `poses`. Each pose has an ID, name, category, and an image `path` relative to the catalog URL. Optional fields include emotion, franchise, and legacy IDs. Other origins may read it (see the JSON API section).
 
 ## JSON API
 
@@ -47,7 +47,7 @@ The site also serves a read-only JSON API under `/api/`. It is plain static JSON
 
 Each pose has `id`, `name`, `category`, `emotion`, `franchise`, `franchiseType`, `collection`, `keywords`, `released`, `image` (`url`, `path`, `type`, `width`, `height`), `link` (the share link that opens the pose in the app), `api`, and `aliases` (its old IDs). Fields that don't apply are `null`.
 
-URLs in the API point at `https://cosplay.julibe.cloud/` (`siteUrl` in `api.mjs`); `image.path` is relative to the site root if you host a copy elsewhere. If another website reads the API from the browser, allow CORS for `/api/` on your server, for example `Access-Control-Allow-Origin: *`.
+URLs in the API point at `https://cosplay.julibe.cloud/` (`siteUrl` in `api.mjs`); `image.path` is relative to the site root if you host a copy elsewhere. Cross-site requests are allowed: `dist/.htaccess` (Apache, LiteSpeed) and `dist/_headers` (Netlify, Cloudflare Pages) send `Access-Control-Allow-Origin: *` for the API, `catalog.json` and the pose images. On nginx, add `add_header Access-Control-Allow-Origin * always;` to a `location ~ \.(json|webp)$` block.
 
 ## Update the catalog
 
