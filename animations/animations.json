@@ -1,0 +1,4 @@
+{
+  "idle": { "name": "Idle", "emotion": "Calm", "fps": 10, "keywords": "idle floating breathing hovering waiting" },
+  "custom-celebrate": { "name": "Celebrate", "emotion": "Joy", "fps": 10, "keywords": "celebrate celebration cheering hooray yay party" }
+}

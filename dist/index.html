@@ -11,7 +11,7 @@
 <link rel="canonical" href="https://cosplay.julibe.cloud/">
 <link rel="manifest" href="manifest.webmanifest?v=390f6b81db47">
 <link rel="apple-touch-icon" href="icons/phanto-192.png">
-<link rel="alternate" type="application/json" href="catalog.json?v=e99dec92db36" title="Phanto pose catalog">
+<link rel="alternate" type="application/json" href="catalog.json?v=d6c1ef3b2993" title="Phanto pose catalog">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -32,9 +32,9 @@
 <link rel="stylesheet" href="vendor/fontawesome.css">
 <link rel="stylesheet" href="vendor/solid.css">
 <link rel="stylesheet" href="vendor/brands.css">
-<link rel="stylesheet" href="style.css?v=1dec232c3be8">
-<script src="catalog.js?v=6c7b012a4a8e" defer></script>
-<script src="app.js?v=ae785b6240e3" defer></script>
+<link rel="stylesheet" href="style.css?v=8c3cb8d2d0c1">
+<script src="catalog.js?v=dd44d0dc33c9" defer></script>
+<script src="app.js?v=e0125fbfc8da" defer></script>
 <script src="hero.js?v=76572d35b8ec" defer></script>
 </head>
 <body>
@@ -177,6 +177,7 @@
   </div>
   <p id="editor-name"></p>
   <div id="editor-preview" class="editor-preview"></div>
+  <div id="editor-frames" class="editor-frames" role="group" aria-label="Animation or single frame" hidden></div>
   <div class="editor-toolbar" role="group" aria-label="Transform pose">
     <button type="button" class="icon-control" data-transform="left" aria-label="Rotate left" title="Rotate left"><i class="icon fa-solid fa-rotate-left" aria-hidden="true"></i></button>
     <button type="button" class="icon-control" data-transform="right" aria-label="Rotate right" title="Rotate right"><i class="icon fa-solid fa-rotate-right" aria-hidden="true"></i></button>
@@ -193,7 +194,7 @@
 <div id="toast" role="status" class="toast" hidden></div>
 <template id="card">
   <article class="card">
-    <button class="picture" type="button"><img alt="" width="320" height="320" decoding="async" loading="lazy"><span class="copy-mark"><i class="icon fa-solid fa-copy" aria-hidden="true"></i></span><span class="new-tag" hidden>New</span></button>
+    <button class="picture" type="button"><img alt="" width="320" height="320" decoding="async" loading="lazy"><span class="copy-mark"><i class="icon fa-solid fa-copy" aria-hidden="true"></i></span><span class="new-tag" hidden>New</span><span class="anim-tag" hidden><i class="fa-solid fa-film" aria-hidden="true"></i>Animated</span></button>
     <div class="card-body"><div class="pose-meta"><h3></h3><p></p></div>
       <div class="actions"><button class="icon-control edit-pose" type="button" title="Rotate or flip"><i class="icon fa-solid fa-pen" aria-hidden="true"></i></button><a class="icon-control" download title="Download WebP"><i class="icon fa-solid fa-download" aria-hidden="true"></i></a><button class="icon-control" type="button" title="Share"><i class="icon fa-solid fa-share-nodes" aria-hidden="true"></i></button></div>
     </div>
