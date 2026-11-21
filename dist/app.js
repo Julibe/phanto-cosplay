@@ -628,12 +628,21 @@ function shufflePoses(list) {
   }
 }
 
+// Shuffles in place but keeps the newest batch (poses tagged New) on top, newest first.
+function shuffleNewFirst(list) {
+  const fresh = list.filter(pose => pose.isNew)
+    .sort((first, second) => (second.released ?? '').localeCompare(first.released ?? '') || first.name.localeCompare(second.name));
+  const rest = list.filter(pose => !pose.isNew);
+  shufflePoses(rest);
+  list.splice(0, list.length, ...fresh, ...rest);
+}
+
 const homeOrder = [...poses];
-shufflePoses(homeOrder);
+shuffleNewFirst(homeOrder);
 
 shuffle.addEventListener('click', () => {
   if (matches.length < 2) return;
-  shufflePoses(matches);
+  shuffleNewFirst(matches);
   rebuildGallery(shown);
   notify('Poses shuffled.');
 });
