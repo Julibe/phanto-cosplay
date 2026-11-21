@@ -36,7 +36,7 @@ The site also serves a read-only JSON API under `/api/`. It is plain static JSON
 | `/api/poses.json` | Every pose with full details |
 | `/api/poses/{id}.json` | One pose. Old IDs from `pose-renames.json` also resolve here; the response's `id` is the current ID and `requestedId` is the one you asked for |
 | `/api/latest.json` | The 50 newest poses |
-| `/api/categories.json` | Every category (Reactions, Costumes, Activities, Holidays, Animals, Turnarounds) with pose counts, emotions, franchise types and collections |
+| `/api/categories.json` | Every category (Reactions, Costumes, Activities, Holidays, Animals, Turnarounds, Animated) with pose counts, emotions, franchise types and collections |
 | `/api/categories/{id}.json` | One category with all its poses, newest first, for example `/api/categories/costumes.json` |
 | `/api/collections.json` | Every collection (one per image folder, such as `game-pokemon` or `emoji-joy`) with its name, type, categories, pose count and cover image |
 | `/api/collections/{id}.json` | One collection with all its poses, for example `/api/collections/game-pokemon.json` |
@@ -45,7 +45,7 @@ The site also serves a read-only JSON API under `/api/`. It is plain static JSON
 | `/api/emotions.json` | Every reaction emotion with pose counts |
 | `/api/aliases.json` | Map of old pose ID to current pose ID |
 
-Each pose has `id`, `name`, `category`, `emotion`, `franchise`, `franchiseType`, `collection`, `keywords`, `released`, `image` (`url`, `path`, `type`, `width`, `height`), `link` (the share link that opens the pose in the app), `api`, and `aliases` (its old IDs). Fields that don't apply are `null`.
+Each pose has `id`, `name`, `category`, `emotion`, `franchise`, `franchiseType`, `collection`, `keywords`, `released`, `image` (`url`, `path`, `type`, `width`, `height`), `animation` (frames of an animated pose, see Animated poses), `link` (the share link that opens the pose in the app), `api`, and `aliases` (its old IDs). Fields that don't apply are `null`.
 
 URLs in the API point at `https://cosplay.julibe.cloud/` (`siteUrl` in `api.mjs`); `image.path` is relative to the site root if you host a copy elsewhere. Cross-site requests are allowed: `dist/.htaccess` (Apache, LiteSpeed) and `dist/_headers` (Netlify, Cloudflare Pages) send `Access-Control-Allow-Origin: *` for the API, `catalog.json` and the pose images. On nginx, add `add_header Access-Control-Allow-Origin * always;` to a `location ~ \.(json|webp)$` block.
 
@@ -68,6 +68,20 @@ Use these filename patterns for new sprites.
 - General reactions use `emoji-<category>-<emotion>`.
 
 When renaming an existing sprite, record the old stem under the new stem in `pose-renames.json` so old shared links still resolve.
+
+## Animated poses
+
+Animated poses start as a horizontal frame strip: one PNG with the frames side by side, each frame square (for example 8 frames of 640×640 in a 5120×640 strip). To add one:
+
+1. Drop the strip in `animations/`, for example `animations/wave.png`.
+2. Optionally give it a name, emotion, search keywords, speed or frame count in `animations/animations.json`, keyed by the file name in lowercase with `_` as `-`: `"wave": { "name": "Wave", "emotion": "Joy", "keywords": "hello hi bye", "fps": 10 }`. Without an entry the name comes from the file name, it plays at 10 fps, and the frame count is width ÷ height.
+3. Run `npm ci` once, then `npm run build:animations`.
+
+The build trims every frame to one shared bounding box (so the motion stays aligned), fits it into a 320 px square like the other poses, and writes `dist/animated/animated-<name>.webp` (looping animated WebP) plus `dist/animated/frames/animated-<name>/animated-<name>-frame-NN.webp`. It adds each strip to the catalog as an **Animated** pose with the ID `animated-<name>`, and rebuilds `catalog.json` and the JSON API. Rebuilding the catalog with `node catalog.mjs` keeps animated poses, since they are merged back in from `animations/`.
+
+In the app, animated poses play in the gallery and carry an **Animated** tag. The card's download button saves the animated WebP. The film button opens the pose options, where you can pick **All** (the animation) or any single frame, then download it; a single frame can also be rotated, flipped and copied. Copying an animation copies its first frame, since clipboards hold still images.
+
+In the API, animated poses have `category: "Animated"` and an `animation` object with `fps`, `frameDelay` (ms), `frameCount` and `frames` (each with `index`, `url`, `path`). Other poses have `"animation": null`.
 
 ## Release dates
 

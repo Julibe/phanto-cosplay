@@ -62,6 +62,12 @@ export function buildApi(poses, root = new URL('./dist/', import.meta.url)) {
       keywords: pose.tags || null,
       released: pose.released,
       image: { url: siteUrl + pose.path, path: pose.path, type: 'image/webp', ...webpSize(new URL(pose.path, root)) },
+      animation: pose.animation ? {
+        fps: pose.animation.fps,
+        frameDelay: pose.animation.delay,
+        frameCount: pose.animation.frames.length,
+        frames: pose.animation.frames.map((path, index) => ({ index: index + 1, url: siteUrl + path, path, type: 'image/webp' }))
+      } : null,
       link: siteUrl + '?pose=' + encodeURIComponent(pose.id),
       api: apiUrl('poses/' + pose.id + '.json'),
       aliases
