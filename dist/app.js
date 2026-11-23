@@ -1,6 +1,6 @@
 'use strict';
 
-const categories = ['All poses', 'Reactions', 'Costumes', 'Animals', 'Holidays', 'Activities', 'Powers', 'Assets', 'Turnarounds', 'Animated'];
+const categories = ['All poses', 'Reactions', 'Costumes', 'Animals', 'Holidays', 'Activities', 'Powers', 'Assets', 'Turnarounds', 'Animation'];
 const collections = {
   turnarounds: pose => pose.category === 'Turnarounds',
   emoji: pose => pose.category === 'Reactions',
@@ -680,7 +680,7 @@ function restoreView() {
   search.value = params.get('q') ?? '';
   const requestedCollection = params.get('collection');
   collection = suggestions.some(button => !button.hidden && button.dataset.collection === requestedCollection) ? requestedCollection : '';
-  const requestedCategory = params.get('category');
+  const requestedCategory = params.get('category') === 'Animated' ? 'Animation' : params.get('category');
   category = categories.includes(requestedCategory) ? requestedCategory : categories[0];
   node('sort').value = ['newest', 'oldest'].includes(params.get('sort')) ? params.get('sort') : '';
   for (const [key, id] of [['from', 'released-from'], ['to', 'released-to']]) {

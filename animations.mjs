@@ -1,6 +1,6 @@
 // Animated poses: drop a horizontal strip or configured sprite grid (PNG) into animations/
 // and run `npm run build:animations`. Each strip becomes an animated WebP plus one WebP per frame
-// under dist/animated/, and an "Animated" pose in the catalog and JSON API.
+// under dist/animated/, and an "Animation" pose in the catalog and JSON API.
 // Optional per-strip settings live in animations/animations.json, keyed by the strip's slug
 // (file name, lowercased, underscores as hyphens): { "name", "emotion", "keywords", "fps", "frames", "columns", "rows" }.
 // Without "frames", a strip is cut into square frames (width / height).
@@ -50,7 +50,7 @@ export function animatedPoses() {
   return strips().map(({ id, slug, settings, frames, fps, delay }) => ({
     id,
     name: settings.name ?? title(slug),
-    category: 'Animated',
+    category: 'Animation',
     ...(settings.emotion ? { emotion: settings.emotion } : {}),
     tags: ['animated animation gif moving', settings.keywords].filter(Boolean).join(' '),
     path: 'animated/' + id + '.webp',
@@ -64,7 +64,7 @@ export function animatedPoses() {
 
 // Replaces any previous animated entries with the current strips.
 export function withAnimations(poses) {
-  return [...poses.filter(pose => pose.category !== 'Animated'), ...animatedPoses()];
+  return [...poses.filter(pose => !['Animated', 'Animation'].includes(pose.category)), ...animatedPoses()];
 }
 
 export async function renderAnimations(only) {
