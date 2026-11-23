@@ -120,6 +120,11 @@ const poses = readdirSync(source).filter(name => name.endsWith('.png')
       category: rotation ? 'Turnarounds' : 'Reactions', franchise: 'Berry Angry',
       emotion: rotation ? '' : 'Berry Angry', tags: 'berry strawberry' };
   }
+  if (id.startsWith('asset-') || id.startsWith('power-')) {
+    const [prefix, group, ...action] = id.split('-');
+    return { id, name: title(action.join('-')), category: prefix === 'asset' ? 'Assets' : 'Powers',
+      tags: `${group} cookie adventure ${prefix === 'asset' ? 'ingredient prop' : 'ghost ability'}` };
+  }
   if (id.startsWith('emoji-')) {
     const [, group, ...name] = id.split('-');
     const category = {
