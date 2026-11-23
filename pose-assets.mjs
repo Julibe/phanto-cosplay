@@ -28,20 +28,41 @@ function folderFor(pose) {
   return group ? type + '/' + group : type;
 }
 
+function pathFor(pose) {
+  const story = /^emoji-activity-cookie-adventure-(intro|level[1-6]|final|ending)-(.+)$/.exec(pose.id);
+  if (story) return `game/cookie-adventure/${story[1]}/${story[2]}.webp`;
+  if (pose.id.startsWith('asset-')) {
+    const [, type, ...parts] = pose.id.split('-');
+    let category;
+    if (type === 'ingredients') category = ['chocolate-chips', 'secret-chocolate'].find(value => parts.join('-').startsWith(value + '-')) ?? parts[0];
+    else if (type === 'textures') category = ['spring', 'summer', 'autumn', 'winter', 'material'].includes(parts[0]) ? parts[0] : 'general';
+    else if (type === 'stars') category = parts[0];
+    else if (type === 'cookies') category = 'baked';
+    else if (type === 'gui') category = parts.at(-1) === 'button' ? 'buttons' : ['health', 'inventory', 'progress', 'lock'].includes(parts[0]) ? parts[0] : 'rewards';
+    else category = /^(tree|bush|leaf)-/.test(parts.join('-')) ? 'flora' : /wall/.test(parts.join('-')) ? 'walls' : /^crates?-/.test(parts.join('-')) ? 'boxes' : /cube/.test(parts.join('-')) ? 'blocks' : 'props';
+    const action = parts.join('-');
+    const name = action.startsWith(category + '-') ? action.slice(category.length + 1) : action;
+    return `assets/${type}/${category}/${name}.webp`;
+  }
+  return folderFor(pose) + '/' + pose.id + '.webp';
+}
+
 export function writeOrganizedPoses(poses) {
   poses = withAnimations(poses);
   const ids = new Set();
+  const existing = JSON.parse(readFileSync(catalog, 'utf8').trim().slice(prefix.length, -1));
+  const oldPaths = new Map(existing.map(pose => [pose.id, pose.path.split('?')[0]]));
   const moves = poses.map(pose => {
     if (ids.has(pose.id)) throw new Error('Duplicate pose: ' + pose.id);
     ids.add(pose.id);
-    const folder = folderFor(pose);
-    const path = folder + '/' + pose.id + '.webp';
+    const path = pathFor(pose);
     const target = new URL(path, root);
-    const previous = new URL('poses/' + pose.id + '.webp', root);
+    const previous = new URL(oldPaths.get(pose.id) ?? 'poses/' + pose.id + '.webp', root);
     const ready = existsSync(target);
-    if (ready && existsSync(previous)) throw new Error('Pose exists in both locations: ' + pose.id);
+    if (ready && target.href !== previous.href && existsSync(previous)) throw new Error('Pose exists in both locations: ' + pose.id);
     if (!statSync(ready ? target : previous).size) throw new Error('Empty image: ' + pose.id);
-    return { pose: { ...pose, path }, target, previous, ready };
+    const name = pose.id.startsWith('emoji-activity-cookie-adventure-') ? pose.name.replace(/^Cookie Adventure\s+/i, '') : pose.name;
+    return { pose: { ...pose, name, path }, target, previous, ready };
   });
   const byId = new Map(moves.map(({ pose }) => [pose.id, pose.path]));
   for (const { pose } of moves) {
@@ -54,6 +75,9 @@ export function writeOrganizedPoses(poses) {
       const asset = byId.get(id);
       if (!asset) throw new Error('Unknown artwork in index.html: ' + id);
       return attribute + asset;
+    }).replace(/((?:src|href)=")([^"?]+\.webp)(?:\?[^" ]*)?(?=")/g, (match, attribute, path) => {
+      const moved = moves.find(move => oldPaths.get(move.pose.id) === path);
+      return moved ? attribute + moved.pose.path : match;
     });
   for (const { target, previous, ready } of moves) {
     if (ready) continue;

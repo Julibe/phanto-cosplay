@@ -708,6 +708,12 @@ dialog[open] { animation: panel-enter 180ms ease-out both }
 body[data-assets-portal] .portal-menu { background: #684003ed }
 body[data-berry-portal] .portal-menu { background: #400f22ed }
 #assets-portal img, #phanto-portal img { width: 100%; height: 100%; object-fit: contain }
+.portal-swap, .portal-art { display: grid; place-items: center }
+.portal-art { width: 44px; height: 44px }
+.portal-swap > img, .portal-art > img { grid-area: 1 / 1; transition: opacity .16s ease, rotate .24s ease, scale .24s ease }
+.portal-swap .portal-reaction { opacity: 0; rotate: 8deg; scale: .94 }
+.portal-swap:is(:hover, :focus-visible, [data-reacting]) .portal-rest { opacity: 0; rotate: 7deg; scale: .96 }
+.portal-swap:is(:hover, :focus-visible, [data-reacting]) .portal-reaction { opacity: 1; rotate: -9deg; scale: 1.06 }
 #assets-portal[aria-pressed="true"] img { filter: drop-shadow(0 0 10px #ffda75) }
 .portal-option:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 20px }
 #berry-portal {
@@ -814,6 +820,7 @@ body[data-berry-portal]::after {
 @media (prefers-reduced-motion: reduce) {
   .portal-switches .portal-option { transition: none }
   .portal-menu { transition: none }
+  .portal-swap img { transition: none; rotate: none !important; scale: none !important }
   .berry-art img { animation: none }
   #berry-portal img { transition: none; rotate: none !important; scale: none !important }
 }

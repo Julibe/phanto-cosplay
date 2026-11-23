@@ -845,7 +845,11 @@ node('portal-menu').addEventListener('click', event => {
   const choice = event.target.closest('[data-portal]');
   if (!choice) return;
   choosePortal(choice.dataset.portal);
-  portalChoices.find(button => button.classList.contains('is-current')).focus({ preventScroll: true });
+  const current = portalChoices.find(button => button.classList.contains('is-current'));
+  current.focus({ preventScroll: true });
+  clearTimeout(portalReactionTimer);
+  current.setAttribute('data-reacting', '');
+  portalReactionTimer = setTimeout(() => current.removeAttribute('data-reacting'), 900);
   setPortalChoicesOpen(false);
 });
 
