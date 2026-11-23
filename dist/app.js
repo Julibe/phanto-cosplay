@@ -144,6 +144,9 @@ const clearSearch = node('clear-search');
 const shuffle = node('shuffle');
 const portalButton = node('berry-portal');
 const assetsPortalButton = node('assets-portal');
+const phantoPortalButton = node('phanto-portal');
+const portalSwitches = document.querySelector('.portal-switches');
+const portalChoices = [phantoPortalButton, portalButton, assetsPortalButton];
 const grid = node('grid');
 const moreButton = node('more');
 const shareDialog = node('share-dialog');
@@ -388,19 +391,19 @@ function setPortal(active, assets = false) {
   assetsPortal = assets;
   document.body.toggleAttribute('data-berry-portal', active);
   document.body.toggleAttribute('data-assets-portal', assets);
-  assetsPortalButton.setAttribute('aria-pressed', String(assets));
-  assetsPortalButton.setAttribute('aria-label', assets ? 'Switch to Phanto portal' : 'Switch to Assets portal');
-  assetsPortalButton.title = assets ? 'Switch to Phanto portal' : 'Switch to Assets portal';
-  const destination = active ? 'Phanto' : 'Berry';
-  const label = 'Switch to ' + destination + ' portal';
-  portalButton.setAttribute('aria-label', label);
-  portalButton.title = label;
-  portalButton.querySelector('.portal-rest').src = active
-    ? 'emoji/joy/emoji-joy-cheerful.webp'
-    : 'berry/berry-stern-glare.webp';
-  portalButton.querySelector('.portal-reaction').src = active
-    ? 'emoji/playful/emoji-playful-cheeky-wink.webp'
-    : 'berry/berry-furious-forward-lunge.webp';
+  const current = assets ? assetsPortalButton : active ? portalButton : phantoPortalButton;
+  let optionOffset = -1;
+  for (const button of portalChoices) {
+    const selected = button === current;
+    const name = button === assetsPortalButton ? 'Assets' : button === portalButton ? 'Berry' : 'Phanto';
+    button.classList.toggle('is-current', selected);
+    button.setAttribute('aria-pressed', String(selected));
+    button.setAttribute('aria-label', selected ? 'Choose portal, current portal ' + name : 'Switch to ' + name + ' portal');
+    button.title = name;
+    button.style.setProperty('--portal-offset', selected ? '0' : String(optionOffset));
+    if (!selected) optionOffset = 1;
+  }
+  setPortalChoicesOpen(false);
   node('phanto-intro').hidden = active || assets;
   node('berry-intro').hidden = !active;
   node('assets-intro').hidden = !assets;
@@ -828,20 +831,42 @@ portalButton.addEventListener('click', () => {
   clearTimeout(portalReactionTimer);
   portalButton.setAttribute('data-reacting', '');
   portalReactionTimer = setTimeout(() => portalButton.removeAttribute('data-reacting'), 900);
-  clearLinkedPose();
-  category = categories[0];
-  search.value = '';
-  collection = '';
-  setPortal(!berryPortal);
-  render();
+  choosePortal('berry');
 });
-assetsPortalButton.addEventListener('click', () => {
+function setPortalChoicesOpen(open) {
+  portalSwitches.toggleAttribute('data-open', open);
+  for (const button of portalChoices) button.setAttribute('aria-expanded', String(open));
+}
+
+function choosePortal(destination) {
+  const current = assetsPortal ? 'assets' : berryPortal ? 'berry' : 'phanto';
+  if (destination === current) {
+    setPortalChoicesOpen(true);
+    return;
+  }
   clearLinkedPose();
   category = categories[0];
   search.value = '';
   collection = '';
-  setPortal(false, !assetsPortal);
+  setPortal(destination === 'berry', destination === 'assets');
   render();
+}
+
+assetsPortalButton.addEventListener('click', () => choosePortal('assets'));
+phantoPortalButton.addEventListener('click', () => choosePortal('phanto'));
+portalSwitches.addEventListener('pointerenter', event => {
+  if (event.pointerType !== 'touch') setPortalChoicesOpen(true);
+});
+portalSwitches.addEventListener('pointerleave', () => setPortalChoicesOpen(false));
+portalSwitches.addEventListener('focusin', () => setPortalChoicesOpen(true));
+portalSwitches.addEventListener('focusout', event => {
+  if (!portalSwitches.contains(event.relatedTarget)) setPortalChoicesOpen(false);
+});
+portalSwitches.addEventListener('keydown', event => {
+  if (event.key === 'Escape') setPortalChoicesOpen(false);
+});
+document.addEventListener('pointerdown', event => {
+  if (!portalSwitches.contains(event.target)) setPortalChoicesOpen(false);
 });
 search.addEventListener('input', () => { clearLinkedPose(); render(); });
 clearSearch.addEventListener('click', () => {

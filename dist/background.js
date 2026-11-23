@@ -17,6 +17,40 @@ uniform vec2 iResolution;
 uniform float iTime;
 uniform float uTransition; // 0.0 = Zen Multiple Blobs (zero noise), 1.0 = Evil Fire (exact pnoise)
 uniform float uBlobCount;  // Number of floating Zen metaball blobs
+uniform float uAssets;
+
+float starDistance(vec2 p, float radius) {
+    vec2 k1 = vec2(0.809016994, -0.587785252);
+    vec2 k2 = vec2(-k1.x, k1.y);
+    p.x = abs(p.x);
+    p -= 2.0 * max(dot(k1, p), 0.0) * k1;
+    p -= 2.0 * max(dot(k2, p), 0.0) * k2;
+    p.x = abs(p.x);
+    p.y -= radius;
+    vec2 edge = 0.45 * vec2(-k1.y, k1.x) - vec2(0.0, 1.0);
+    float h = clamp(dot(p, edge) / dot(edge, edge), 0.0, radius);
+    return length(p - edge * h) * sign(p.y * edge.x - p.x * edge.y);
+}
+
+vec3 assetsBackground(vec2 p, vec2 uv, float aspect) {
+    float distance = 10.0;
+    for (int i = 0; i < 6; i++) {
+        float phase = float(i) * 1.6180339;
+        vec2 center = vec2(
+            (sin(iTime * 0.14 + phase * 2.1) * 0.36) * aspect,
+            cos(iTime * 0.12 + phase * 1.7) * 0.39);
+        float angle = sin(iTime * 0.13 + phase) * 0.35;
+        vec2 local = mat2(cos(angle), -sin(angle), sin(angle), cos(angle)) * (p - center);
+        distance = min(distance, starDistance(local, 0.14 + 0.04 * sin(phase * 3.1)));
+    }
+    vec3 backdrop = mix(vec3(0.38, 0.17, 0.015), vec3(0.76, 0.43, 0.045), uv.y);
+    backdrop += vec3(0.15, 0.09, 0.015) * exp(-3.0 * dot(p, p));
+    vec3 star = mix(vec3(0.89, 0.48, 0.035), vec3(1.0, 0.88, 0.39), uv.y);
+    float rim = 1.0 - smoothstep(0.0, 0.012, abs(distance));
+    star = mix(star, vec3(1.0, 0.94, 0.64), rim * 0.7);
+    float antialias = 2.0 / min(iResolution.x, iResolution.y);
+    return mix(backdrop, star, 1.0 - smoothstep(-antialias, antialias, distance));
+}
 
 // --- User's Exact Noise Functions ---
 float rand(vec2 co) {
@@ -122,9 +156,10 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     vec3 zenBlob = mix(vec3(0.50, 0.18, 0.72), zenTint, 0.18 + innerDepth * 0.29);
     zenBlob = mix(zenBlob, vec3(0.82, 0.57, 0.95), rim * 0.56);
     vec3 zen = mix(zenBackdrop, zenBlob, smoothstep(0.70, 0.745, blobField));
+    vec3 gold = assetsBackground(centered, uv, iResolution.x / shortEdge);
 
     if (t <= 0.0) {
-        fragColor = vec4(zen, 1.0);
+        fragColor = vec4(mix(zen, gold, uAssets), 1.0);
         return;
     }
 
@@ -150,7 +185,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     emberBackdrop = mix(emberBackdrop, vec3(0.79, 0.21, 0.075), emberGlow * 0.4);
     float halo = smoothstep(0.23, 0.68, flameField) * 0.20;
     emberBackdrop = mix(emberBackdrop, vec3(0.90, 0.13, 0.19), halo);
-    fragColor = vec4(mix(zen, mix(emberBackdrop, fireBlob, flame), turb), 1.0);
+    fragColor = vec4(mix(mix(zen, mix(emberBackdrop, fireBlob, flame), turb), gold, uAssets), 1.0);
 }
 
 void main() {
@@ -166,6 +201,8 @@ void main() {
   let program, locations, frame = 0, lastDraw = 0, elapsed = 0;
   const portal = () => Number(document.body.hasAttribute('data-berry-portal'));
   let transition = portal();
+  const assetsPortal = () => Number(document.body.hasAttribute('data-assets-portal'));
+  let assetsTransition = assetsPortal();
 
   function compile(type, source) {
     const shader = gl.createShader(type);
@@ -198,7 +235,7 @@ void main() {
     const position = gl.getAttribLocation(program, 'aPosition');
     gl.enableVertexAttribArray(position);
     gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
-    locations = Object.fromEntries(['iResolution', 'iTime', 'uTransition', 'uBlobCount']
+    locations = Object.fromEntries(['iResolution', 'iTime', 'uTransition', 'uBlobCount', 'uAssets']
       .map(key => [key, gl.getUniformLocation(program, key)]));
     wake();
   }
@@ -221,15 +258,21 @@ void main() {
     if (motion.matches || !lastDraw || now - lastDraw >= 1000 / 30) {
       const dt = lastDraw ? Math.min(.1, (now - lastDraw) / 1000) : .035;
       lastDraw = now;
-      if (motion.matches) transition = portal();
+      if (motion.matches) {
+        transition = portal();
+        assetsTransition = assetsPortal();
+      }
       else {
         elapsed += dt;
         transition += (portal() - transition) * (1 - Math.exp(-dt * 5));
+        assetsTransition += (assetsPortal() - assetsTransition) * (1 - Math.exp(-dt * 5));
       }
       if (Math.abs(transition - portal()) < .002) transition = portal();
+      if (Math.abs(assetsTransition - assetsPortal()) < .002) assetsTransition = assetsPortal();
       gl.uniform1f(locations.iTime, motion.matches ? 0 : elapsed);
       gl.uniform1f(locations.uTransition, transition);
       gl.uniform1f(locations.uBlobCount, 6);
+      gl.uniform1f(locations.uAssets, assetsTransition);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
       if (!document.body.hasAttribute('data-shader-ready')) document.body.setAttribute('data-shader-ready', '');
     }

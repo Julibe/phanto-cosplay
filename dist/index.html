@@ -32,9 +32,9 @@
 <link rel="stylesheet" href="vendor/fontawesome.css">
 <link rel="stylesheet" href="vendor/solid.css">
 <link rel="stylesheet" href="vendor/brands.css">
-<link rel="stylesheet" href="style.css?v=d285be4b14cd">
+<link rel="stylesheet" href="style.css?v=935572a54b3f">
 <script src="catalog.js?v=0aa9a4e6480b" defer></script>
-<script src="app.js?v=c3a5b52beca3" defer></script>
+<script src="app.js?v=1fcc45a5274d" defer></script>
 <script src="hero.js?v=843c5561aa93" defer></script>
 </head>
 <body>
@@ -143,11 +143,14 @@
     <button id="filter-toggle" class="icon-control grid place-items-center rounded-full" type="button" aria-label="Filters" aria-controls="filters" aria-expanded="false" title="Filters"><i class="fa-solid fa-sliders" aria-hidden="true"></i></button>
   </div>
   <div class="portal-switches" role="group" aria-label="Portals">
-  <button id="berry-portal" type="button" aria-label="Switch to Berry portal" title="Switch to Berry portal">
+  <button id="phanto-portal" class="portal-option is-current" type="button" aria-label="Choose portal, current portal Phanto" title="Phanto" aria-expanded="false">
+    <img src="emoji/joy/emoji-joy-cheerful.webp" alt="" width="96" height="96" decoding="async">
+  </button>
+  <button id="berry-portal" class="portal-option" type="button" aria-label="Switch to Berry portal" title="Berry">
     <img class="portal-rest" src="berry/berry-stern-glare.webp" alt="" width="96" height="96">
     <img class="portal-reaction" src="berry/berry-furious-forward-lunge.webp" alt="" width="96" height="96" decoding="async">
   </button>
-  <button id="assets-portal" type="button" aria-label="Switch to Assets portal" title="Switch to Assets portal" aria-pressed="false">
+  <button id="assets-portal" class="portal-option" type="button" aria-label="Switch to Assets portal" title="Assets" aria-pressed="false">
     <img src="asset/stars/asset-stars-gold-front.webp" alt="" width="96" height="96" decoding="async">
   </button>
   </div>
@@ -209,7 +212,7 @@
     </div>
   </article>
 </template>
-<script src="background.js?v=d4e376619b48" defer></script>
+<script src="background.js?v=f1e5798046d4" defer></script>
 <script src="pwa.js?v=40acff4107d2" defer></script>
 </body>
 </html>
