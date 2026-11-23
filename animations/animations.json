@@ -1,4 +1,23 @@
 {
-  "idle": { "name": "Idle", "emotion": "Calm", "fps": 10, "keywords": "idle floating breathing hovering waiting" },
-  "custom-celebrate": { "name": "Celebrate", "emotion": "Joy", "fps": 10, "keywords": "celebrate celebration cheering hooray yay party" }
+  "idle": {
+    "name": "Idle",
+    "emotion": "Calm",
+    "fps": 10,
+    "keywords": "idle floating breathing hovering waiting"
+  },
+  "custom-celebrate": {
+    "name": "Celebrate",
+    "emotion": "Joy",
+    "fps": 10,
+    "keywords": "celebrate celebration cheering hooray yay party"
+  },
+  "rotation-360": {
+    "name": "360\u00b0 Rotation",
+    "emotion": "Joy",
+    "fps": 10,
+    "frames": 25,
+    "columns": 5,
+    "rows": 5,
+    "keywords": "turntable rotation full turn 360 spin clockwise"
+  }
 }

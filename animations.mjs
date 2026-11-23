@@ -1,10 +1,10 @@
-// Animated poses: drop a horizontal frame strip (PNG, frames side by side) into animations/
+// Animated poses: drop a horizontal strip or configured sprite grid (PNG) into animations/
 // and run `npm run build:animations`. Each strip becomes an animated WebP plus one WebP per frame
 // under dist/animated/, and an "Animated" pose in the catalog and JSON API.
 // Optional per-strip settings live in animations/animations.json, keyed by the strip's slug
-// (file name, lowercased, underscores as hyphens): { "name", "emotion", "keywords", "fps", "frames" }.
+// (file name, lowercased, underscores as hyphens): { "name", "emotion", "keywords", "fps", "frames", "columns", "rows" }.
 // Without "frames", a strip is cut into square frames (width / height).
-import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { writeOrganizedPoses } from './pose-assets.mjs';
 
@@ -33,10 +33,15 @@ function strips() {
     const settings = meta[slug] ?? {};
     const strip = new URL(file, source);
     const { width, height } = pngSize(strip);
-    const frames = settings.frames ?? Math.max(1, Math.round(width / height));
+    const columns = settings.columns ?? settings.frames ?? Math.max(1, Math.round(width / height));
+    const rows = settings.rows ?? 1;
+    const frames = settings.frames ?? columns * rows;
+    if (!Number.isInteger(columns) || !Number.isInteger(rows) || columns < 1 || rows < 1 || frames > columns * rows || width % columns || height % rows) {
+      throw new Error('Invalid sprite grid: ' + file);
+    }
     const fps = settings.fps ?? 10;
     const id = 'animated-' + slug;
-    return { id, slug, strip, settings, frames, fps, delay: Math.round(1000 / fps) };
+    return { id, slug, strip, settings, columns, rows, frames, fps, delay: Math.round(1000 / fps) };
   });
 }
 
@@ -62,24 +67,26 @@ export function withAnimations(poses) {
   return [...poses.filter(pose => pose.category !== 'Animated'), ...animatedPoses()];
 }
 
-export async function renderAnimations() {
+export async function renderAnimations(only) {
   const { default: sharp } = await import('sharp');
-  const out = new URL('animated/', root);
-  rmSync(out, { recursive: true, force: true });
   const poses = new Map(animatedPoses().map(pose => [pose.id, pose]));
-  for (const { id, strip, frames } of strips()) {
+  for (const { id, slug, strip, columns, rows, frames } of strips()) {
+    if (only && slug !== only) continue;
     const { data, info } = await sharp(readFileSync(strip)).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
-    const frameWidth = Math.floor(info.width / frames);
+    const frameWidth = info.width / columns;
+    const frameHeight = info.height / rows;
     // One shared bounding box for all frames keeps the motion aligned after trimming.
-    let left = frameWidth, top = info.height, right = -1, bottom = -1;
+    let left = frameWidth, top = frameHeight, right = -1, bottom = -1;
     for (let y = 0; y < info.height; y++) {
-      for (let x = 0; x < frameWidth * frames; x++) {
+      for (let x = 0; x < info.width; x++) {
+        if (Math.floor(y / frameHeight) * columns + Math.floor(x / frameWidth) >= frames) continue;
         if (data[(y * info.width + x) * 4 + 3] < 8) continue;
         const fx = x % frameWidth;
+        const fy = y % frameHeight;
         if (fx < left) left = fx;
         if (fx > right) right = fx;
-        if (y < top) top = y;
-        if (y > bottom) bottom = y;
+        if (fy < top) top = fy;
+        if (fy > bottom) bottom = fy;
       }
     }
     if (right < 0) throw new Error('Empty strip: ' + id);
@@ -90,7 +97,7 @@ export async function renderAnimations() {
     const rendered = [];
     for (let index = 0; index < frames; index++) {
       const png = await sharp(data, { raw: { width: info.width, height: info.height, channels: 4 } })
-        .extract({ left: index * frameWidth + left, top, ...box })
+        .extract({ left: (index % columns) * frameWidth + left, top: Math.floor(index / columns) * frameHeight + top, ...box })
         .resize(width, height, { kernel: 'lanczos3' })
         .extend({ ...pad, right: size - width - pad.left, bottom: size - height - pad.top, background: { r: 0, g: 0, b: 0, alpha: 0 } })
         .png().toBuffer();
@@ -108,7 +115,7 @@ export async function renderAnimations() {
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  await renderAnimations();
+  await renderAnimations(process.argv[2]);
   const prefix = 'window.phantoCatalog = ';
   const text = readFileSync(new URL('catalog.js', root), 'utf8').trim();
   writeOrganizedPoses(JSON.parse(text.slice(prefix.length, -1)));
