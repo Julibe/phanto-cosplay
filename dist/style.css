@@ -234,17 +234,18 @@ body[data-berry-portal] .new-tag { background: linear-gradient(135deg, #c8501a, 
 .picture:is(:hover,:focus-visible) .copy-mark { background: var(--accent); color: var(--on-accent) }
 .card-body {
   display: flex;
-  align-items: end;
+  flex-direction: column;
+  align-items: stretch;
   justify-content: space-between;
   gap: 4px;
   padding: 7px 8px 7px 12px;
   border-top: 1px solid #ffffff17;
   background: #ffffff0e;
 }
-.pose-meta { min-width: 0; padding-block: 1px 6px }
+.pose-meta { min-width: 0; width: 100%; padding-block: 1px 6px }
 .card h3 { font-size: 1.25rem; line-height: 1.05; overflow-wrap: anywhere }
 .card-body p { margin-top: 2px; color: var(--muted); font-size: .66rem; line-height: 1.35; overflow-wrap: anywhere }
-.actions { display: flex; flex: none }
+.actions { display: flex; flex: none; justify-content: flex-end; gap: 4px }
 .icon-control { display: inline-grid; place-items: center; border: 0; text-decoration: none; line-height: 1 }
 .actions .icon-control { width: 36px; height: 42px; border-radius: 999px; color: #ffffffeb; font-size: .83rem }
 .actions .icon-control:hover { background: #ffffff1b; color: var(--accent) }
