@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 import { buildApi } from './api.mjs';
 
@@ -9,6 +9,12 @@ export function versionAssets() {
   const prefix = 'window.phantoCatalog = ';
   if (!generated.startsWith(prefix) || !generated.endsWith(';')) throw new Error('Invalid generated pose catalog');
   const poses = JSON.parse(generated.slice(prefix.length, -1));
+  const revisionsFile = new URL('./sprite-revisions.json', import.meta.url);
+  const revisions = existsSync(revisionsFile) ? JSON.parse(readFileSync(revisionsFile, 'utf8')) : {};
+  for (const pose of poses) {
+    if (revisions[pose.id]) pose.path = pose.path.split('?')[0] + '?v=' + revisions[pose.id];
+  }
+  writeFileSync(new URL('catalog.js', root), prefix + JSON.stringify(poses) + ';\n');
   writeFileSync(new URL('catalog.json', root), JSON.stringify({ schemaVersion: 1, poses }) + '\n');
   buildApi(poses, root);
   const entry = new URL('index.html', root);

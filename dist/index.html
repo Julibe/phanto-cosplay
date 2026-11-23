@@ -11,7 +11,7 @@
 <link rel="canonical" href="https://cosplay.julibe.cloud/">
 <link rel="manifest" href="manifest.webmanifest?v=3178970481d5">
 <link rel="apple-touch-icon" href="icons/phanto-192.png">
-<link rel="alternate" type="application/json" href="catalog.json?v=80a80fe91b3a" title="Phanto pose catalog">
+<link rel="alternate" type="application/json" href="catalog.json?v=0b3b86382365" title="Phanto pose catalog">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -32,9 +32,9 @@
 <link rel="stylesheet" href="vendor/fontawesome.css">
 <link rel="stylesheet" href="vendor/solid.css">
 <link rel="stylesheet" href="vendor/brands.css">
-<link rel="stylesheet" href="style.css?v=935572a54b3f">
-<script src="catalog.js?v=0aa9a4e6480b" defer></script>
-<script src="app.js?v=1fcc45a5274d" defer></script>
+<link rel="stylesheet" href="style.css?v=83323ece0183">
+<script src="catalog.js?v=1bb5014e28d6" defer></script>
+<script src="app.js?v=0a37e4a7095b" defer></script>
 <script src="hero.js?v=843c5561aa93" defer></script>
 </head>
 <body>
@@ -143,6 +143,11 @@
     <button id="filter-toggle" class="icon-control grid place-items-center rounded-full" type="button" aria-label="Filters" aria-controls="filters" aria-expanded="false" title="Filters"><i class="fa-solid fa-sliders" aria-hidden="true"></i></button>
   </div>
   <div class="portal-switches" role="group" aria-label="Portals">
+  <div class="portal-menu" id="portal-menu" role="group" aria-label="Choose category" inert>
+    <button type="button" data-portal="phanto"><img src="emoji/joy/emoji-joy-cheerful.webp" alt="" width="44" height="44"><span>Phanto</span></button>
+    <button type="button" data-portal="berry"><img src="berry/berry-stern-glare.webp" alt="" width="44" height="44"><span>Berry</span></button>
+    <button type="button" data-portal="assets"><img src="asset/stars/asset-stars-gold-front.webp" alt="" width="44" height="44"><span>Assets</span></button>
+  </div>
   <button id="phanto-portal" class="portal-option is-current" type="button" aria-label="Choose portal, current portal Phanto" title="Phanto" aria-expanded="false">
     <img src="emoji/joy/emoji-joy-cheerful.webp" alt="" width="96" height="96" decoding="async">
   </button>

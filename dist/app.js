@@ -397,6 +397,8 @@ function setPortal(active, assets = false) {
     const selected = button === current;
     const name = button === assetsPortalButton ? 'Assets' : button === portalButton ? 'Berry' : 'Phanto';
     button.classList.toggle('is-current', selected);
+    button.tabIndex = selected ? 0 : -1;
+    button.setAttribute('aria-controls', 'portal-menu');
     button.setAttribute('aria-pressed', String(selected));
     button.setAttribute('aria-label', selected ? 'Choose portal, current portal ' + name : 'Switch to ' + name + ' portal');
     button.title = name;
@@ -835,8 +837,17 @@ portalButton.addEventListener('click', () => {
 });
 function setPortalChoicesOpen(open) {
   portalSwitches.toggleAttribute('data-open', open);
+  node('portal-menu').inert = !open;
   for (const button of portalChoices) button.setAttribute('aria-expanded', String(open));
 }
+
+node('portal-menu').addEventListener('click', event => {
+  const choice = event.target.closest('[data-portal]');
+  if (!choice) return;
+  choosePortal(choice.dataset.portal);
+  portalChoices.find(button => button.classList.contains('is-current')).focus({ preventScroll: true });
+  setPortalChoicesOpen(false);
+});
 
 function choosePortal(destination) {
   const current = assetsPortal ? 'assets' : berryPortal ? 'berry' : 'phanto';

@@ -169,7 +169,7 @@ main.wrap { padding-top: clamp(12px, 3vw, 32px) }
   backdrop-filter: var(--glass-blur);
   transition: border-color .2s, background-color .2s;
 }
-.card:hover, .card:focus-within { border-color: #ffffff6b; background-color: var(--glass-tint) }
+.card:hover, .card:focus-within { border-color: #ffffff6b }
 .picture {
   position: relative;
   display: grid;
@@ -665,7 +665,7 @@ dialog[open] { animation: panel-enter 180ms ease-out both }
   transform: scale(.8);
   transition: transform .18s ease, opacity .18s ease, visibility .18s;
 }
-.portal-switches .portal-option.is-current {
+.portal-switches :is(#berry-portal, #assets-portal, #phanto-portal).is-current {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
@@ -677,14 +677,36 @@ dialog[open] { animation: panel-enter 180ms ease-out both }
   position: absolute;
   inset: -65px -90px 0;
 }
-.portal-switches[data-open] .portal-option {
+.portal-menu {
+  position: absolute;
+  bottom: calc(100% - 12px);
+  left: 50%;
+  display: flex;
+  gap: 4px;
+  padding: 7px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #291c45ed;
+  box-shadow: 0 8px 24px #0003;
+  backdrop-filter: blur(20px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-50%, 6px);
+  transition: opacity .16s ease, transform .16s ease, visibility .16s;
+  z-index: 4;
+}
+.portal-switches[data-open] .portal-menu {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transform: translate(calc(var(--portal-offset) * 90px), -52px) scale(.9);
-  z-index: 3;
+  transform: translate(-50%, 0);
 }
-.portal-switches[data-open] .portal-option.is-current { transform: none }
+.portal-menu button { display: grid; justify-items: center; gap: 3px; width: 74px; padding: 5px; border: 0; border-radius: 999px; font-size: .65rem }
+.portal-menu button:hover, .portal-menu button:focus-visible { background: var(--surface) }
+.portal-menu img { object-fit: contain }
+body[data-assets-portal] .portal-menu { background: #684003ed }
+body[data-berry-portal] .portal-menu { background: #400f22ed }
 #assets-portal img, #phanto-portal img { width: 100%; height: 100%; object-fit: contain }
 #assets-portal[aria-pressed="true"] img { filter: drop-shadow(0 0 10px #ffda75) }
 .portal-option:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 20px }
@@ -791,6 +813,7 @@ body[data-berry-portal]::after {
 }
 @media (prefers-reduced-motion: reduce) {
   .portal-switches .portal-option { transition: none }
+  .portal-menu { transition: none }
   .berry-art img { animation: none }
   #berry-portal img { transition: none; rotate: none !important; scale: none !important }
 }
