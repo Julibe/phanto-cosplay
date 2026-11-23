@@ -34,7 +34,8 @@ function pathFor(pose) {
   if (pose.id.startsWith('asset-')) {
     const [, type, ...parts] = pose.id.split('-');
     let category;
-    if (type === 'ingredients') category = ['chocolate-chips', 'secret-chocolate'].find(value => parts.join('-').startsWith(value + '-')) ?? parts[0];
+    if (type === 'vegetation') category = parts[0];
+    else if (type === 'ingredients') category = ['chocolate-chips', 'secret-chocolate'].find(value => parts.join('-').startsWith(value + '-')) ?? parts[0];
     else if (type === 'textures') category = ['spring', 'summer', 'autumn', 'winter', 'material'].includes(parts[0]) ? parts[0] : 'general';
     else if (type === 'stars') category = parts[0];
     else if (type === 'cookies') category = 'baked';
