@@ -70,7 +70,7 @@ export function withAnimations(poses) {
 export async function renderAnimations(only) {
   const { default: sharp } = await import('sharp');
   const poses = new Map(animatedPoses().map(pose => [pose.id, pose]));
-  for (const { id, slug, strip, columns, rows, frames } of strips()) {
+  for (const { id, slug, strip, settings, columns, rows, frames } of strips()) {
     if (only && slug !== only) continue;
     const { data, info } = await sharp(readFileSync(strip)).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
     const frameWidth = info.width / columns;
@@ -90,8 +90,12 @@ export async function renderAnimations(only) {
       }
     }
     if (right < 0) throw new Error('Empty strip: ' + id);
-    const box = { width: right - left + 1, height: bottom - top + 1 };
-    const scale = fit / Math.max(box.width, box.height);
+    // Pre-aligned turntables retain their authored pivot and body scale. Tails
+    // must never influence the framing or scale of an individual frame.
+    const box = settings.preserveCanvas ? { width: frameWidth, height: frameHeight }
+      : { width: right - left + 1, height: bottom - top + 1 };
+    if (settings.preserveCanvas) left = top = 0;
+    const scale = (settings.preserveCanvas ? size : fit) / Math.max(box.width, box.height);
     const width = Math.round(box.width * scale), height = Math.round(box.height * scale);
     const pad = { left: Math.floor((size - width) / 2), top: Math.floor((size - height) / 2) };
     const rendered = [];

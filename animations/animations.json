@@ -15,63 +15,70 @@
     "name": "360\u00b0 Rotation - Mixed Tail Position",
     "emotion": "Joy",
     "fps": 10,
-    "frames": 25,
+    "frames": 24,
     "columns": 5,
     "rows": 5,
-    "keywords": "turntable rotation full turn 360 spin rotation-mixed"
+    "keywords": "turntable rotation full turn 360 spin rotation-mixed",
+    "preserveCanvas": true
   },
   "rotation-360-top-tail": {
     "name": "360\u00b0 Rotation - Top Tail Only",
     "emotion": "Joy",
     "fps": 10,
-    "frames": 25,
+    "frames": 24,
     "columns": 5,
     "rows": 5,
-    "keywords": "turntable rotation full turn 360 spin rotation-top"
+    "keywords": "turntable rotation full turn 360 spin rotation-top",
+    "preserveCanvas": true
   },
   "rotation-360-bottom-tail": {
     "name": "360\u00b0 Rotation - Bottom Tail Only",
     "emotion": "Joy",
     "fps": 10,
-    "frames": 25,
+    "frames": 24,
     "columns": 5,
     "rows": 5,
-    "keywords": "turntable rotation full turn 360 spin rotation-bottom"
+    "keywords": "turntable rotation full turn 360 spin rotation-bottom",
+    "preserveCanvas": true
   },
   "rotation-360-top-tail-open-eyes": {
     "name": "360\u00b0 Rotation - Top Tail Only - Open Eyes",
     "emotion": "Joy",
     "fps": 10,
-    "frames": 25,
+    "frames": 24,
     "columns": 5,
     "rows": 5,
-    "keywords": "turntable rotation full turn 360 spin rotation-top-open"
+    "keywords": "turntable rotation full turn 360 spin rotation-top-open",
+    "preserveCanvas": true
   },
   "rotation-360-bottom-tail-open-eyes": {
     "name": "360\u00b0 Rotation - Bottom Tail Only - Open Eyes",
     "emotion": "Joy",
     "fps": 10,
-    "frames": 25,
+    "frames": 24,
     "columns": 5,
     "rows": 5,
-    "keywords": "turntable rotation full turn 360 spin rotation-bottom-open"
+    "keywords": "turntable rotation full turn 360 spin rotation-bottom-open",
+    "preserveCanvas": true
   },
   "rotation-360-open-eyes": {
     "name": "360\u00b0 Rotation - Mixed Tail Position - Open Eyes",
     "emotion": "Joy",
     "fps": 10,
-    "frames": 25,
+    "frames": 24,
     "columns": 5,
     "rows": 5,
-    "keywords": "turntable rotation full turn 360 spin rotation-mixed-open"
+    "keywords": "turntable rotation full turn 360 spin rotation-mixed-open",
+    "preserveCanvas": true
   },
   "berry-rotation-360": {
     "name": "Berry 360 Rotation",
     "emotion": "Joy",
     "fps": 10,
-    "frames": 25,
+    "frames": 24,
     "columns": 5,
     "rows": 5,
-    "keywords": "turntable rotation full turn 360 spin berry-rotation"
+    "keywords": "turntable rotation full turn 360 spin berry-rotation",
+    "preserveCanvas": true
   }
 }
