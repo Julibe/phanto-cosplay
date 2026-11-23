@@ -1,8 +1,14 @@
-# Phanto animation rules
+# Rotation animation variants
 
-- Phanto has exactly one tail. In a front-facing pose, that tail is the pointed curl at the TOP of the head.
-- Preserve the top tail as the character rotates. Do not add a lower rear tail, bottom nub, feet, or another tail.
-- Keep the compact cream/pink squircle body, two eyes, blush, mouth, and two small fingerless flippers consistent.
-- Rotation test: `rotation-360.png` is a 5 by 5 sheet of 25 aligned frames in row-major order, configured at 10 FPS.
-- Build only this animation with `node animations.mjs rotation-360`. The catalog entry is `animated-rotation-360`, and the animated WebP is `dist/animated/animated-rotation-360.webp`.
-- The corrected sheet was made with the built-in image generation editor. Edit instruction: preserve the correct TOP tail and remove only the erroneous LOW/BOTTOM rear tails in all 25 frames; retain the original frame order, design, lighting, and transparent background.
+Keep all user-requested variants. Do not replace or delete a variant when adding another.
+
+Phanto has three closed-eye and three open-eye rotations:
+- Top tail only: the pointed curl remains on top throughout the turn.
+- Bottom tail only: a low rear tail, without a top point.
+- Mixed tail position: use the user's reference pattern, with a top tail from the front and a low rear tail from the back. One tail per frame, not both.
+
+Berry has one stern, open-eye rotation matching the existing red strawberry design.
+
+Each animation uses a 5 by 5 PNG sheet, row-major frame order, 25 frames, 10 FPS, and a transparent looping animated WebP. The existing Idle and Celebrate animations must remain intact.
+
+Built-in image editor instructions for the open-eye sheets: replace only closed-eye strokes with open dark plum oval eyes and small white catchlights; retain each reference sheet's tail pattern, mouth, blush, shape and orientation; no face on back views. Remove background haze and preserve alpha transparency.

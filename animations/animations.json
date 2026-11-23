@@ -12,12 +12,66 @@
     "keywords": "celebrate celebration cheering hooray yay party"
   },
   "rotation-360": {
-    "name": "360\u00b0 Rotation",
+    "name": "360\u00b0 Rotation - Mixed Tail Position",
     "emotion": "Joy",
     "fps": 10,
     "frames": 25,
     "columns": 5,
     "rows": 5,
-    "keywords": "turntable rotation full turn 360 spin clockwise"
+    "keywords": "turntable rotation full turn 360 spin rotation-mixed"
+  },
+  "rotation-360-top-tail": {
+    "name": "360\u00b0 Rotation - Top Tail Only",
+    "emotion": "Joy",
+    "fps": 10,
+    "frames": 25,
+    "columns": 5,
+    "rows": 5,
+    "keywords": "turntable rotation full turn 360 spin rotation-top"
+  },
+  "rotation-360-bottom-tail": {
+    "name": "360\u00b0 Rotation - Bottom Tail Only",
+    "emotion": "Joy",
+    "fps": 10,
+    "frames": 25,
+    "columns": 5,
+    "rows": 5,
+    "keywords": "turntable rotation full turn 360 spin rotation-bottom"
+  },
+  "rotation-360-top-tail-open-eyes": {
+    "name": "360\u00b0 Rotation - Top Tail Only - Open Eyes",
+    "emotion": "Joy",
+    "fps": 10,
+    "frames": 25,
+    "columns": 5,
+    "rows": 5,
+    "keywords": "turntable rotation full turn 360 spin rotation-top-open"
+  },
+  "rotation-360-bottom-tail-open-eyes": {
+    "name": "360\u00b0 Rotation - Bottom Tail Only - Open Eyes",
+    "emotion": "Joy",
+    "fps": 10,
+    "frames": 25,
+    "columns": 5,
+    "rows": 5,
+    "keywords": "turntable rotation full turn 360 spin rotation-bottom-open"
+  },
+  "rotation-360-open-eyes": {
+    "name": "360\u00b0 Rotation - Mixed Tail Position - Open Eyes",
+    "emotion": "Joy",
+    "fps": 10,
+    "frames": 25,
+    "columns": 5,
+    "rows": 5,
+    "keywords": "turntable rotation full turn 360 spin rotation-mixed-open"
+  },
+  "berry-rotation-360": {
+    "name": "Berry 360 Rotation",
+    "emotion": "Joy",
+    "fps": 10,
+    "frames": 25,
+    "columns": 5,
+    "rows": 5,
+    "keywords": "turntable rotation full turn 360 spin berry-rotation"
   }
 }

@@ -94,7 +94,7 @@ const poses = window.phantoCatalog.map(pose => {
   const text = normalize(['Phanto', pose.id, pose.legacyId, pose.previousId, pose.name, pose.category, pose.franchise,
     pose.franchiseType, pose.tags, pose.emotion].filter(Boolean).join(' '));
   const aliases = poseKeywords.filter(([pattern]) => pattern.test(text)).map(([, words]) => words);
-  const hasBerry = pose.id.startsWith('berry-');
+  const hasBerry = pose.id.startsWith('berry-') || pose.id.startsWith('animated-berry-');
   const hasPhanto = !hasBerry || pose.id.split('-').includes('phanto');
   const isNew = Boolean(newestRelease) && Date.parse(pose.released) >= newSince;
   const releasedAt = pose.released ? new Date(pose.released) : null;
