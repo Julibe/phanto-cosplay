@@ -3,6 +3,7 @@ import { pathToFileURL } from 'node:url';
 import { franchisePrefix } from './costume-types.mjs';
 import { versionAssets } from './version-assets.mjs';
 import { assignReleaseDates } from './release-dates.mjs';
+import { withAnimations } from './animations.mjs';
 
 const root = new URL('./dist/', import.meta.url);
 const catalog = new URL('catalog.js', root);
@@ -19,7 +20,7 @@ function folderFor(pose) {
   if (!slug.test(pose.id)) throw new Error('Invalid pose ID: ' + pose.id);
   const [type, sub] = pose.id.split('-');
   const remainder = pose.id.slice(type.length + 1);
-  if (type === 'animal' || type === 'meme' || type === 'berry') return type;
+  if (type === 'animal' || type === 'meme' || type === 'berry' || type === 'animated') return type;
   const multiwordGenre = ['rnb-and-soul', 'hip-hop', 'sci-fi', 'science-fiction'].find(part => remainder.startsWith(part + '-'));
   const group = franchisePrefix(pose.id)
     ?? [nameSlug(pose.franchise), pose.tags, multiwordGenre].find(part => part && slug.test(part) && remainder.startsWith(part + '-'))
@@ -28,6 +29,7 @@ function folderFor(pose) {
 }
 
 export function writeOrganizedPoses(poses) {
+  poses = withAnimations(poses);
   const ids = new Set();
   const moves = poses.map(pose => {
     if (ids.has(pose.id)) throw new Error('Duplicate pose: ' + pose.id);

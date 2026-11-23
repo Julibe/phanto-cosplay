@@ -1,6 +1,6 @@
 'use strict';
 
-const categories = ['All poses', 'Reactions', 'Costumes', 'Animals', 'Holidays', 'Activities', 'Powers', 'Assets', 'Turnarounds'];
+const categories = ['All poses', 'Reactions', 'Costumes', 'Animals', 'Holidays', 'Activities', 'Powers', 'Assets', 'Turnarounds', 'Animated'];
 const collections = {
   turnarounds: pose => pose.category === 'Turnarounds',
   emoji: pose => pose.category === 'Reactions',
@@ -143,6 +143,7 @@ const filters = node('filters');
 const clearSearch = node('clear-search');
 const shuffle = node('shuffle');
 const portalButton = node('berry-portal');
+const assetsPortalButton = node('assets-portal');
 const grid = node('grid');
 const moreButton = node('more');
 const shareDialog = node('share-dialog');
@@ -204,10 +205,24 @@ async function encodeImage(image, type, matrix = new DOMMatrix()) {
   });
 }
 
-function poseImage(pose) {
+function poseImage(pose, path = pose.path) {
   const image = new Image();
-  image.src = pose.path;
+  image.src = path;
   return image;
+}
+
+function downloadFile(href, filename, container = document.body) {
+  const link = document.createElement('a');
+  link.href = href;
+  link.download = filename;
+  container.append(link);
+  link.click();
+  link.remove();
+}
+
+// Clipboards hold still images, so animated poses copy their first frame.
+function stillPath(pose) {
+  return pose.animation?.frames[0] ?? pose.path;
 }
 
 function celebrateCopy(origin) {
@@ -237,7 +252,7 @@ function celebrateCopy(origin) {
 
 async function copyImage(pose, {
   origin,
-  renderPng = () => encodeImage(poseImage(pose), 'image/png'),
+  renderPng = () => encodeImage(poseImage(pose, stillPath(pose)), 'image/png'),
   report = notify
 } = {}) {
   if (!navigator.clipboard?.write || !window.ClipboardItem) {
@@ -246,20 +261,66 @@ async function copyImage(pose, {
   }
   try {
     await navigator.clipboard.write([new ClipboardItem({ 'image/png': renderPng() })]);
-    report(pose.name + ' copied!');
+    report(pose.name + (pose.animation ? ' (first frame)' : '') + ' copied!');
     celebrateCopy(origin);
   } catch {
     report('Couldn’t copy the image. Try downloading it.');
   }
 }
 
-function openEditor(pose) {
-  const image = poseImage(pose);
-  image.alt = pose.name;
-  edit = { pose, image, matrix: new DOMMatrix() };
-  node('editor-name').textContent = pose.name;
-  node('editor-status').textContent = '';
+// frame is null for the full animation, or a 0-based frame index.
+function showEditorImage(frame) {
+  const { pose } = edit;
+  const animated = Boolean(pose.animation) && frame === null;
+  const image = poseImage(pose, pose.animation && !animated ? pose.animation.frames[frame] : pose.path);
+  image.alt = pose.name + (pose.animation ? animated ? ', animated' : ', frame ' + (frame + 1) : '');
+  image.style.transform = animated ? '' : edit.matrix.toString();
+  Object.assign(edit, { image, frame });
   node('editor-preview').replaceChildren(image);
+  for (const button of editor.querySelectorAll('.editor-toolbar button')) button.disabled = animated;
+  for (const button of node('editor-frames').children) {
+    button.setAttribute('aria-pressed', String(String(frame) === button.dataset.frame));
+  }
+  const label = !pose.animation ? 'WebP' : animated ? 'Animated WebP' : 'Frame ' + (frame + 1);
+  const download = node('editor-download');
+  download.lastChild.textContent = label;
+  download.setAttribute('aria-label', 'Download ' + (animated ? 'animated WebP' : pose.animation ? 'frame ' + (frame + 1) + ' as WebP' : 'edited WebP'));
+  download.title = download.getAttribute('aria-label');
+}
+
+function openEditor(pose) {
+  edit = { pose, matrix: new DOMMatrix() };
+  node('editor-title').textContent = pose.animation ? 'Pose options' : 'Edit pose';
+  node('editor-name').textContent = pose.name;
+  node('editor-status').textContent = pose.animation ? 'Pick a frame to rotate, flip or download it on its own.' : '';
+  const frames = node('editor-frames');
+  frames.hidden = !pose.animation;
+  frames.replaceChildren();
+  if (pose.animation) {
+    const choice = (frame, label, content) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.dataset.frame = String(frame);
+      button.setAttribute('aria-label', label);
+      button.title = label;
+      button.append(...content);
+      button.addEventListener('click', () => showEditorImage(frame));
+      frames.append(button);
+    };
+    const icon = document.createElement('i');
+    icon.className = 'fa-solid fa-film';
+    icon.setAttribute('aria-hidden', 'true');
+    choice(null, 'Animation', [icon, 'All']);
+    pose.animation.frames.forEach((path, index) => {
+      const thumb = poseImage(pose, path);
+      thumb.alt = '';
+      thumb.width = thumb.height = 48;
+      const number = document.createElement('span');
+      number.textContent = index + 1;
+      choice(index, 'Frame ' + (index + 1), [thumb, number]);
+    });
+  }
+  showEditorImage(null);
   editor.showModal();
 }
 
@@ -270,6 +331,7 @@ function reportEdit(current, message) {
 editor.querySelector('.editor-toolbar').addEventListener('click', event => {
   const button = event.target.closest('[data-transform]');
   if (!button) return;
+  if (edit.pose.animation && edit.frame === null) return;
   const transform = transforms[button.dataset.transform];
   edit.matrix = transform ? transform.multiply(edit.matrix) : new DOMMatrix();
   edit.image.style.transform = edit.matrix.toString();
@@ -280,24 +342,27 @@ node('close-editor').addEventListener('click', () => editor.close());
 node('editor-copy').addEventListener('click', () => {
   const current = edit;
   const { image, matrix, pose } = current;
+  const still = pose.animation && current.frame === null ? poseImage(pose, stillPath(pose)) : image;
   copyImage(pose, {
     origin: node('editor-copy'),
-    renderPng: () => encodeImage(image, 'image/png', matrix),
+    renderPng: () => encodeImage(still, 'image/png', still === image ? matrix : new DOMMatrix()),
     report: message => reportEdit(current, message)
   });
 });
 node('editor-download').addEventListener('click', async () => {
   const current = edit;
-  const { image, matrix, pose } = current;
+  const { image, matrix, pose, frame } = current;
+  const stem = pose.animation && frame !== null ? pose.id + '-frame-' + String(frame + 1).padStart(2, '0') : pose.id;
+  if (pose.animation && (frame === null || matrix.isIdentity)) {
+    // Untouched files download as published, so the animation keeps all its frames.
+    downloadFile(frame === null ? pose.path : pose.animation.frames[frame], stem + '.webp', editor);
+    reportEdit(current, (frame === null ? 'Animated WebP' : 'Frame ' + (frame + 1)) + ' download started.');
+    return;
+  }
   try {
     const blob = await encodeImage(image, 'image/webp', matrix);
     const href = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = href;
-    link.download = pose.id + '-edited.webp';
-    editor.append(link);
-    link.click();
-    link.remove();
+    downloadFile(href, stem + '-edited.webp', editor);
     setTimeout(() => URL.revokeObjectURL(href), 10000);
     reportEdit(current, 'WebP download started.');
   } catch {
@@ -311,14 +376,21 @@ const viewParameters = {
   type: 'franchise-type'
 };
 let berryPortal = false;
+let assetsPortal = false;
 
 function poseInPortal(pose) {
-  return berryPortal ? pose.hasBerry : pose.hasPhanto;
+  if (assetsPortal) return pose.category === 'Assets';
+  return pose.category !== 'Assets' && (berryPortal ? pose.hasBerry : pose.hasPhanto);
 }
 
-function setPortal(active) {
+function setPortal(active, assets = false) {
   berryPortal = active;
+  assetsPortal = assets;
   document.body.toggleAttribute('data-berry-portal', active);
+  document.body.toggleAttribute('data-assets-portal', assets);
+  assetsPortalButton.setAttribute('aria-pressed', String(assets));
+  assetsPortalButton.setAttribute('aria-label', assets ? 'Switch to Phanto portal' : 'Switch to Assets portal');
+  assetsPortalButton.title = assets ? 'Switch to Phanto portal' : 'Switch to Assets portal';
   const destination = active ? 'Phanto' : 'Berry';
   const label = 'Switch to ' + destination + ' portal';
   portalButton.setAttribute('aria-label', label);
@@ -329,13 +401,15 @@ function setPortal(active) {
   portalButton.querySelector('.portal-reaction').src = active
     ? 'emoji/playful/emoji-playful-cheeky-wink.webp'
     : 'berry/berry-furious-forward-lunge.webp';
-  node('phanto-intro').hidden = active;
+  node('phanto-intro').hidden = active || assets;
   node('berry-intro').hidden = !active;
+  node('assets-intro').hidden = !assets;
+  document.querySelector('.hero-showcase').setAttribute('aria-label', assets ? 'Featured game assets' : 'Featured Phanto poses');
   document.querySelector('.hero-showcase').hidden = active;
   node('berry-art').hidden = !active;
   document.dispatchEvent(new Event('portalchange'));
   const portalPoses = poses.filter(poseInPortal);
-  const bannerPoses = portalPoses.filter(collections.emoji);
+  const bannerPoses = assets ? [...portalPoses] : portalPoses.filter(collections.emoji);
   shufflePoses(bannerPoses);
   const artwork = active ? node('berry-art') : document.querySelector('.hero-showcase');
   artwork.querySelectorAll('.hero-pose').forEach((button, index) => {
@@ -355,7 +429,7 @@ function setPortal(active) {
   });
   for (const button of suggestions) {
     const key = button.dataset.collection;
-    button.hidden = active ? !portalPoses.some(collections[key]) : key === 'turnarounds';
+    button.hidden = active || assets ? !portalPoses.some(collections[key]) : key === 'turnarounds';
   }
   for (const button of node('categories').children) {
     button.hidden = button.textContent !== categories[0] && !portalPoses.some(pose => pose.category === button.textContent);
@@ -368,7 +442,7 @@ function setPortal(active) {
 }
 
 function currentViewParams() {
-  const portal = berryPortal ? 'berry' : '';
+  const portal = assetsPortal ? 'assets' : berryPortal ? 'berry' : '';
   if (linkedPose) return { pose: linkedPose, portal };
   return {
     portal,
@@ -413,7 +487,7 @@ function openViewLink(label, params) {
 }
 
 function shareLink(pose) {
-  return makeShareLink({ pose: pose.id, portal: berryPortal ? 'berry' : '' });
+  return makeShareLink({ pose: pose.id, portal: pose.category === 'Assets' ? 'assets' : berryPortal ? 'berry' : '' });
 }
 
 function setShareIcon(control, label, iconClass) {
@@ -522,15 +596,21 @@ function showMore(limit = pageSize) {
     picture.addEventListener('click', () => copyImage(pose, { origin: picture }));
     card.querySelector('h3').textContent = pose.name;
     card.querySelector('.new-tag').hidden = !pose.isNew;
+    card.querySelector('.anim-tag').hidden = !pose.animation;
     const subtitle = [pose.franchiseType, pose.franchise].filter(Boolean).join(' · ') || pose.emotion || pose.category;
     const released = node('sort').value && pose.released ? releaseDate.format(new Date(pose.released)) : '';
     card.querySelector('p').textContent = released ? subtitle + ' · ' + released : subtitle;
     const download = card.querySelector('a');
     download.href = pose.path;
     download.download = pose.id + '.webp';
-    download.setAttribute('aria-label', 'Download ' + pose.name + ' as WebP');
+    download.setAttribute('aria-label', 'Download ' + pose.name + (pose.animation ? ' as animated WebP' : ' as WebP'));
+    if (pose.animation) download.title = 'Download animated WebP';
     const editButton = card.querySelector('.edit-pose');
-    editButton.setAttribute('aria-label', 'Edit ' + pose.name);
+    editButton.setAttribute('aria-label', (pose.animation ? 'Frames and options for ' : 'Edit ') + pose.name);
+    if (pose.animation) {
+      editButton.title = 'Frames and options';
+      editButton.querySelector('i').className = 'icon fa-solid fa-film';
+    }
     editButton.addEventListener('click', () => openEditor(pose));
     const share = card.querySelector('.actions button:not(.edit-pose)');
     share.setAttribute('aria-label', 'Share ' + pose.name);
@@ -558,12 +638,21 @@ function shufflePoses(list) {
   }
 }
 
+// Shuffles in place but keeps the newest batch (poses tagged New) on top, newest first.
+function shuffleNewFirst(list) {
+  const fresh = list.filter(pose => pose.isNew)
+    .sort((first, second) => (second.released ?? '').localeCompare(first.released ?? '') || first.name.localeCompare(second.name));
+  const rest = list.filter(pose => !pose.isNew);
+  shufflePoses(rest);
+  list.splice(0, list.length, ...fresh, ...rest);
+}
+
 const homeOrder = [...poses];
-shufflePoses(homeOrder);
+shuffleNewFirst(homeOrder);
 
 shuffle.addEventListener('click', () => {
   if (matches.length < 2) return;
-  shufflePoses(matches);
+  shuffleNewFirst(matches);
   rebuildGallery(shown);
   notify('Poses shuffled.');
 });
@@ -581,7 +670,8 @@ function restoreView() {
   const params = new URL(location.href).searchParams;
   linkedPose = resolvePose(params.get('pose'));
   const linked = poses.find(pose => pose.id === linkedPose);
-  setPortal(linked ? linked.hasBerry && (!linked.hasPhanto || params.get('portal') === 'berry') : params.get('portal') === 'berry');
+  setPortal(linked ? linked.hasBerry && (!linked.hasPhanto || params.get('portal') === 'berry') : params.get('portal') === 'berry',
+    linked ? linked.category === 'Assets' : params.get('portal') === 'assets');
   search.value = params.get('q') ?? '';
   const requestedCollection = params.get('collection');
   collection = suggestions.some(button => !button.hidden && button.dataset.collection === requestedCollection) ? requestedCollection : '';
@@ -662,9 +752,10 @@ function render() {
     button.setAttribute('aria-pressed', String(!linkedPose && button.textContent === category));
   }
   const collectionLabel = suggestions.find(button => button.dataset.collection === collection)?.textContent;
-  const portalLabel = berryPortal && category === categories[0] ? 'Berry poses' : category;
+  const portalLabel = assetsPortal ? 'Assets' : berryPortal && category === categories[0] ? 'Berry poses' : category;
   node('heading').textContent = linkedPose ? 'Shared pose' : collectionLabel || portalLabel;
-  node('count').textContent = matches.length.toLocaleString() + (matches.length === 1 ? ' pose' : ' poses');
+  node('count').textContent = matches.length.toLocaleString() + (assetsPortal
+    ? (matches.length === 1 ? ' asset' : ' assets') : (matches.length === 1 ? ' pose' : ' poses'));
   node('empty').hidden = matches.length > 0;
   shuffle.disabled = matches.length < 2;
   rebuildGallery();
@@ -742,6 +833,14 @@ portalButton.addEventListener('click', () => {
   search.value = '';
   collection = '';
   setPortal(!berryPortal);
+  render();
+});
+assetsPortalButton.addEventListener('click', () => {
+  clearLinkedPose();
+  category = categories[0];
+  search.value = '';
+  collection = '';
+  setPortal(false, !assetsPortal);
   render();
 });
 search.addEventListener('input', () => { clearLinkedPose(); render(); });

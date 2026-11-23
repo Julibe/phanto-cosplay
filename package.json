@@ -5,11 +5,13 @@
     "build:css": "tailwindcss -i tailwind.css -o dist/utilities.css --minify",
     "build:icons": "node copy-icons.mjs",
     "organize:images": "node pose-assets.mjs",
+    "build:animations": "node animations.mjs",
     "build": "npm run build:icons && npm run build:css && node version-assets.mjs"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^7.3.1",
     "@tailwindcss/cli": "^4.3.5",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4.3.5"
   }
 }
