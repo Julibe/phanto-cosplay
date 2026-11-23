@@ -12,7 +12,11 @@ export function versionAssets() {
   const revisionsFile = new URL('./sprite-revisions.json', import.meta.url);
   const revisions = existsSync(revisionsFile) ? JSON.parse(readFileSync(revisionsFile, 'utf8')) : {};
   for (const pose of poses) {
-    if (revisions[pose.id]) pose.path = pose.path.split('?')[0] + '?v=' + revisions[pose.id];
+    if (revisions[pose.id]) {
+      const versioned = path => path.split('?')[0] + '?v=' + revisions[pose.id];
+      pose.path = versioned(pose.path);
+      if (pose.animation) pose.animation.frames = pose.animation.frames.map(versioned);
+    }
   }
   writeFileSync(new URL('catalog.js', root), prefix + JSON.stringify(poses) + ';\n');
   writeFileSync(new URL('catalog.json', root), JSON.stringify({ schemaVersion: 1, poses }) + '\n');
