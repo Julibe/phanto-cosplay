@@ -1,7 +1,7 @@
 'use strict';
 
 const categories = ['All poses', 'Reactions', 'Costumes', 'Animals', 'Holidays', 'Activities', 'Powers', 'Assets', 'Turnarounds', 'Animation'];
-const assetCategories = ['Ingredients', 'Cookies', 'Stars', 'GUI', 'Terrain', 'Textures', 'Vegetation'];
+const assetCategories = ['Ingredients', 'Cookies', 'Stars', 'Icons', 'GUI', 'Terrain', 'Textures', 'Vegetation'];
 const collections = {
   turnarounds: pose => pose.category === 'Turnarounds',
   emoji: pose => pose.category === 'Reactions',

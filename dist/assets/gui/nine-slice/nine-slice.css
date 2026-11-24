@@ -1,0 +1,6 @@
+.ui-book-paper-panel { border-style:solid; border-width:48px 48px 48px 48px; border-image:url("book-paper-panel.png") 192 192 192 192 fill / 1 / 0 stretch; }
+.ui-classic-game-panel { border-style:solid; border-width:48px 48px 48px 48px; border-image:url("classic-game-panel.png") 192 192 192 192 fill / 1 / 0 stretch; }
+.ui-forest-panel { border-style:solid; border-width:48px 48px 48px 48px; border-image:url("forest-panel.png") 192 192 192 192 fill / 1 / 0 stretch; }
+.ui-book-paper-button { border-style:solid; border-width:24px 36px 24px 36px; border-image:url("book-paper-button.png") 96 144 96 144 fill / 1 / 0 stretch; }
+.ui-classic-game-button { border-style:solid; border-width:24px 36px 24px 36px; border-image:url("classic-game-button.png") 96 144 96 144 fill / 1 / 0 stretch; }
+.ui-forest-button { border-style:solid; border-width:24px 36px 24px 36px; border-image:url("forest-button.png") 96 144 96 144 fill / 1 / 0 stretch; }

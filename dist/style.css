@@ -90,6 +90,8 @@ a { color: inherit }
 button, a { -webkit-tap-highlight-color: transparent }
 button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid #ffffff; outline-offset: 3px }
 [hidden] { display: none !important }
+.ui-kit-download { display: inline-block; margin-top: 12px; padding: 10px 16px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); font-size: .75rem; text-decoration: none }
+.ui-kit-download:hover, .ui-kit-download:focus-visible { background: var(--glass-deep); border-color: var(--accent) }
 h1, h2, h3, p { margin: 0 }
 h1, h2, h3 { font-family: var(--display); font-weight: 400 }
 .wrap { width: calc(100% - 56px); margin-inline: auto }

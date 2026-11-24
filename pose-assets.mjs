@@ -35,12 +35,12 @@ function pathFor(pose) {
   if (pose.id.startsWith('asset-')) {
     const [, type, ...parts] = pose.id.split('-');
     let category;
-    if (type === 'vegetation') category = parts[0];
+    if (type === 'vegetation' || type === 'icons') category = parts[0];
     else if (type === 'ingredients') category = ['chocolate-chips', 'secret-chocolate'].find(value => parts.join('-').startsWith(value + '-')) ?? parts[0];
-    else if (type === 'textures') category = ['spring', 'summer', 'autumn', 'winter', 'material'].includes(parts[0]) ? parts[0] : 'general';
+    else if (type === 'textures') category = ['spring', 'summer', 'autumn', 'winter', 'material', 'paper'].includes(parts[0]) ? parts[0] : 'general';
     else if (type === 'stars') category = parts[0];
     else if (type === 'cookies') category = 'baked';
-    else if (type === 'gui') category = parts.at(-1) === 'button' ? 'buttons' : ['health', 'inventory', 'progress', 'lock'].includes(parts[0]) ? parts[0] : 'rewards';
+    else if (type === 'gui') category = parts.slice(0, 2).join('-') === 'nine-slice' ? 'nine-slice' : ['panels', 'buttons'].includes(parts[0]) ? parts[0] : parts.at(-1) === 'button' ? 'buttons' : ['health', 'inventory', 'progress', 'lock'].includes(parts[0]) ? parts[0] : 'rewards';
     else category = /^(tree|bush|leaf)-/.test(parts.join('-')) ? 'flora' : /wall/.test(parts.join('-')) ? 'walls' : /^crates?-/.test(parts.join('-')) ? 'boxes' : /cube/.test(parts.join('-')) ? 'blocks' : 'props';
     const action = parts.join('-');
     const name = action.startsWith(category + '-') ? action.slice(category.length + 1) : action;
@@ -64,7 +64,7 @@ export function writeOrganizedPoses(poses) {
     if (ready && target.href !== previous.href && existsSync(previous)) throw new Error('Pose exists in both locations: ' + pose.id);
     if (!statSync(ready ? target : previous).size) throw new Error('Empty image: ' + pose.id);
     const name = pose.id.startsWith('emoji-activity-cookie-adventure-') ? pose.name.replace(/^Cookie Adventure\s+/i, '') : pose.name;
-    const assetTypes = { ingredients: 'Ingredients', cookies: 'Cookies', stars: 'Stars', gui: 'GUI', terrain: 'Terrain', textures: 'Textures', vegetation: 'Vegetation' };
+    const assetTypes = { ingredients: 'Ingredients', cookies: 'Cookies', stars: 'Stars', icons: 'Icons', gui: 'GUI', terrain: 'Terrain', textures: 'Textures', vegetation: 'Vegetation' };
     const assetDetails = pose.category === 'Assets' ? { assetType: assetTypes[path.split('/')[1]], assetGroup: path.split('/')[2] } : {};
     return { pose: { ...pose, name, path, ...assetDetails }, target, previous, ready };
   });

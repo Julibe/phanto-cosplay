@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "items": [
+    {
+      "name": "book-paper-panel",
+      "kind": "panel",
+      "style": "book-paper",
+      "image": "book-paper-panel.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "border": {
+        "top": 192,
+        "right": 192,
+        "bottom": 192,
+        "left": 192
+      },
+      "pieces": {
+        "top-left": "book-paper-panel-top-left.png",
+        "top": "book-paper-panel-top.png",
+        "top-right": "book-paper-panel-top-right.png",
+        "left": "book-paper-panel-left.png",
+        "center": "book-paper-panel-center.png",
+        "right": "book-paper-panel-right.png",
+        "bottom-left": "book-paper-panel-bottom-left.png",
+        "bottom": "book-paper-panel-bottom.png",
+        "bottom-right": "book-paper-panel-bottom-right.png"
+      }
+    },
+    {
+      "name": "classic-game-panel",
+      "kind": "panel",
+      "style": "classic-game",
+      "image": "classic-game-panel.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "border": {
+        "top": 192,
+        "right": 192,
+        "bottom": 192,
+        "left": 192
+      },
+      "pieces": {
+        "top-left": "classic-game-panel-top-left.png",
+        "top": "classic-game-panel-top.png",
+        "top-right": "classic-game-panel-top-right.png",
+        "left": "classic-game-panel-left.png",
+        "center": "classic-game-panel-center.png",
+        "right": "classic-game-panel-right.png",
+        "bottom-left": "classic-game-panel-bottom-left.png",
+        "bottom": "classic-game-panel-bottom.png",
+        "bottom-right": "classic-game-panel-bottom-right.png"
+      }
+    },
+    {
+      "name": "forest-panel",
+      "kind": "panel",
+      "style": "forest",
+      "image": "forest-panel.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "border": {
+        "top": 192,
+        "right": 192,
+        "bottom": 192,
+        "left": 192
+      },
+      "pieces": {
+        "top-left": "forest-panel-top-left.png",
+        "top": "forest-panel-top.png",
+        "top-right": "forest-panel-top-right.png",
+        "left": "forest-panel-left.png",
+        "center": "forest-panel-center.png",
+        "right": "forest-panel-right.png",
+        "bottom-left": "forest-panel-bottom-left.png",
+        "bottom": "forest-panel-bottom.png",
+        "bottom-right": "forest-panel-bottom-right.png"
+      }
+    },
+    {
+      "name": "book-paper-button",
+      "kind": "button",
+      "style": "book-paper",
+      "image": "book-paper-button.png",
+      "size": [
+        1024,
+        282
+      ],
+      "border": {
+        "top": 96,
+        "right": 144,
+        "bottom": 96,
+        "left": 144
+      },
+      "pieces": {
+        "top-left": "book-paper-button-top-left.png",
+        "top": "book-paper-button-top.png",
+        "top-right": "book-paper-button-top-right.png",
+        "left": "book-paper-button-left.png",
+        "center": "book-paper-button-center.png",
+        "right": "book-paper-button-right.png",
+        "bottom-left": "book-paper-button-bottom-left.png",
+        "bottom": "book-paper-button-bottom.png",
+        "bottom-right": "book-paper-button-bottom-right.png"
+      }
+    },
+    {
+      "name": "classic-game-button",
+      "kind": "button",
+      "style": "classic-game",
+      "image": "classic-game-button.png",
+      "size": [
+        1024,
+        255
+      ],
+      "border": {
+        "top": 96,
+        "right": 144,
+        "bottom": 96,
+        "left": 144
+      },
+      "pieces": {
+        "top-left": "classic-game-button-top-left.png",
+        "top": "classic-game-button-top.png",
+        "top-right": "classic-game-button-top-right.png",
+        "left": "classic-game-button-left.png",
+        "center": "classic-game-button-center.png",
+        "right": "classic-game-button-right.png",
+        "bottom-left": "classic-game-button-bottom-left.png",
+        "bottom": "classic-game-button-bottom.png",
+        "bottom-right": "classic-game-button-bottom-right.png"
+      }
+    },
+    {
+      "name": "forest-button",
+      "kind": "button",
+      "style": "forest",
+      "image": "forest-button.png",
+      "size": [
+        1024,
+        252
+      ],
+      "border": {
+        "top": 96,
+        "right": 144,
+        "bottom": 96,
+        "left": 144
+      },
+      "pieces": {
+        "top-left": "forest-button-top-left.png",
+        "top": "forest-button-top.png",
+        "top-right": "forest-button-top-right.png",
+        "left": "forest-button-left.png",
+        "center": "forest-button-center.png",
+        "right": "forest-button-right.png",
+        "bottom-left": "forest-button-bottom-left.png",
+        "bottom": "forest-button-bottom.png",
+        "bottom-right": "forest-button-bottom-right.png"
+      }
+    }
+  ]
+}
