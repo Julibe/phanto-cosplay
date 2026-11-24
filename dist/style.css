@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Comfortaa:wght@300..700&display=swap');
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
   --base: #1b1036;
-  --on-accent: #100b2d;
+  --on-accent: #ffffffeb;
   --surface: #ffffff1f;
   --accent: #ffffffe6;
   --ink: #ffffffeb;
@@ -17,7 +17,7 @@
   font: 16px "Comfortaa", system-ui, sans-serif;
   --scroll-thumb: #ffffff3d;
   --scroll-thumb-hover: #ffffff6b;
-  --scroll-track: #0f0a2440;
+  --scroll-track: #ffffff0d;
   scrollbar-gutter: stable;
 }
 * { box-sizing: border-box }
@@ -38,8 +38,8 @@
 ::-webkit-scrollbar-thumb:active { background-color: #ffffff8f }
 ::-webkit-scrollbar-corner { background: transparent }
 ::-webkit-scrollbar-button { display: none; width: 0; height: 0 }
-body[data-berry-portal] { --scroll-thumb: #ff8a9c4d; --scroll-thumb-hover: #ff8a9c8c; --scroll-track: #24091140 }
-body[data-assets-portal] { --base: #80500b; --scroll-thumb: #ffd76d66; --scroll-thumb-hover: #ffe6a1aa; --scroll-track: #40230240 }
+body[data-berry-portal] { --scroll-thumb: #ffffff3d; --scroll-thumb-hover: #ffffff6b; --scroll-track: #ffffff0d }
+body[data-assets-portal] { --base: #80500b; --scroll-thumb: #ffffff3d; --scroll-thumb-hover: #ffffff6b; --scroll-track: #ffffff0d }
 body[data-assets-portal]::before, body[data-assets-portal]::after {
   background: radial-gradient(ellipse at 30% 35%, #ffdc7180, transparent 65%), linear-gradient(145deg, #a56a15, #684003);
 }
@@ -114,11 +114,11 @@ main.wrap { padding-top: clamp(12px, 3vw, 32px) }
     linear-gradient(115deg, var(--glass-deep) 5%, var(--glass-tint) 100%);
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
-  box-shadow: inset 0 1px #ffffff1a, 0 18px 48px #100b2d44;
+  box-shadow: inset 0 1px #ffffff1a, 0 18px 48px #ffffff0a;
 }
 .hero-copy { position: relative; z-index: 2 }
 .hero h1 { font-size: clamp(4rem, 8vw, 7rem); line-height: .86; letter-spacing: -.018em }
-.hero h1 em { display: block; color: var(--accent); font-style: normal; text-shadow: 0 0 28px #100b2d42 }
+.hero h1 em { display: block; color: var(--accent); font-style: normal; text-shadow: 0 0 28px #ffffff12 }
 .hero p { max-width: 38ch; margin-top: 17px; color: #ffffffeb; font-size: .91rem; line-height: 1.65 }
 .hero .hero-slogan { color: var(--accent); font-weight: 700 }
 .hero .hero-intro { margin-top: 7px }
@@ -144,7 +144,7 @@ main.wrap { padding-top: clamp(12px, 3vw, 32px) }
 .hero-pose { position: relative; display: grid; place-items: center; min-width: 0; height: 100%; border: 0; padding: 0; background: transparent }
 .hero-pose img:not([src]) { visibility: hidden }
 .hero-pose:hover:not(:disabled) img { filter: drop-shadow(0 10px 14px var(--accent)) }
-.hero-art img { position: relative; display: block; width: 100%; height: 100%; min-height: 0; object-fit: contain; filter: drop-shadow(0 12px 15px #100b2d75) }
+.hero-art img { position: relative; display: block; width: 100%; height: 100%; min-height: 0; object-fit: contain; filter: drop-shadow(0 12px 15px #ffffff12) }
 .hero-art .center { z-index: 1 }
 .hero-art .side { transform: translateY(12px) }
 .spark { pointer-events: none; position: absolute; z-index: 1; color: #ffffffc4; font-size: 1.5rem }
@@ -166,7 +166,7 @@ main.wrap { padding-top: clamp(12px, 3vw, 32px) }
   border: 1px solid var(--line);
   border-radius: 21px;
   background: linear-gradient(165deg, var(--glass-glint), var(--glass-tint) 70%);
-  box-shadow: inset 0 1px #ffffff13, 0 8px 20px #100b2d3b;
+  box-shadow: inset 0 1px #ffffff13, 0 8px 20px #ffffff08;
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
   transition: border-color .2s, background-color .2s;
@@ -209,8 +209,8 @@ main.wrap { padding-top: clamp(12px, 3vw, 32px) }
   left: 9px;
   padding: 4px 10px 3px;
   border-radius: 999px;
-  background: linear-gradient(135deg, #d63f8c, #7a3fd6);
-  box-shadow: 0 2px 10px #a66bff80, inset 0 1px #ffffff59;
+  background: var(--glass-deep);
+  box-shadow: 0 2px 10px #ffffff1f, inset 0 1px #ffffff59;
   color: #fff;
   font: 1rem/1 var(--display);
   letter-spacing: .06em;
@@ -236,8 +236,8 @@ main.wrap { padding-top: clamp(12px, 3vw, 32px) }
 }
 .anim-tag i { font-size: .7rem }
 .anim-tag[hidden] { display: none }
-body[data-berry-portal] .new-tag { background: linear-gradient(135deg, #c8501a, #c41e44); box-shadow: 0 2px 10px #ff3d5e80, inset 0 1px #ffffff59 }
-.picture:is(:hover,:focus-visible) .copy-mark { background: var(--accent); color: var(--on-accent) }
+
+.picture:is(:hover,:focus-visible) .copy-mark { background: #ffffff3d; color: var(--ink) }
 .card-body {
   display: flex;
   flex-direction: column;
@@ -301,10 +301,10 @@ body[data-berry-portal] .new-tag { background: linear-gradient(135deg, #c8501a, 
   padding: 5px;
   border: 1px solid #ffffff57;
   border-radius: 999px;
-  background: #100b2d73;
-  box-shadow: inset 0 1px #ffffff26, 0 10px 35px #100b2d5c;
-  -webkit-backdrop-filter: var(--glass-blur);
-  backdrop-filter: var(--glass-blur);
+  background: var(--glass-tint);
+  box-shadow: inset 0 1px #ffffff26, 0 10px 35px #ffffff0a;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
 }
 .hero::before, .card::before, .search-dock::before, .filters::before {
   content: "";
@@ -313,9 +313,10 @@ body[data-berry-portal] .new-tag { background: linear-gradient(135deg, #c8501a, 
   z-index: -1;
   pointer-events: none;
   border-radius: inherit;
-  background: linear-gradient(135deg, #ffffff38, transparent 63%, #100b2d22);
+  background: linear-gradient(135deg, #ffffff38, transparent 63%, #ffffff08);
   mix-blend-mode: soft-light;
 }
+.search-dock::before { -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur) }
 .search { grid-column: 1; grid-row: 1; min-height: 50px; padding: 2px 3px 2px 12px; background: #ffffff0a; gap: 7px }
 .search input { width: 100%; padding-block: 8px; border: 0; background: none }
 .search input::-webkit-search-cancel-button { appearance: none }
@@ -368,15 +369,14 @@ kbd { color: var(--muted); border: 1px solid var(--line); border-radius: 5px; pa
   overscroll-behavior: contain;
   border-radius: 19px;
   border: 1px solid var(--line);
-  /* A nested panel cannot blur the page through its parent dock. Use a lighter portal tint. */
-  background: linear-gradient(#ffffff12, #ffffff05), #60339ce6;
+  background: var(--glass-deep);
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
-  box-shadow: 0 8px 25px #100b2d96;
+  box-shadow: 0 8px 25px #ffffff0a;
 }
 .categories, .selects { display: flex; flex-wrap: wrap; gap: 7px }
 .categories button,.selects select { min-height: 42px; padding: 6px 11px; border: 1px solid var(--line); border-radius: 11px; background: #ffffff1f; font-size: .75rem }
-.categories button[aria-pressed=true] { color: #2b1447; background: #f4eaff; border-color: #ffffffb3; font-weight: 700 }
+.categories button[aria-pressed=true] { color: var(--ink); background: #ffffff3d; border-color: #ffffffb3; font-weight: 700 }
 .selects select {
   flex: 1 1 7.5rem;
   min-width: 0;
@@ -417,7 +417,7 @@ kbd { color: var(--muted); border: 1px solid var(--line); border-radius: 5px; pa
   border: 0;
   background: none;
   color: var(--ink);
-  color-scheme: dark;
+  color-scheme: light;
   font: inherit;
 }
 .date-range input:focus-visible { outline: none }
@@ -426,11 +426,10 @@ kbd { color: var(--muted); border: 1px solid var(--line); border-radius: 5px; pa
 #clear-dates { width: 42px; height: 42px; flex: none; border: 1px solid #ffffff30; border-radius: 50%; background: #ffffff1f; color: var(--muted) }
 #clear-dates:hover { background: #ffffff2e; color: var(--ink) }
 #clear-dates[hidden] { display: none }
-.selects option { background: #1d1730; color: var(--ink); font-weight: 400 }
+.selects option { background: #fff; color: #666; font-weight: 400 }
 .selects option[value=""] { color: var(--muted) }
-body[data-berry-portal] .selects option { background: #2a1016 }
-body[data-berry-portal] .filters { background: linear-gradient(#ffffff12, #ffffff05), #8c2544e6 }
-body[data-assets-portal] .filters { background: linear-gradient(#ffffff12, #ffffff05), #9a591ce6 }
+
+
 .toast {
   position: fixed;
   z-index: 11;
@@ -460,7 +459,7 @@ dialog {
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
 }
-dialog::backdrop { background: #100b2d67; backdrop-filter: blur(14px) }
+dialog::backdrop { background: #ffffff12; -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px) }
 .dialog-top { display: flex; align-items: center; justify-content: space-between; gap: 10px }
 .dialog-top h2 { font-size: 1.85rem }
 .dialog-top button { width: 42px; height: 42px; border-radius: 50%; background: #ffffff20 }
@@ -495,7 +494,7 @@ dialog::backdrop { background: #100b2d67; backdrop-filter: blur(14px) }
 .editor-frames button:hover { border-color: var(--accent) }
 .editor-frames button[aria-pressed="true"] { border-color: var(--accent); background: #ffffff3d; color: var(--ink); box-shadow: inset 0 0 0 1px var(--accent) }
 .editor-output { margin-top: 8px }
-.editor-output #editor-copy { background: var(--accent); color: var(--on-accent); font-weight: 800 }
+.editor-output #editor-copy { background: #ffffff3d; color: var(--ink); font-weight: 800 }
 #editor-status { min-height: 1.5em; margin-top: 9px; text-align: center }
 
 @media (max-width: 940px) {
@@ -695,9 +694,10 @@ dialog[open] { animation: panel-enter 180ms ease-out both }
   padding: 7px;
   border: 1px solid var(--line);
   border-radius: 999px;
-  background: #291c45ed;
-  box-shadow: 0 8px 24px #0003;
-  backdrop-filter: blur(20px);
+  background: var(--glass-deep);
+  box-shadow: 0 8px 24px #ffffff0a;
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -714,8 +714,7 @@ dialog[open] { animation: panel-enter 180ms ease-out both }
 .portal-menu button { display: grid; justify-items: center; gap: 3px; width: 74px; padding: 5px; border: 0; border-radius: 999px; font-size: .65rem }
 .portal-menu button:hover, .portal-menu button:focus-visible { background: var(--surface) }
 .portal-menu img { object-fit: contain }
-body[data-assets-portal] .portal-menu { background: #684003ed }
-body[data-berry-portal] .portal-menu { background: #400f22ed }
+
 #assets-portal img, #phanto-portal img { width: 100%; height: 100%; object-fit: contain }
 .portal-swap, .portal-art { display: grid; place-items: center }
 .portal-art { width: 44px; height: 44px }
