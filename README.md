@@ -2,6 +2,8 @@
 
 Dress for any occasion.
 
+**Start with [HANDOFF.md](HANDOFF.md) before making changes.** It is the authority for current status, user decisions, restrictions and the roadmap; this README is an operational reference. Historical progress/backlog snapshots are under `docs/history/`.
+
 A spooky-cute picker for Phanto’s reactions, costumes, and poses. Search names, characters, franchises, emotions, or keyboard emoticons such as `:-)`, `<3`, and `xD`.
 
 ## Run locally
@@ -36,7 +38,7 @@ The site also serves a read-only JSON API under `/api/`. It is plain static JSON
 | `/api/poses.json` | Every pose with full details |
 | `/api/poses/{id}.json` | One pose. Old IDs from `pose-renames.json` also resolve here; the response's `id` is the current ID and `requestedId` is the one you asked for |
 | `/api/latest.json` | The 50 newest poses |
-| `/api/categories.json` | Every category (Reactions, Costumes, Activities, Holidays, Animals, Turnarounds, Animated) with pose counts, emotions, franchise types and collections |
+| `/api/categories.json` | Every category (Reactions, Costumes, Activities, Holidays, Animals, Powers, Assets, Turnarounds, Animation) with pose counts, emotions, franchise types and collections |
 | `/api/categories/{id}.json` | One category with all its poses, newest first, for example `/api/categories/costumes.json` |
 | `/api/collections.json` | Every collection (one per image folder, such as `game-pokemon` or `emoji-joy`) with its name, type, categories, pose count and cover image |
 | `/api/collections/{id}.json` | One collection with all its poses, for example `/api/collections/game-pokemon.json` |
@@ -51,7 +53,9 @@ URLs in the API point at `https://cosplay.julibe.cloud/` (`siteUrl` in `api.mjs`
 
 ## Update the catalog
 
-Save the individual PNG sprites in the sibling `squirlce-emojis/` directory. Put each newly converted WebP in `dist/poses/` with the same filename stem, then run `node catalog.mjs` to regenerate the catalog and move the assets into their prefix folders.
+**Do not run `node catalog.mjs` on a fresh clone until the external source library is restored; absent source PNGs can remove entries.**
+
+Save the individual PNG sprites in the workspace `../squirlce/squirlce-emojis/` directory (outside this Git repository). Put each newly converted WebP in `dist/poses/` with the same filename stem, then run `node catalog.mjs` to regenerate the catalog and move the assets into their prefix folders.
 
 For example, `game-persona-5-joker-posing.webp` is served at `/game/persona-5/game-persona-5-joker-posing.webp`, and `emoji-anxiety-worried.webp` is served at `/emoji/anxiety/emoji-anxiety-worried.webp`. The catalog records each image path. Shared `?pose=` links use IDs and continue to work across file moves.
 
@@ -71,17 +75,19 @@ When renaming an existing sprite, record the old stem under the new stem in `pos
 
 ## Animated poses
 
+See [animations/README.md](animations/README.md) and [HANDOFF.md](HANDOFF.md) for current grid/rotation requirements. Existing rotations use `preserveCanvas: true`, 24 playback frames and body-aligned scale; do not apply generic trimming to those sources. Star half-turns use 12 frames and remain in Assets.
+
 Animated poses start as a horizontal frame strip: one PNG with the frames side by side, each frame square (for example 8 frames of 640×640 in a 5120×640 strip). To add one:
 
 1. Drop the strip in `animations/`, for example `animations/wave.png`.
 2. Optionally give it a name, emotion, search keywords, speed or frame count in `animations/animations.json`, keyed by the file name in lowercase with `_` as `-`: `"wave": { "name": "Wave", "emotion": "Joy", "keywords": "hello hi bye", "fps": 10 }`. Without an entry the name comes from the file name, it plays at 10 fps, and the frame count is width ÷ height.
 3. Run `npm ci` once, then `npm run build:animations`.
 
-The build trims every frame to one shared bounding box (so the motion stays aligned), fits it into a 320 px square like the other poses, and writes `dist/animated/animated-<name>.webp` (looping animated WebP) plus `dist/animated/frames/animated-<name>/animated-<name>-frame-NN.webp`. It adds each strip to the catalog as an **Animated** pose with the ID `animated-<name>`, and rebuilds `catalog.json` and the JSON API. Rebuilding the catalog with `node catalog.mjs` keeps animated poses, since they are merged back in from `animations/`.
+For unaligned strips the build uses a shared bounding box and fits it into a 320 px square; configured `preserveCanvas` grids keep their authored canvas and alignment. It writes `dist/animated/animated-<name>.webp` (looping animated WebP) plus `dist/animated/frames/animated-<name>/animated-<name>-frame-NN.webp`. It adds each strip to the catalog as an **Animation** pose (unless configured as an Assets animation) with the ID `animated-<name>`, and rebuilds `catalog.json` and the JSON API. Rebuilding the catalog with `node catalog.mjs` keeps animated poses, since they are merged back in from `animations/`.
 
 In the app, animated poses play in the gallery and carry an **Animated** tag. The card's download button saves the animated WebP. The film button opens the pose options, where you can pick **All** (the animation) or any single frame, then download it; a single frame can also be rotated, flipped and copied. Copying an animation copies its first frame, since clipboards hold still images.
 
-In the API, animated poses have `category: "Animated"` and an `animation` object with `fps`, `frameDelay` (ms), `frameCount` and `frames` (each with `index`, `url`, `path`). Other poses have `"animation": null`.
+In the API, animated poses have `category: "Animation"` (or `"Assets"` for asset animations) and an `animation` object with `fps`, `frameDelay` (ms), `frameCount` and `frames` (each with `index`, `url`, `path`). Other poses have `"animation": null`.
 
 ## Release dates
 
