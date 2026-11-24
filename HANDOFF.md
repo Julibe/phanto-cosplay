@@ -1,6 +1,6 @@
 # Phanto project handoff
 
-**Single source of truth for project continuity. Last reviewed: 2026-11-24 (America/Bogota).**
+**Single source of truth for project continuity. Last reviewed: 2026-11-24 (America/Bogota); offline fallback update same day.**
 
 Every AI agent must read this file before changing the project and update it after significant implementation. The user's current instructions override this document. Specialized reference documents explain mechanisms; they do not override the decisions here.
 
@@ -217,7 +217,7 @@ Use `rg` for searches; inspect changes before committing. Avoid noisy CRLF warni
 
 ## 9. Known issues and limits
 
-- **Offline fallback remains dark:** inline HTML in `dist/sw.js` still has `background:#100b2d` and a pink link. This was found during documentation audit; white-glass claim is incomplete for that state. Fix separately, preserving reconnect behavior.
+- Offline fallback (`dist/sw.js`) now uses the app's animated colored backdrop with a translucent white glass card, white-opacity text and a white pill link; reconnect behavior (network-first navigation, 503, `no-store`, `./` link) is unchanged. Checked with `node --check` and a headless render of the inline HTML at desktop and mobile widths only; an actual offline navigation through an installed service worker was not exercised.
 - Recent white glass and dock blur-layer changes are implemented but need authorized rendered desktop/mobile verification. Native browser controls and stacking/backdrop-root behavior may vary. Do not claim universal visual validation.
 - Approved older sprites still have inconsistent Phanto body shapes/materials. Inclusion in the app is not proof they meet today's art rules. Preserve them unless specifically asked to correct/remove them. Current toy crops derive from user-approved sheets, including unusual preexisting package/bottle details.
 - No complete fresh all-sheet/crop reconciliation or up-to-date duplicate audit was performed in this handoff. Historical review files contain decisions and unresolved candidates; never automatically deduplicate.
@@ -232,7 +232,6 @@ Use `rg` for searches; inspect changes before committing. Avoid noisy CRLF warni
 
 | Priority | Work | Complexity / acceptance |
 | --- | --- | --- |
-| P0 | White-glass offline fallback | Small; remove dark fill without breaking reconnect; separate authorized implementation |
 | P0 | Authorized UI regression review | Medium; all portals, nested blur, native controls, one row/six shortcuts, mobile, hover swaps, sharing/editor |
 | P1 | Crop/source-to-catalog reconciliation | Large; compare all grids, preserve every approved duplicate/variant, export only missing cells and inspect previews |
 | P1 | Source-library backup/portability | Medium; document or package complete source restore without changing existing paths |
@@ -270,6 +269,8 @@ Historical requested backlog includes separate 5x5 TV franchise sheets, Mario pa
 | `1713ae62` | Restored one row with six Assets shortcuts; Icons/Terrain/Toys stay in filters |
 | `58524ad0` | Interim lighter colored filter panel; **superseded** by all-white surface direction |
 | `bad91335` | White/opacity surfaces throughout main UI, lighter backdrop/scrollbars/native controls, dock blur on pseudo-layer; offline HTML omission remains |
+| `1fbfa3b1` | HANDOFF.md, AGENTS.md, `docs/history/` committed; README/PROGRESS point here |
+| child of `1fbfa3b1` | Offline fallback page moved to animated backdrop + white glass; P0 roadmap item closed |
 
 No exact historical commit or count should override present files. This document was created after these changes; future authors add their own significant changes and verification.
 
