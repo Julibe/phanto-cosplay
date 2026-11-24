@@ -368,15 +368,15 @@ kbd { color: var(--muted); border: 1px solid var(--line); border-radius: 5px; pa
   overscroll-behavior: contain;
   border-radius: 19px;
   border: 1px solid var(--line);
-  /* Nested inside the blurred dock, so its own blur cannot apply: white glass over the violet base keeps it readable */
-  background: linear-gradient(#ffffff1f, #ffffff1f), #1b1036f0;
+  /* A nested panel cannot blur the page through its parent dock. Use a lighter portal tint. */
+  background: linear-gradient(#ffffff12, #ffffff05), #60339ce6;
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
   box-shadow: 0 8px 25px #100b2d96;
 }
 .categories, .selects { display: flex; flex-wrap: wrap; gap: 7px }
 .categories button,.selects select { min-height: 42px; padding: 6px 11px; border: 1px solid var(--line); border-radius: 11px; background: #ffffff1f; font-size: .75rem }
-.categories button[aria-pressed=true] { color: var(--on-accent); background: var(--accent); font-weight: 700 }
+.categories button[aria-pressed=true] { color: #2b1447; background: #f4eaff; border-color: #ffffffb3; font-weight: 700 }
 .selects select {
   flex: 1 1 7.5rem;
   min-width: 0;
@@ -429,7 +429,8 @@ kbd { color: var(--muted); border: 1px solid var(--line); border-radius: 5px; pa
 .selects option { background: #1d1730; color: var(--ink); font-weight: 400 }
 .selects option[value=""] { color: var(--muted) }
 body[data-berry-portal] .selects option { background: #2a1016 }
-body[data-berry-portal] .filters { background: linear-gradient(#ffffff1f, #ffffff1f), #240911f0 }
+body[data-berry-portal] .filters { background: linear-gradient(#ffffff12, #ffffff05), #8c2544e6 }
+body[data-assets-portal] .filters { background: linear-gradient(#ffffff12, #ffffff05), #9a591ce6 }
 .toast {
   position: fixed;
   z-index: 11;
