@@ -55,6 +55,7 @@ export function buildApi(poses, root = new URL('./dist/', import.meta.url)) {
       id: pose.id,
       name: pose.name,
       category: pose.category,
+      ...(pose.category === 'Assets' ? { assetType: pose.assetType, assetGroup: pose.assetGroup } : {}),
       emotion: pose.emotion || null,
       franchise: pose.franchise || null,
       franchiseType: pose.franchiseType || null,

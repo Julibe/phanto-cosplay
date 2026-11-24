@@ -63,7 +63,9 @@ export function writeOrganizedPoses(poses) {
     if (ready && target.href !== previous.href && existsSync(previous)) throw new Error('Pose exists in both locations: ' + pose.id);
     if (!statSync(ready ? target : previous).size) throw new Error('Empty image: ' + pose.id);
     const name = pose.id.startsWith('emoji-activity-cookie-adventure-') ? pose.name.replace(/^Cookie Adventure\s+/i, '') : pose.name;
-    return { pose: { ...pose, name, path }, target, previous, ready };
+    const assetTypes = { ingredients: 'Ingredients', cookies: 'Cookies', stars: 'Stars', gui: 'GUI', terrain: 'Terrain', textures: 'Textures', vegetation: 'Vegetation' };
+    const assetDetails = pose.category === 'Assets' ? { assetType: assetTypes[path.split('/')[1]], assetGroup: path.split('/')[2] } : {};
+    return { pose: { ...pose, name, path, ...assetDetails }, target, previous, ready };
   });
   const byId = new Map(moves.map(({ pose }) => [pose.id, pose.path]));
   for (const { pose } of moves) {

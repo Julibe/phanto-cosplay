@@ -1,6 +1,7 @@
 'use strict';
 
 const categories = ['All poses', 'Reactions', 'Costumes', 'Animals', 'Holidays', 'Activities', 'Powers', 'Assets', 'Turnarounds', 'Animation'];
+const assetCategories = ['Ingredients', 'Cookies', 'Stars', 'GUI', 'Terrain', 'Textures', 'Vegetation'];
 const collections = {
   turnarounds: pose => pose.category === 'Turnarounds',
   emoji: pose => pose.category === 'Reactions',
@@ -91,7 +92,7 @@ const newestRelease = Math.max(0, ...window.phantoCatalog.map(pose => Date.parse
 const newSince = newestRelease - newWindowHours * 3600e3;
 const poses = window.phantoCatalog.map(pose => {
   const name = normalize(pose.name);
-  const text = normalize(['Phanto', pose.id, pose.legacyId, pose.previousId, pose.name, pose.category, pose.franchise,
+  const text = normalize(['Phanto', pose.id, pose.legacyId, pose.previousId, pose.name, pose.category, pose.assetType, pose.assetGroup, pose.franchise,
     pose.franchiseType, pose.tags, pose.emotion].filter(Boolean).join(' '));
   const aliases = poseKeywords.filter(([pattern]) => pattern.test(text)).map(([, words]) => words);
   const hasBerry = pose.id.startsWith('berry-') || pose.id.startsWith('animated-berry-');
@@ -376,7 +377,8 @@ node('editor-download').addEventListener('click', async () => {
 const viewParameters = {
   emotion: 'emotion',
   franchise: 'franchise',
-  type: 'franchise-type'
+  type: 'franchise-type',
+  group: 'asset-group'
 };
 let berryPortal = false;
 let assetsPortal = false;
@@ -437,13 +439,21 @@ function setPortal(active, assets = false) {
     button.hidden = active || assets ? !portalPoses.some(collections[key]) : key === 'turnarounds';
   }
   for (const button of node('categories').children) {
-    button.hidden = button.textContent !== categories[0] && !portalPoses.some(pose => pose.category === button.textContent);
+    const value = button.dataset.category;
+    button.textContent = value === categories[0] && assets ? 'All assets' : value;
+    button.title = button.textContent;
+    button.hidden = value !== categories[0] && !portalPoses.some(pose => (assets ? pose.assetType : pose.category) === value);
   }
   for (const [id, key] of [['franchise', 'franchise'], ['franchise-type', 'franchiseType'], ['emotion', 'emotion']]) {
     const select = node(id);
+    select.hidden = assets;
     const values = [...new Set(portalPoses.map(pose => pose[key]).filter(Boolean))].sort((a, b) => a.localeCompare(b));
     select.replaceChildren(select.options[0], ...values.map(value => new Option(value, value)));
   }
+  const assetGroup = node('asset-group');
+  const groups = [...new Set(portalPoses.map(pose => pose.assetGroup).filter(Boolean))].sort();
+  assetGroup.replaceChildren(assetGroup.options[0], ...groups.map(value => new Option(value.replace(/\b\w/g, letter => letter.toUpperCase()).replaceAll('-', ' '), value)));
+  assetGroup.hidden = !assets;
 }
 
 function currentViewParams() {
@@ -602,7 +612,8 @@ function showMore(limit = pageSize) {
     card.querySelector('h3').textContent = pose.name;
     card.querySelector('.new-tag').hidden = !pose.isNew;
     card.querySelector('.anim-tag').hidden = !pose.animation;
-    const subtitle = [pose.franchiseType, pose.franchise].filter(Boolean).join(' · ') || pose.emotion || pose.category;
+    const subtitle = assetsPortal ? [pose.assetType, pose.assetGroup?.replaceAll('-', ' ').replace(/\b\w/g, letter => letter.toUpperCase())].filter(Boolean).join(' · ')
+      : [pose.franchiseType, pose.franchise].filter(Boolean).join(' · ') || pose.emotion || pose.category;
     const released = node('sort').value && pose.released ? releaseDate.format(new Date(pose.released)) : '';
     card.querySelector('p').textContent = released ? subtitle + ' · ' + released : subtitle;
     const download = card.querySelector('a');
@@ -681,7 +692,7 @@ function restoreView() {
   const requestedCollection = params.get('collection');
   collection = suggestions.some(button => !button.hidden && button.dataset.collection === requestedCollection) ? requestedCollection : '';
   const requestedCategory = params.get('category') === 'Animated' ? 'Animation' : params.get('category');
-  category = categories.includes(requestedCategory) ? requestedCategory : categories[0];
+  category = (assetsPortal ? assetCategories : categories).includes(requestedCategory) ? requestedCategory : categories[0];
   node('sort').value = ['newest', 'oldest'].includes(params.get('sort')) ? params.get('sort') : '';
   for (const [key, id] of [['from', 'released-from'], ['to', 'released-to']]) {
     node(id).value = /^\d{4}-\d{2}-\d{2}$/.test(params.get(key) ?? '') ? params.get(key) : '';
@@ -707,6 +718,12 @@ function narrowFranchiseOptions(type) {
 
 function render() {
   const raw = search.value.trim().toLowerCase();
+  const availableGroups = new Set(poses.filter(pose => poseInPortal(pose) && (category === categories[0] || pose.assetType === category)).map(pose => pose.assetGroup));
+  const assetGroupSelect = node('asset-group');
+  for (const option of [...assetGroupSelect.options].slice(1)) {
+    option.hidden = option.disabled = !availableGroups.has(option.value);
+  }
+  if (assetGroupSelect.value && !availableGroups.has(assetGroupSelect.value)) assetGroupSelect.value = '';
   const franchiseType = node('franchise-type').value;
   narrowFranchiseOptions(franchiseType);
   let releasedFrom = node('released-from').value;
@@ -714,7 +731,7 @@ function render() {
   if (releasedFrom && releasedTo && releasedFrom > releasedTo) [releasedFrom, releasedTo] = [releasedTo, releasedFrom];
   node('clear-dates').hidden = !releasedFrom && !releasedTo;
   const filtered = category !== categories[0] || Boolean(node('emotion').value || node('franchise').value || franchiseType
-    || releasedFrom || releasedTo);
+    || assetGroupSelect.value || releasedFrom || releasedTo);
   clearSearch.hidden = !search.value;
   filterToggle.toggleAttribute('data-filtered', filtered);
   filterToggle.setAttribute('aria-label', filtered ? 'Filters, active' : 'Filters');
@@ -733,7 +750,8 @@ function render() {
     if (linkedPose) return pose.id === linkedPose;
     return poseInPortal(pose)
       && (!collection || collections[collection](pose))
-      && (category === categories[0] || pose.category === category)
+      && (category === categories[0] || (assetsPortal ? pose.assetType : pose.category) === category)
+      && (!assetsPortal || !assetGroupSelect.value || pose.assetGroup === assetGroupSelect.value)
       && (!node('emotion').value || pose.emotion === node('emotion').value)
       && (!node('franchise').value || pose.franchise === node('franchise').value)
       && (!franchiseType || pose.franchiseType === franchiseType)
@@ -754,10 +772,10 @@ function render() {
       direction * (first.released ?? '').localeCompare(second.released ?? '') || first.name.localeCompare(second.name));
   }
   for (const button of node('categories').children) {
-    button.setAttribute('aria-pressed', String(!linkedPose && button.textContent === category));
+    button.setAttribute('aria-pressed', String(!linkedPose && button.dataset.category === category));
   }
   const collectionLabel = suggestions.find(button => button.dataset.collection === collection)?.textContent;
-  const portalLabel = assetsPortal ? 'Assets' : berryPortal && category === categories[0] ? 'Berry poses' : category;
+  const portalLabel = assetsPortal ? category === categories[0] ? 'Assets' : category : berryPortal && category === categories[0] ? 'Berry poses' : category;
   node('heading').textContent = linkedPose ? 'Shared pose' : collectionLabel || portalLabel;
   node('count').textContent = matches.length.toLocaleString() + (assetsPortal
     ? (matches.length === 1 ? ' asset' : ' assets') : (matches.length === 1 ? ' pose' : ' poses'));
@@ -771,10 +789,11 @@ function clearLinkedPose() {
   linkedPose = null;
 }
 
-for (const label of categories) {
+for (const label of [...categories, ...assetCategories]) {
   const button = document.createElement('button');
   button.type = 'button';
   button.textContent = label;
+  button.dataset.category = label;
   button.title = label;
   button.addEventListener('click', () => {
     clearLinkedPose();
@@ -790,6 +809,7 @@ for (const id of Object.values(viewParameters)) {
   const select = node(id);
   select.addEventListener('change', () => {
     clearLinkedPose();
+    if (id === 'asset-group') { render(); return; }
     if (select.value) {
       collection = '';
       category = id === 'emotion' ? 'Reactions' : categories[0];
