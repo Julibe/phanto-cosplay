@@ -93,6 +93,35 @@ Keep the existing misspellings `squirlce` and `squicle-grids` in filesystem path
 
 ## 6. Design guidelines and non-negotiable rules
 
+### PHANTO DESIGN — MUST RULES (read before any artwork work)
+
+**These are mandatory acceptance criteria, not suggestions. The user has repeatedly had to correct these same failures. Do not spend credits or import another version without checking them.**
+
+| MUST | What to verify / what has repeatedly gone wrong |
+| --- | --- |
+| **1:1 BODY** | Main body width equals main body height, excluding tail, flippers, props, headphones and costume pieces. A 1:1 canvas or square crop does NOT make a tall character correct. Inspect the underlying body even when a prop covers it. Never stretch the torso to fit accessories. |
+| **SQUIRCLE** | A rounded-square three-dimensional body with a broad top/base, upright sides and rounded corners. NOT a circle, sphere, egg, pear, dome or vertical rectangle. “Cute” does not justify changing the silhouette. |
+| **MATTE 3D** | Keep Phanto's original soft matte dimensional finish and diffuse shading. NOT shiny, glossy, polished plastic/vinyl, wet, flat illustration, felt or a sewn cushion. Plush props may be plush; Phanto does not inherit their material. |
+| **EXACTLY ONE TAIL** | Normal front-facing art has ONE tail on TOP. No second tail at the bottom, rear or side. No extra body bumps masquerading as feet or a tail. Approved historical rotation variants are preservation exceptions only; each frame still has exactly one tail. |
+| **TWO EYES** | Exactly two eyes, never three. Expression changes must not leave an old eye behind. Back-facing rotation views have no face; ordinary perspective may naturally occlude a feature, not duplicate it. |
+| **TWO FLIPPERS** | Two small fingerless side flippers. No human hands, fingers, legs or feet added. A flipper must not turn into a lower-body protrusion. |
+| **ORIGINAL IDENTITY** | Preserve approved face, pale blush/ivory color, blush marks, proportions and distinctive features. Use the user's original Phanto reference, not an accumulating chain of rejected generated variants. A costume or interaction does not authorize a redesign. |
+| **5x5 SHEET** | General sprite sheets are FIVE columns by FIVE rows, 25 square cells on a square canvas. Never silently substitute 2x3, 2x2 or a strip. Partial sheets leave unused cells empty; do not invent extra designs to fill them. Explicit user exceptions, such as Mario pairs and existing animation strips, remain exceptions. |
+| **REAL TRANSPARENCY** | Check alpha, not the preview color. No painted black/white/checkerboard background, screenshot UI, haze or ground fragments. Preserve intended translucent powers without blindly thresholding them away. |
+| **COMPLETE CROPS** | Keep all of each character and its props, centered with safe margins. No clipped tails/heads/objects, neighboring slivers or resizing that deforms the body. |
+
+**Required check before presenting artwork as corrected or adding it to the app:**
+
+1. Compare with the original approved reference, not just the prompt text. Inspect every Phanto individually at useful size.
+2. Check the main body's width and height and its squircle silhouette separately. Do not count the top tail or accessories in the body bounds. Do not claim a numerical ratio was measured if it was only inspected visually.
+3. Count eyes, flippers and tails; inspect the bottom and back specifically for extra tails or foot-like bumps.
+4. Check matte 3D shading and original identity. “3D” in a generation prompt is not proof that the render matches Phanto.
+5. Check sheet dimensions/layout, actual alpha, full silhouettes and every crop. For rotations also verify a constant main-body scale/pivot, without per-frame trimming.
+6. If a rule fails, do not label the result “fixed,” “approved” or complete. State the actual issue and correct only that issue within the authorized scope. Do not repeatedly generate speculative alternatives to hide a failure.
+7. Explicit user approval to import a particular existing sheet is not permission to delete older variants, redesign props, or use that imperfect sheet as the new canonical Phanto reference. Preserve the approved import while keeping these rules for future work.
+
+**Repeated failure pattern to avoid:** round body → tall rectangle → shiny plastic → extra tail → wrong grid → unnecessary regeneration. Fixing one property must not break another. Keep the full checklist active on every revision, including monkey, puppy, car, bottle, VR and power interactions.
+
 ### App interface
 
 Latest explicit direction: **ALL UI surfaces are white with opacity and backdrop blur. Nothing should be a dark panel.** This applies to cards, dock, filters, portal chooser, dialogs, inputs, hover/selected states and scrollbar styling. Colored animated page backgrounds remain; a tinted scene behind white glass is not permission to add dark or opaque colored surface fills.
