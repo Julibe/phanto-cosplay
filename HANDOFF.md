@@ -270,7 +270,7 @@ Historical requested backlog includes separate 5x5 TV franchise sheets, Mario pa
 | `58524ad0` | Interim lighter colored filter panel; **superseded** by all-white surface direction |
 | `bad91335` | White/opacity surfaces throughout main UI, lighter backdrop/scrollbars/native controls, dock blur on pseudo-layer; offline HTML omission remains |
 | `1fbfa3b1` | HANDOFF.md, AGENTS.md, `docs/history/` committed; README/PROGRESS point here |
-| child of `1fbfa3b1` | Offline fallback page moved to animated backdrop + white glass; P0 roadmap item closed |
+| `00c129c3` | Offline fallback page moved to animated backdrop + white glass; P0 roadmap item closed |
 
 No exact historical commit or count should override present files. This document was created after these changes; future authors add their own significant changes and verification.
 
