@@ -1,7 +1,7 @@
 'use strict';
 
 const categories = ['All poses', 'Reactions', 'Costumes', 'Animals', 'Holidays', 'Activities', 'Powers', 'Assets', 'Turnarounds', 'Animation'];
-const assetCategories = ['Ingredients', 'Cookies', 'Stars', 'Icons', 'GUI', 'Terrain', 'Textures', 'Vegetation'];
+const assetCategories = ['Ingredients', 'Cookies', 'Stars', 'Icons', 'GUI', 'Terrain', 'Textures', 'Vegetation', 'Toys'];
 const collections = {
   turnarounds: pose => pose.category === 'Turnarounds',
   emoji: pose => pose.category === 'Reactions',
@@ -438,6 +438,8 @@ function setPortal(active, assets = false) {
     const key = button.dataset.collection;
     button.hidden = active || assets ? !portalPoses.some(collections[key]) : key === 'turnarounds';
   }
+  document.querySelector('.suggestions').hidden = assets;
+  node('asset-shortcuts').hidden = !assets;
   for (const button of node('categories').children) {
     const value = button.dataset.category;
     button.textContent = value === categories[0] && assets ? 'All assets' : value;
@@ -738,6 +740,9 @@ function render() {
   for (const button of suggestions) {
     button.setAttribute('aria-pressed', String(!linkedPose && button.dataset.collection === collection));
   }
+  for (const button of document.querySelectorAll('[data-asset-category]')) {
+    button.setAttribute('aria-pressed', String(!linkedPose && assetsPortal && category === button.dataset.assetCategory));
+  }
   const normalized = normalize(Object.hasOwn(shortcuts, raw) ? shortcuts[raw] : raw);
   const emotionPhrase = normalized.replace(/^(?:i am|i m|im|i feel|feeling) /, '');
   const emotion = emotionTerms.get(normalized) ?? emotionTerms.get(emotionPhrase);
@@ -824,6 +829,14 @@ for (const id of Object.values(viewParameters)) {
         }
       }
     }
+    render();
+  });
+}
+for (const button of document.querySelectorAll('[data-asset-category]')) {
+  button.addEventListener('click', () => {
+    clearLinkedPose();
+    collection = '';
+    category = category === button.dataset.assetCategory ? categories[0] : button.dataset.assetCategory;
     render();
   });
 }

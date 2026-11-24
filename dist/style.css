@@ -349,6 +349,12 @@ kbd { color: var(--muted); border: 1px solid var(--line); border-radius: 5px; pa
 .suggestions button:hover, #filter-toggle:hover { background: var(--dock-control) }
 .suggestions button[aria-pressed=true], #filter-toggle[aria-expanded=true] { background: var(--dock-control-active); color: var(--ink); box-shadow: inset 0 0 0 1px #ffffff56 }
 .suggestions button[aria-pressed=true] i { color: inherit }
+.asset-suggestions { display: grid; grid-column: 3; grid-row: 1; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 3px; padding: 1px 4px }
+.asset-suggestions button { display: grid; justify-items: center; align-content: center; gap: 4px; min-width: 0; min-height: 38px; padding: 4px 1px; border: 0; border-radius: 12px; font-size: .59rem; line-height: 1.1 }
+.asset-suggestions i { font-size: .88rem }
+.asset-suggestions button:hover, .asset-suggestions button:focus-visible { background: var(--dock-control) }
+.asset-suggestions button[aria-pressed=true] { background: var(--dock-control-active); box-shadow: inset 0 0 0 1px #ffffff56 }
+@media (max-width: 760px) { .asset-suggestions { grid-column: 1; grid-row: 2 } }
 .filters {
   display: grid;
   gap: 10px;
