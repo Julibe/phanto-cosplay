@@ -31,6 +31,7 @@ function strips() {
   return readdirSync(source).filter(name => name.toLowerCase().endsWith('.png')).sort().map(file => {
     const slug = file.slice(0, -4).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
     const settings = meta[slug] ?? {};
+    if (settings.assetPath && !/^assets\/[a-z0-9-]+\/[a-z0-9-]+\/[a-z0-9-]+\.webp$/.test(settings.assetPath)) throw new Error('Invalid animation asset path: ' + file);
     const strip = new URL(file, source);
     const { width, height } = pngSize(strip);
     const columns = settings.columns ?? settings.frames ?? Math.max(1, Math.round(width / height));
@@ -50,10 +51,11 @@ export function animatedPoses() {
   return strips().map(({ id, slug, settings, frames, fps, delay }) => ({
     id,
     name: settings.name ?? title(slug),
-    category: 'Animation',
+    category: settings.assetPath ? 'Assets' : 'Animation',
+    ...(settings.assetPath ? { assetType: settings.assetType, assetGroup: settings.assetGroup } : {}),
     ...(settings.emotion ? { emotion: settings.emotion } : {}),
     tags: ['animated animation gif moving', settings.keywords].filter(Boolean).join(' '),
-    path: 'animated/' + id + '.webp',
+    path: settings.assetPath ?? 'animated/' + id + '.webp',
     animation: {
       fps, delay,
       frames: Array.from({ length: frames }, (_, index) =>
@@ -64,7 +66,7 @@ export function animatedPoses() {
 
 // Replaces any previous animated entries with the current strips.
 export function withAnimations(poses) {
-  return [...poses.filter(pose => !['Animated', 'Animation'].includes(pose.category)), ...animatedPoses()];
+  return [...poses.filter(pose => !pose.animation && !['Animated', 'Animation'].includes(pose.category)), ...animatedPoses()];
 }
 
 export async function renderAnimations(only) {
@@ -111,6 +113,7 @@ export async function renderAnimations(only) {
       await sharp(png).webp(webp).toFile(fileURLToPath(file));
     }
     const { delay } = poses.get(id).animation;
+    mkdirSync(new URL('./', new URL(poses.get(id).path, root)), { recursive: true });
     await sharp(rendered, { join: { animated: true } })
       .webp({ ...webp, loop: 0, delay: Array(frames).fill(delay) })
       .toFile(fileURLToPath(new URL(poses.get(id).path, root)));

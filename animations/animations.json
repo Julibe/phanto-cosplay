@@ -80,5 +80,29 @@
     "rows": 5,
     "keywords": "turntable rotation full turn 360 spin berry-rotation",
     "preserveCanvas": true
+  },
+  "asset-stars-purple-rotation-180": {
+    "name": "Purple Star - 180 Rotation",
+    "fps": 10,
+    "frames": 12,
+    "columns": 5,
+    "rows": 5,
+    "preserveCanvas": true,
+    "assetPath": "assets/stars/purple/rotation-180.webp",
+    "assetType": "Stars",
+    "assetGroup": "purple",
+    "keywords": "purple crystal star gem collectible 180 half turn rotation"
+  },
+  "asset-stars-gold-rotation-180": {
+    "name": "Gold Star - 180 Rotation",
+    "fps": 10,
+    "frames": 12,
+    "columns": 5,
+    "rows": 5,
+    "preserveCanvas": true,
+    "assetPath": "assets/stars/gold/rotation-180.webp",
+    "assetType": "Stars",
+    "assetGroup": "gold",
+    "keywords": "gold crystal star gem collectible 180 half turn rotation"
   }
 }

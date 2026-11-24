@@ -29,6 +29,7 @@ function folderFor(pose) {
 }
 
 function pathFor(pose) {
+  if (pose.animation && pose.category === 'Assets') return pose.path.split('?')[0];
   const story = /^emoji-activity-cookie-adventure-(intro|level[1-6]|final|ending)-(.+)$/.exec(pose.id);
   if (story) return `game/cookie-adventure/${story[1]}/${story[2]}.webp`;
   if (pose.id.startsWith('asset-')) {
