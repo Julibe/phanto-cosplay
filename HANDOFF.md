@@ -8,7 +8,7 @@ Every AI agent must read this file before changing the project and update it aft
 
 - Actual Git repository: `A:/julibe/phanto/emojis/App`, remote `https://github.com/Julibe/phanto-cosplay.git`, branch `main`.
 - Parent `A:/julibe/phanto/emojis` is the asset workspace, not this Git root. Source PNGs, grids and review tooling also live outside the Git repository. Back them up separately; a fresh Git clone does not contain them.
-- Implementation baseline before this documentation update: `bad91335` (white glass surfaces). Local `main` and locally recorded `origin/main` matched; working tree was clean before documentation work. This is not a fresh network/hosting audit.
+- Implementation baseline before this documentation update: `7ee17dc5` (white glass surfaces). Local `main` and locally recorded `origin/main` matched; working tree was clean before documentation work. This is not a fresh network/hosting audit.
 - Catalog verified directly from `dist/catalog.json`: **4,248 entries**, unique image IDs managed by the builder; every catalog image path and every referenced animation frame exists locally. File existence does not establish visual correctness.
 - **11 animated WebPs**: 9 in Animation, 2 star animations in Assets. **37 toy-related entries** remain after one explicit rejection (18 standalone toys, 19 Phanto interactions).
 - No browser was used for this audit. Latest UI edits were checked through source/build checks, not rendered cross-browser QA. Hosted deployment of the latest commit has not been verified.
@@ -147,7 +147,7 @@ Toy specifics: use the cuter black puppy with larger head, shorter muzzle, erect
 ### Preservation and approval
 
 - Never delete or skip a pose because it looks repetitive. Keep all approved variants unless the user explicitly names a removal. Similarity reports are evidence for review, not deletion authority.
-- Explicitly rejected `asset-toys-bottle-side` was removed in `fab60d59`. Its archived source is outside the scanned PNG directory. Do not re-import it from an old sheet.
+- Explicitly rejected `asset-toys-bottle-side` was removed in `072ca2e1`. Its archived source is outside the scanned PNG directory. Do not re-import it from an old sheet.
 - Preserve hover image swaps, portal chooser, existing icons, navigation, filters, editor, sharing and links. Do not redesign unrelated surfaces to solve a small issue.
 - User has prohibited browser/computer-use spending for routine work. Use local code/files and deterministic checks; obtain a changed instruction before interactive browser use. Do not claim browser QA when none occurred.
 - Image credits are sensitive. Do not generate during imports, maintenance or documentation. Generation requires a current art request; imports use approved files. Do not launch repeated speculative generations or silently expand requested counts.
@@ -246,6 +246,7 @@ Historical requested backlog includes separate 5x5 TV franchise sheets, Mario pa
 
 - At audit only local `main` was listed, tracking `origin/main`. Recent work was committed directly to main and pushed with user authorization. No required PR template, protected-branch policy or automated deployment workflow was found in tracked files. Future sessions must honor current repository/user policy rather than assume a new branch is forbidden or direct push is always authorized.
 - **Commit authorship (user rule, 2026-11-25):** the author and committer of every commit is the user who asked for the work, here **Julibe** (`git config user.name Julibe`, `git config user.email mail@julibe.com`), never Claude or another agent. Do not add `Co-Authored-By: Claude`, `Claude-Session` or any other agent attribution trailers to commit messages, and do not push commits authored as `Claude <noreply@anthropic.com>`. Set the git identity before the first commit of every session.
+- 2026-11-25: with Julibe's approval, `main` history was rewritten so earlier Claude-authored commits are authored by Julibe and agent trailers were removed. All commit hashes changed; hashes in this file were remapped. Old clones (e.g. `App\` on Julibe's PC) must run `git fetch origin && git reset --hard origin/main` after saving any local work.
 - Start with status/log and read this handoff. Preserve unrelated work. For multi-step or risky work use a focused branch/worktree when appropriate. Keep commits scoped; use problem/result-focused messages.
 - Before publishing, inspect ID delta and all generated assets, commit a coherent complete `dist/` with matching catalogs, API, hashes, images and metadata. Never stage during a running generator.
 - Prior authorized workflow: `git pull --no-rebase origin main`, resolve without losing remote work, then `git push origin main`. Check result, not just command invocation. Never force-push or reset someone else's work to resolve routine conflicts.
@@ -257,21 +258,21 @@ Historical requested backlog includes separate 5x5 TV franchise sheets, Mario pa
 
 | Commit | Result / reason |
 | --- | --- |
-| `abb9c66c` | Main-body rotation alignment, duplicate frame25 removed; avoids scale jumps caused by tail bounds |
-| `d26ad58c` | Retained six Phanto rotation variants and added transparent Berry rotation |
-| `59bc2e6b` | Category renamed Animation with old-link compatibility |
-| `3433cede` | Asset types and season/group filters |
-| `f095a37c` | 12-frame gold/purple star half-turn assets |
-| `41d79f73` | Corrected game icons, paper textures, six scalable UI kits |
-| `fa42211d` | 30 approved toy designs; visible Assets navigation and Toys metadata support |
-| `448a6ab7` | Eight additional corrected toy variants, preserving earlier designs |
-| `fab60d59` | User explicitly removed malformed side bottle; exactly one catalog item removed |
-| `9fceff5a` | Removed extra Toys shortcut after dock grew too tall |
-| `1713ae62` | Restored one row with six Assets shortcuts; Icons/Terrain/Toys stay in filters |
-| `58524ad0` | Interim lighter colored filter panel; **superseded** by all-white surface direction |
-| `bad91335` | White/opacity surfaces throughout main UI, lighter backdrop/scrollbars/native controls, dock blur on pseudo-layer; offline HTML omission remains |
-| `1fbfa3b1` | HANDOFF.md, AGENTS.md, `docs/history/` committed; README/PROGRESS point here |
-| `00c129c3` | Offline fallback page moved to animated backdrop + white glass; P0 roadmap item closed |
+| `a0c2e030` | Main-body rotation alignment, duplicate frame25 removed; avoids scale jumps caused by tail bounds |
+| `c11cf760` | Retained six Phanto rotation variants and added transparent Berry rotation |
+| `f9048636` | Category renamed Animation with old-link compatibility |
+| `d45dfd69` | Asset types and season/group filters |
+| `92e57bee` | 12-frame gold/purple star half-turn assets |
+| `961016a4` | Corrected game icons, paper textures, six scalable UI kits |
+| `2ce2b014` | 30 approved toy designs; visible Assets navigation and Toys metadata support |
+| `0eeb86b4` | Eight additional corrected toy variants, preserving earlier designs |
+| `072ca2e1` | User explicitly removed malformed side bottle; exactly one catalog item removed |
+| `e8014835` | Removed extra Toys shortcut after dock grew too tall |
+| `0608e640` | Restored one row with six Assets shortcuts; Icons/Terrain/Toys stay in filters |
+| `4dc750fd` | Interim lighter colored filter panel; **superseded** by all-white surface direction |
+| `7ee17dc5` | White/opacity surfaces throughout main UI, lighter backdrop/scrollbars/native controls, dock blur on pseudo-layer; offline HTML omission remains |
+| `2369f111` | HANDOFF.md, AGENTS.md, `docs/history/` committed; README/PROGRESS point here |
+| `50fea243` | Offline fallback page moved to animated backdrop + white glass; P0 roadmap item closed |
 
 No exact historical commit or count should override present files. This document was created after these changes; future authors add their own significant changes and verification.
 
