@@ -1,6 +1,6 @@
 # Phanto project handoff
 
-**Single source of truth for project continuity. Last reviewed: 2026-11-24 (America/Bogota); offline fallback update same day.**
+**Single source of truth for project continuity. Last reviewed: 2026-11-25 (America/Bogota); approved paper/printer import.**
 
 Every AI agent must read this file before changing the project and update it after significant implementation. The user's current instructions override this document. Specialized reference documents explain mechanisms; they do not override the decisions here.
 
@@ -9,13 +9,13 @@ Every AI agent must read this file before changing the project and update it aft
 - Actual Git repository: `A:/julibe/phanto/emojis/App`, remote `https://github.com/Julibe/phanto-cosplay.git`, branch `main`.
 - Parent `A:/julibe/phanto/emojis` is the asset workspace, not this Git root. Source PNGs, grids and review tooling also live outside the Git repository. Back them up separately; a fresh Git clone does not contain them.
 - Implementation baseline before this documentation update: `7ee17dc5` (white glass surfaces). Local `main` and locally recorded `origin/main` matched; working tree was clean before documentation work. This is not a fresh network/hosting audit.
-- Catalog verified directly from `dist/catalog.json`: **4,248 entries**, unique image IDs managed by the builder; every catalog image path and every referenced animation frame exists locally. File existence does not establish visual correctness.
+- Catalog verified directly from `dist/catalog.json`: **4,298 entries**, unique image IDs managed by the builder; every catalog image path and every referenced animation frame exists locally. File existence does not establish visual correctness.
 - **11 animated WebPs**: 9 in Animation, 2 star animations in Assets. **37 toy-related entries** remain after one explicit rejection (18 standalone toys, 19 Phanto interactions).
 - No browser was used for this audit. Latest UI edits were checked through source/build checks, not rendered cross-browser QA. Hosted deployment of the latest commit has not been verified.
 
 | Category | Entries |
 | --- | ---: |
-| Activities | 764 |
+| Activities | 814 |
 | Animals | 51 |
 | Animation | 9 |
 | Assets | 501 |
@@ -298,3 +298,10 @@ No exact historical commit or count should override present files. This document
 - `docs/history/PROGRESS-2026-11-19.md`: original maintenance snapshot preserved verbatim.
 - `docs/history/PENDING-legacy.md`: original workspace backlog preserved verbatim; old publication/count claims superseded.
 - `PROGRESS.md` and workspace `../PENDING.md` now point here. Workspace `../HANDOFF.md` routes to this Git-root file.
+
+## 2026-11-25: approved paper and printer-success import
+
+- Imported the two explicitly approved 5x5 sheets: 25 paper-only poses (12 positive, 12 negative, neutral sorting center) and 25 printer-success poses. Both are Activities.
+- Stable IDs: `emoji-activity-paper-*` and `emoji-activity-printer-success-*`; gallery paths under `dist/emoji/activity/`. Added 50 entries, preserved every prior ID. Current catalog: 4,298; Activities: 814.
+- Source sheets and repeatable component extraction script/audit/previews are in workspace `../_to-review/printer-paper/`; import script `import-approved.py`, exports `approved-import/`. 1024px transparent PNG sources and 320px WebPs; alpha threshold used only for these approved sheets' haze. Both contact sheets visually inspected for clipped subjects/neighbor fragments; all catalog/frame paths checked locally. No fresh browser/live-host verification.
+- Printer-disaster drafts remain review-only and were NOT imported by this approval. No new artwork was generated during import.
