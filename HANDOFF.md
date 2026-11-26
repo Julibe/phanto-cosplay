@@ -9,13 +9,13 @@ Every AI agent must read this file before changing the project and update it aft
 - Actual Git repository: `A:/julibe/phanto/emojis/App`, remote `https://github.com/Julibe/phanto-cosplay.git`, branch `main`.
 - Parent `A:/julibe/phanto/emojis` is the asset workspace, not this Git root. Source PNGs, grids and review tooling also live outside the Git repository. Back them up separately; a fresh Git clone does not contain them.
 - Implementation baseline before this documentation update: `7ee17dc5` (white glass surfaces). Local `main` and locally recorded `origin/main` matched; working tree was clean before documentation work. This is not a fresh network/hosting audit.
-- Catalog verified directly from `dist/catalog.json`: **4,298 entries**, unique image IDs managed by the builder; every catalog image path and every referenced animation frame exists locally. File existence does not establish visual correctness.
+- Catalog verified directly from `dist/catalog.json`: **4,323 entries**, unique image IDs managed by the builder; every catalog image path and every referenced animation frame exists locally. File existence does not establish visual correctness.
 - **11 animated WebPs**: 9 in Animation, 2 star animations in Assets. **37 toy-related entries** remain after one explicit rejection (18 standalone toys, 19 Phanto interactions).
 - No browser was used for this audit. Latest UI edits were checked through source/build checks, not rendered cross-browser QA. Hosted deployment of the latest commit has not been verified.
 
 | Category | Entries |
 | --- | ---: |
-| Activities | 814 |
+| Activities | 839 |
 | Animals | 51 |
 | Animation | 9 |
 | Assets | 501 |
@@ -305,3 +305,9 @@ No exact historical commit or count should override present files. This document
 - Stable IDs: `emoji-activity-paper-*` and `emoji-activity-printer-success-*`; gallery paths under `dist/emoji/activity/`. Added 50 entries, preserved every prior ID. Current catalog: 4,298; Activities: 814.
 - Source sheets and repeatable component extraction script/audit/previews are in workspace `../_to-review/printer-paper/`; import script `import-approved.py`, exports `approved-import/`. 1024px transparent PNG sources and 320px WebPs; alpha threshold used only for these approved sheets' haze. Both contact sheets visually inspected for clipped subjects/neighbor fragments; all catalog/frame paths checked locally. No fresh browser/live-host verification.
 - Printer-disaster drafts remain review-only and were NOT imported by this approval. No new artwork was generated during import.
+
+## 2026-11-26: missing printer-disaster sheet imported
+
+- User expected the broken-printer sheet too. The previous approval was interpreted too narrowly as only the final two sheets; that omission is now corrected.
+- Added all25 poses from workspace `_to-review/printer-paper/phanto-printer-disasters-reference-revision-5x5.png` as `emoji-activity-printer-disaster-*` in Activities. All earlier poses remain. This supersedes the preceding review-only status for this specific disaster sheet.
+- Repeatable extraction: workspace `_to-review/printer-paper/import-disasters.py`; crops, audit and inspected contact sheet in `disaster-import/`. No new image generation. Catalog now4,323; Activities839. All catalog images and animation frames checked for file existence; no live-browser deployment claim.
