@@ -101,7 +101,7 @@ Artwork and character by Julibe.
 
 ## Copy metadata and export selected poses
 
-Each card has Copy title and Copy JSON buttons. JSON contains `name` and an absolute `imageUrl` (the original WebP, including animation where applicable). Clipboard copy requires HTTPS/localhost and browser permission.
+Each card has Copy title and Copy JSON buttons. JSON contains `name`, `category`, optional `assetType`/`assetGroup` for Assets, and an absolute `imageUrl` (the original WebP, including animation where applicable). Clipboard copy requires HTTPS/localhost and browser permission.
 
 Select two or more card checkboxes to show the bulk pill above the dock. ZIP downloads the original WebPs; JSON downloads an array of the same metadata objects. Selection persists while filtering or switching portals, until cleared or the page reloads. ZIP fetches up to four files at a time and refuses selections exceeding500MB; a failed image cancels the archive instead of silently omitting it.
 

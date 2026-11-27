@@ -11,8 +11,13 @@ function tools() {
 }
 
 test('metadata uses exact name and absolute versioned image URL, including subdirectory hosts', () => {
-  const result = tools().metadata({ name: 'Día "happy"', path: 'animated/wave.webp?v=abc' }, 'https://example.org/gallery/?q=happy#pose');
-  assert.deepEqual(JSON.parse(JSON.stringify(result)), { name: 'Día "happy"', imageUrl: 'https://example.org/gallery/animated/wave.webp?v=abc' });
+  const result = tools().metadata({ name: 'Día "happy"', category: 'Animation', path: 'animated/wave.webp?v=abc' }, 'https://example.org/gallery/?q=happy#pose');
+  assert.deepEqual(JSON.parse(JSON.stringify(result)), { name: 'Día "happy"', imageUrl: 'https://example.org/gallery/animated/wave.webp?v=abc', category: 'Animation' });
+});
+
+test('asset metadata retains its category, type and group', () => {
+  const result = tools().metadata({ name: 'Winter Tree', path: 'assets/vegetation/winter/tree.webp', category: 'Assets', assetType: 'Vegetation', assetGroup: 'winter' }, 'https://example.org/');
+  assert.deepEqual(JSON.parse(JSON.stringify(result)), { name: 'Winter Tree', imageUrl: 'https://example.org/assets/vegetation/winter/tree.webp', category: 'Assets', assetType: 'Vegetation', assetGroup: 'winter' });
 });
 
 test('stored ZIP has correct CRC, UTF-8 filenames, offsets and byte-identical payloads', async () => {
@@ -70,16 +75,16 @@ test('selection threshold, bulk JSON, clipboard and failed ZIP handling', async 
   const source = app.slice(app.indexOf('const selectedPoses ='), app.indexOf('// Clipboards hold still images'));
   // Use a download sink instead of the DOM URL-click implementation.
   vm.runInContext(source.replace(/function downloadBlob\(blob, name\) \{[\s\S]*?\n\}/, ''), context);
-  vm.runInContext("selectedPoses.set('a', { id: 'a', name: 'One', path: 'a.webp' }); syncSelection();", context);
+  vm.runInContext("selectedPoses.set('a', { id: 'a', name: 'One', category: 'Activities', path: 'a.webp' }); syncSelection();", context);
   assert.equal(node('bulk-actions').hidden, true);
-  vm.runInContext("selectedPoses.set('b', { id: 'b', name: 'Two', path: 'b.webp' }); syncSelection();", context);
+  vm.runInContext("selectedPoses.set('b', { id: 'b', name: 'Two', category: 'Assets', assetType: 'Toys', assetGroup: 'car', path: 'b.webp' }); syncSelection();", context);
   assert.equal(node('bulk-actions').hidden, false);
   await vm.runInContext("copyPoseText('One', 'Title')", context);
   assert.deepEqual(copied, ['One']);
   node('bulk-json').click();
   assert.deepEqual(JSON.parse(await downloads[0].blob.text()), [
-    { name: 'One', imageUrl: 'https://example.org/gallery/a.webp' },
-    { name: 'Two', imageUrl: 'https://example.org/gallery/b.webp' }
+    { name: 'One', imageUrl: 'https://example.org/gallery/a.webp', category: 'Activities' },
+    { name: 'Two', imageUrl: 'https://example.org/gallery/b.webp', category: 'Assets', assetType: 'Toys', assetGroup: 'car' }
   ]);
   await node('bulk-zip').click();
   assert.equal(downloads[1].name, 'phanto-selection.zip');
