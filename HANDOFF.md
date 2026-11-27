@@ -1,14 +1,140 @@
 # Phanto project handoff
 
-**Single source of truth for project continuity. Last reviewed: 2026-11-25 (America/Bogota); approved paper/printer import.**
+**Single source of truth for project continuity. Current version: v0.0.1. Last reviewed: 2026-11-26 20:52 America/Bogota.**
 
 Every AI agent must read this file before changing the project and update it after significant implementation. The user's current instructions override this document. Specialized reference documents explain mechanisms; they do not override the decisions here.
+
+## v0.0.1 — Versioned continuity baseline and backlog reconciliation
+
+- **Date:** 2026-11-26 20:52 America/Bogota (UTC-05:00).
+- **Branch:** main.
+- **Previous Version:** none; existing implementation was unversioned through `ba5d4acc`.
+- **Status:** Completed documentation/metadata update; application validation remains incomplete. This is NOT a stable/production-ready declaration.
+- **Version scope:** first recorded SemVer baseline for the existing project, not a claim that its earlier features were built in this update. Future updates increment from0.0.1; never reset or retroactively invent historical versions.
+
+### Summary
+
+Applied the explicitly requested `handoff-management` skill: versioned handoff entries, consolidated backlog, CHANGELOG, version metadata and a main-branch/tag publication protocol. No artwork generation, UI redesign or functional change.
+
+### Completed
+
+- Read the complete current handoff, dated progress/review records, historical backlog, recent commits, package metadata and current export/selection code.
+- Reverified4,323 unique catalog IDs and image paths; all208 animation frame paths exist. Assets501, Activities839, animated WebPs11. Paper25, printer-success25 and printer-disaster25 entries are all present.
+- Re-ran4 passing export tests, plus JS syntax checks for app.js, asset-tools.js and sw.js.
+- Initialized package/root lock metadata at0.0.1; created CHANGELOG.md. No existing version/tag was found; earlier Git history remains untouched.
+- Assigned persistent TASK/LEGACY IDs below. Preserved full pre-versioning HANDOFF and older snapshots in docs/history.
+
+### Previously Pending — Resolved
+
+Recorded previously completed work without claiming a new implementation: TASK-100 (missing broken-printer sheet), TASK-101 (copy/bulk/category exports), TASK-102 (handoff/design rules), TASK-103 (explicit bottle removal). The legacy branch-divergence/push-blocking claim is superseded; live-host verification remains TASK-003.
+
+### Previously Pending — Outstanding
+
+All unresolved items remain in the consolidated table. Origins are preserved as dated notes/commits where known; there were no original SemVer values. First versioned tracking is v0.0.1, not an invented introduction date. Historical franchise tasks mean source-sheet/catalog reconciliation is required; unchecked does NOT prove that all named content is absent.
+
+### In Progress
+
+No unrelated implementation is in progress in this update. TASK-004 visual review was paused by the user; documentation maintenance does not resume it. Current validation is source/file/unit-test based.
+
+### New Pending Tasks
+
+No unrelated product requirements added. TASK-005 explicitly carries forward the visual/real-browser validation gap for recently shipped selection/export controls. TASK-104 closes the requested workflow/documentation work.
+
+### Blockers & Dependencies
+
+Interactive browser work remains restricted by user instruction; earlier cloud headless approval and pause are historical and must be interpreted with the current request. Hosted publishing configuration and source-library restoration remain external dependencies. No blocker prevented this documentation update.
+
+### Issues & Resolutions
+
+Old top-level review dates, split status entries and permissive branch guidance no longer described the current workflow. Current state is reconciled here, earlier text is preserved below/as an archive. The documented mobile filter obstruction is still visible in source (grid-area:auto is on #berry-portal, not .portal-switches). Do not mark it fixed. Dock normal blending is implemented; visible blur validation is still pending.
+
+### Technical Decisions
+
+- Keep the canonical filename `HANDOFF.md` on Windows/Git; the skill's lowercase `handoff.md` refers to this same document. Do not add a case-only duplicate.
+- Keep previous sections as the project reference/history; this newest-first version log and consolidated table govern current task status.
+- Work only on main, no new branches/PRs, no force pushes/history rewrite. Existing backup branch is historical and retained. User authorship remains Julibe <mail@julibe.com>.
+- Update HANDOFF and CHANGELOG and synchronize package.json/package-lock.json versions before each new versioned update; use a versioned commit and matching annotated tag. Runtime manifest has no standard release-version field, so no invented PWA field was added.
+- Skill adoption does not authorize unrelated bug fixes, art generation, deduplication or browser usage. Unresolved work is recorded rather than silently executed.
+
+### Validation
+
+4/4 export tests passed; node --check passed for app.js, asset-tools.js and sw.js. Current catalog and all frame paths checked locally. Documentation links, version consistency, backlog coverage, unchanged catalog and diff checks are verified before commit. Publication is verified against origin/main/tag after push; no live-host deployment claim.
+
+### Consolidated Backlog
+
+Statuses follow the skill: Pending, In Progress, Partially Completed, Blocked, Pending Validation, Completed, Deferred, Cancelled, Superseded. Do not delete unresolved rows in later versions. Preserve IDs/origins and update Last Updated/Resolved In when status changes. LEGACY rows preserve every original checkbox request verbatim except the superseded publication claim (full text remains archived). They are not a generation order; TASK-013 gates reconciliation.
+
+| ID | Task | Introduced / evidence | Last Updated | Status | Priority | Resolved In |
+| --- | --- | --- | --- | --- | --- | --- |
+| TASK-001 | Fix <=760px portal icon covering filter button; `.portal-switches` still lacks grid-area:auto. | Unversioned UI review 2026-11-24; first versioned tracking v0.0.1 | v0.0.1 | Pending | P0 | — |
+| TASK-002 | Validate visible dock blur after normal-blend fix; also inspect nested filters/chooser. | UI review; fix3266e5b4; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P0 | — |
+| TASK-003 | Verify live host publishing/CDN/HTML cache; a Git push is not observed deployment. | Legacy publication request; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P1 | — |
+| TASK-004 | Resume full desktop/mobile UI review: all portals, dialogs, hover swaps, empty state, native controls and six-item row. | Unversioned 2026-11-24 review; first versioned tracking v0.0.1 | v0.0.1 | Deferred | P0 | — |
+| TASK-005 | Rendered/real-browser check of card clipboard permission flows, checkbox focus, bulk-pill stacking and downloads. | 691876e7 / ba5d4acc; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P1 | — |
+| TASK-006 | Portable backup/restore of source PNGs, original grids, review archives and import scripts outside App Git. | Initial handoff (2369f111); first versioned tracking v0.0.1 | v0.0.1 | Pending | P1 | — |
+| TASK-007 | Complete source-grid vs crop/catalog reconciliation; retain recovered originals and all approved variants. | Legacy source audit / 2026-11-19 progress; first versioned tracking v0.0.1 | v0.0.1 | Partially Completed | P1 | — |
+| TASK-008 | Review art consistency only when directed; approval/import does not establish a new canonical Phanto design. | Repeated user design feedback; first versioned tracking v0.0.1 | v0.0.1 | Pending | P2 | — |
+| TASK-009 | Reconcile dated near-pair review candidates with current IDs and user decisions; no automatic deduplication. | tools/REVIEW.md, 2026-11-19 evidence; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| TASK-010 | Extend repeatable asset/animation integrity tooling if needed; current export unit tests do not audit the whole library. | Initial handoff roadmap; first versioned tracking v0.0.1 | v0.0.1 | Partially Completed | P2 | — |
+| TASK-011 | Exercise actual installed-service-worker offline navigation; inline fallback changed but that route was not exercised. | Offline update50fea243; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P1 | — |
+| TASK-012 | Review API origin configuration if another host is requested; current absolute origin is hard-coded. | Initial handoff known limitation; first versioned tracking v0.0.1 | v0.0.1 | Deferred | P2 | — |
+| TASK-013 | Reconcile every historical franchise/sheet request below before generating or calling content missing. | docs/history/PENDING-legacy.md (undated); first versioned tracking v0.0.1 | v0.0.1 | Pending | P2 | — |
+| TASK-100 | Restore missing25 printer-disaster activities while preserving all existing IDs. | User follow-up 2026-11-26; first versioned tracking v0.0.1 | v0.0.1 | Completed | P1 | Pre-baseline486fc64c; recorded v0.0.1 |
+| TASK-101 | Card title/JSON copy, checkboxes, ZIP/JSON bulk export and category fields: implementation plus automated validation. | 691876e7 / ba5d4acc; first versioned tracking v0.0.1 | v0.0.1 | Completed | P1 | Pre-baselineba5d4acc; recorded v0.0.1 |
+| TASK-102 | Initial authoritative handoff, Phanto MUST rules and preservation of historical progress/backlog. | 2369f111 and subsequent handoff commits; first versioned tracking v0.0.1 | v0.0.1 | Completed | P1 | Pre-baseline; recorded v0.0.1 |
+| TASK-103 | Remove only explicitly rejected malformed side bottle from catalog. | User explicit rejection; first versioned tracking v0.0.1 | v0.0.1 | Completed | P1 | Pre-baseline072ca2e1; recorded v0.0.1 |
+| TASK-104 | Introduce versioned continuity log, consolidated persistent task IDs, changelog and synchronized version metadata. | v0.0.1 (this update); first versioned tracking v0.0.1 | v0.0.1 | Completed | P1 | v0.0.1 |
+| LEGACY-001 | Lost | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-002 | House M.D. | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-003 | Friends | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-004 | Steven Universe | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-005 | The Amazing World of Gumball | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-006 | Breaking Bad | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-007 | Betty la fea | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-008 | The Sopranos | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-009 | Mad Men | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-010 | Dexter | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-011 | Fleabag | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-012 | Succession | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-013 | The Wire | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-014 | CSI | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-015 | CSI: NY | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-016 | CSI: Miami | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-017 | The Mentalist | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-018 | The Boys | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-019 | The Big Bang Theory | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-020 | Peppa Pig | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-021 | SpongeBob SquarePants | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-022 | Bluey | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-023 | Rick and Morty | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-024 | Super Mario in pairs: Mario, Luigi, Toadette, Yoshi, and Koopa Troopa. Toad, Bowser, Goomba, and Peach are already in the local catalog. Donkey Kong is listed under his own franchise. | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-025 | Game sheets: Doom, Elden Ring, Dark Souls, Assassin’s Creed, Rayman, The Witcher, Cyberpunk 2077, Fallout, and Skyrim. The existing Cyberpunk genre sheet is a separate collection. | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-026 | Separate full game sheets for Halo and Metal Gear. Sprites from the mixed Halo/Metal Gear sheet are already in the catalog. | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-027 | Pokémon expansion: complete the Gen I and Gen II rosters, plus starter lines and legendary Pokémon from every generation. This includes the remaining Nidoran family and five starter evolutions from earlier attempts. | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-028 | Anime sheets: Re:Zero, JoJo’s Bizarre Adventure, Soul Eater, Fullmetal Alchemist, Ascendance of a Bookworm, The Apothecary Diaries, Overlord, Ranma ½, Urusei Yatsura, City Hunter, and Code Geass. | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-029 | Movie sheets: update the Jurassic Park draft with varied poses. Create Back to the Future, Ghostbusters, Pirates of the Caribbean, Indiana Jones, The Matrix, Planet of the Apes, Harry Potter, Rocky/Creed, and Terminator. | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-030 | Scary-cute movie designs from Halloween, Scream, Alien, A Nightmare on Elm Street, and Hellraiser. | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-031 | Standalone Batman and Superman costumes and the planned Marvel Villains sheet. Darkish Knight is already indexed as its own costume. | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-032 | Music sheets: salsa and reggaeton. | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-033 | Screen genre sheets: musical, sitcom, reality, game show, and talk show. | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-034 | Audit older source grids against the individual crop catalog. The original 25 Muppets poses were recovered, and both Muppets sets are indexed locally. | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Pending Validation | P2 | — |
+| LEGACY-035 | Historical publish-and-verify request; old3,609 IDs/ahead-behind/blocked-push claims obsolete. Remaining live verification tracked in TASK-003. | Legacy backlog, undated/unversioned; first versioned tracking v0.0.1 | v0.0.1 | Superseded | P2 | v0.0.1 → TASK-003 |
+
+### Next Steps
+
+1. Address TASK-001 only in an authorized implementation update, preserving the one-row/six-item dock and hover swaps.
+2. Resume TASK-004 only when the user's pause is lifted; validate TASK-002/TASK-005/TASK-011 without claiming source checks are browser checks.
+3. Verify production publication independently (TASK-003), and plan source backup/reconciliation (TASK-006/TASK-007).
+4. Reconcile historical requests before spending image credits; retain approved variants.
+5. For the next update, increment from0.0.1, prepend its full entry, carry forward unresolved IDs, update CHANGELOG/metadata, commit with version, tag and push main plus tag, then confirm local/remote equality.
+
+---
 
 ## 1. Verified baseline and scope
 
 - Actual Git repository: `A:/julibe/phanto/emojis/App`, remote `https://github.com/Julibe/phanto-cosplay.git`, branch `main`.
 - Parent `A:/julibe/phanto/emojis` is the asset workspace, not this Git root. Source PNGs, grids and review tooling also live outside the Git repository. Back them up separately; a fresh Git clone does not contain them.
-- Implementation baseline before this documentation update: `7ee17dc5` (white glass surfaces). Local `main` and locally recorded `origin/main` matched; working tree was clean before documentation work. This is not a fresh network/hosting audit.
+- Current implementation baseline before the versioned documentation update: `ba5d4acc` (category-aware JSON exports). Initial pre-versioning documentation audited white-glass baseline `7ee17dc5`. Local `main` and locally recorded `origin/main` matched; working tree was clean before documentation work. This is not a fresh network/hosting audit.
 - Catalog verified directly from `dist/catalog.json`: **4,323 entries**, unique image IDs managed by the builder; every catalog image path and every referenced animation frame exists locally. File existence does not establish visual correctness.
 - **11 animated WebPs**: 9 in Animation, 2 star animations in Assets. **37 toy-related entries** remain after one explicit rejection (18 standalone toys, 19 Phanto interactions).
 - No browser was used for this audit. Latest UI edits were checked through source/build checks, not rendered cross-browser QA. Hosted deployment of the latest commit has not been verified.
@@ -58,6 +184,8 @@ Paths in this section are relative to the Git root unless labeled workspace.
 | `dist/index.html` | Document, controls, dialogs, portal icons, six Assets shortcuts and versioned entry references |
 | `dist/style.css` | Design tokens, responsive layout, white glass surfaces, portal presentation and accessibility media rules |
 | `dist/app.js` | Search, filtering, rendering, URL state, portals, copying, downloads, sharing and editor |
+| `dist/asset-tools.js` | Shared category-aware JSON metadata and stored ZIP/CRC32 export helpers |
+| `tools/asset-tools.test.mjs` | Targeted metadata, selection, clipboard and ZIP export tests |
 | `dist/hero.js`, `dist/background.js` | Hero motion and WebGL portal background |
 | `dist/pwa.js`, `dist/sw.js`, `dist/manifest.webmanifest` | Installation and navigation fallback |
 | `dist/catalog.js`, `dist/catalog.json` | Generated browser/global and public catalog |
@@ -86,7 +214,7 @@ Keep the existing misspellings `squirlce` and `squicle-grids` in filesystem path
 - Three portals: Phanto, Berry and Assets. One current illustrated portal icon is displayed; hover/focus/touch opens the pill chooser. Hover image swaps/reactions are established behavior. Do not replace this with permanently visible portal icons or remove swapping.
 - Assets uses `assetType` and `assetGroup`, with type/group filtering. **Bottom Assets navigation is exactly ONE ROW of SIX items:** Ingredients, Cookies, Stars, GUI, Textures, Vegetation. Icons, Terrain and Toys remain in the filter panel. Do not add them back into the bottom row or wrap it.
 - Phanto and Berry retain their existing collection shortcuts; do not apply Assets navigation changes to them.
-- Card actions copy PNG, download WebP, share links/files and open pose tools. Editor supports still-frame selection, transforms and exports. Animated download retains WebP animation; clipboard copies a still frame.
+- Card actions copy PNG, copy title, copy category-aware JSON, download WebP, share links/files and open pose tools. Checkbox selection and the >=2 selected ZIP/JSON pill are implemented; see the version log for validation limits. Editor supports still-frame selection, transforms and exports. Animated download retains WebP animation; clipboard copies a still frame.
 - New badge follows the newest release batch (6-hour window relative to latest release, not simply current time). Dates and sorting are preserved through rebuilds.
 - UI-kit ZIP download exists. GUI resources include 3 panels and 3 buttons in book-paper, classic-game and forest styles; manifest slice borders and original PNG dimensions are authoritative.
 - Cookie Adventure story poses and Powers are Phanto content; standalone ingredients and props are Assets. Do not make a separate character portal for story or Powers.
@@ -246,14 +374,14 @@ Historical requested backlog includes separate 5x5 TV franchise sheets, Mario pa
 
 ## 11. Git, publishing and recovery
 
-- At audit only local `main` was listed, tracking `origin/main`. Recent work was committed directly to main and pushed with user authorization. No required PR template, protected-branch policy or automated deployment workflow was found in tracked files. Future sessions must honor current repository/user policy rather than assume a new branch is forbidden or direct push is always authorized.
+- **Current skill workflow (v0.0.1): work exclusively on main; do not create/switch branches or create PRs.** Update HANDOFF.md and CHANGELOG.md before each push, increment the version, synchronize package/root lock metadata, use a versioned commit and create/push its matching version tag. Local main and origin/main must match after publication. Existing backup branches are retained, not used for new work. No deployment workflow was found in tracked files; push is not proof of deployment.
 - **Commit authorship (user rule, 2026-11-25):** the author and committer of every commit is the user who asked for the work, here **Julibe** (`git config user.name Julibe`, `git config user.email mail@julibe.com`), never Claude or another agent. Do not add `Co-Authored-By: Claude`, `Claude-Session` or any other agent attribution trailers to commit messages, and do not push commits authored as `Claude <noreply@anthropic.com>`. Set the git identity before the first commit of every session.
 - 2026-11-25: with Julibe's approval, `main` history was rewritten so earlier Claude-authored commits are authored by Julibe and agent trailers were removed. All commit hashes changed; hashes in this file were remapped. Old clones (e.g. `App\` on Julibe's PC) must run `git fetch origin && git reset --hard origin/main` after saving any local work.
-- Start with status/log and read this handoff. Preserve unrelated work. For multi-step or risky work use a focused branch/worktree when appropriate. Keep commits scoped; use problem/result-focused messages.
+- Start with status/log and read this handoff. Preserve unrelated work. Do not create a branch/worktree under the current main-only skill workflow; keep changes scoped and preserve unrelated work. Keep commits scoped; use problem/result-focused messages.
 - Before publishing, inspect ID delta and all generated assets, commit a coherent complete `dist/` with matching catalogs, API, hashes, images and metadata. Never stage during a running generator.
 - **Local and GitHub always identical (user rule, 2026-11-25):** Julibe's local clone `A:/julibe/phanto/emojis/App` and GitHub `main` must match. Before starting work, commit and push any local changes in the App folder (or fetch and fast-forward it) so nothing exists only locally. After every push from any other clone (cloud or another machine), also sync the local App folder: `git fetch origin && git pull --ff-only origin main` (after a history rewrite: back up, then `git reset --hard origin/main`). Report whether the local folder ended up identical to `origin/main`.
 - 2026-11-25: local App folder synced to the rewritten `origin/main`; old local `main` (tree identical to the rewritten history, no uncommitted work) kept as local branch `backup/pre-rewrite-2026-11-25`.
-- Prior authorized workflow: `git pull --no-rebase origin main`, resolve without losing remote work, then `git push origin main`. Check result, not just command invocation. Never force-push or reset someone else's work to resolve routine conflicts.
+- Current workflow: `git fetch origin --tags`, `git pull --ff-only origin main`, then versioned commit/tag and `git push origin main <version-tag>`. If fast-forward fails, inspect and integrate without losing work; do not force/reset. Earlier merge-based synchronization is historical. Check result, not just command invocation. Never force-push or reset someone else's work to resolve routine conflicts.
 - Static deployment: serve the complete `dist/` over HTTPS with asset paths preserved. Host is documented as `https://cosplay.julibe.cloud/`. Revalidate HTML so it references matching hashed JS/CSS/catalog; purge stale HTML cache once after migrations when access is authorized.
 - Push success means remote Git updated, not live deployment observed. Report those separately. Sandbox/network escalation may be needed for Git; if automatic review rejects an action, explain its actual reason and don't pretend it succeeded.
 - Rejected/removed PNGs must be moved outside the scanned source path before catalog rebuild, or they will return. Keep review archives and aliases when appropriate; never mass-delete sources or drafts.
@@ -292,6 +420,8 @@ No exact historical commit or count should override present files. This document
 
 ## Documentation consolidation
 
+- `CHANGELOG.md`: versioned release history; detailed task continuity remains here.
+- `docs/history/HANDOFF-pre-versioning-2026-11-26.md`: full pre-versioning handoff snapshot preserved.
 - `README.md`: operational/API reference, updated alongside this handoff to remove obsolete source path and Animated-category instructions.
 - `animations/README.md`: specialized rotation constraints, subordinate to this handoff.
 - `tools/REVIEW.md`: historical item-level review evidence, intentionally retained.

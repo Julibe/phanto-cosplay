@@ -106,3 +106,7 @@ Each card has Copy title and Copy JSON buttons. JSON contains `name`, `category`
 Select two or more card checkboxes to show the bulk pill above the dock. ZIP downloads the original WebPs; JSON downloads an array of the same metadata objects. Selection persists while filtering or switching portals, until cleared or the page reloads. ZIP fetches up to four files at a time and refuses selections exceeding500MB; a failed image cancels the archive instead of silently omitting it.
 
 Export checks: `npm run test:asset-tools`.
+
+## Versioned project continuity
+
+Current continuity baseline: **0.0.1**. Read [HANDOFF.md](HANDOFF.md) before changes and [CHANGELOG.md](CHANGELOG.md) for version history. Each update works on main, preserves outstanding task IDs, increments package/root lock version, updates both documents and is committed/tagged/pushed together. The pre-versioning handoff remains in docs/history; no stable-release claim is implied.
