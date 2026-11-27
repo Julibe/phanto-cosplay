@@ -13,13 +13,7 @@ globalThis.PhantoAssetTools = (() => {
     return (crc ^ 0xffffffff) >>> 0;
   }
   function metadata(pose, baseUrl) {
-    return {
-      name: pose.name,
-      imageUrl: new URL(pose.path, baseUrl).href,
-      category: pose.category,
-      ...(pose.assetType ? { assetType: pose.assetType } : {}),
-      ...(pose.assetGroup ? { assetGroup: pose.assetGroup } : {})
-    };
+    return { ...pose, imageUrl: new URL(pose.path, baseUrl).href };
   }
   function zip(files) {
     if (files.length > 65535) throw new Error('Too many files for one ZIP.');

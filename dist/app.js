@@ -228,7 +228,8 @@ const selectedPoses = new Map();
 let bulkExporting = false;
 
 function poseMetadata(pose) {
-  return PhantoAssetTools.metadata(pose, document.baseURI);
+  const catalogPose = window.phantoCatalog.find(item => item.id === pose.id) ?? pose;
+  return PhantoAssetTools.metadata(catalogPose, document.baseURI);
 }
 
 async function copyPoseText(text, label) {
@@ -1002,10 +1003,14 @@ function choosePortal(destination) {
 
 assetsPortalButton.addEventListener('click', () => choosePortal('assets'));
 phantoPortalButton.addEventListener('click', () => choosePortal('phanto'));
+let portalCloseTimer;
 portalSwitches.addEventListener('pointerenter', event => {
+  clearTimeout(portalCloseTimer);
   if (event.pointerType !== 'touch') setPortalChoicesOpen(true);
 });
-portalSwitches.addEventListener('pointerleave', () => setPortalChoicesOpen(false));
+portalSwitches.addEventListener('pointerleave', () => {
+  portalCloseTimer = setTimeout(() => setPortalChoicesOpen(false), 300);
+});
 portalSwitches.addEventListener('focusin', () => setPortalChoicesOpen(true));
 portalSwitches.addEventListener('focusout', event => {
   if (!portalSwitches.contains(event.relatedTarget)) setPortalChoicesOpen(false);

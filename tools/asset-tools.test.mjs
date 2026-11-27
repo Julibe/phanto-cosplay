@@ -12,12 +12,12 @@ function tools() {
 
 test('metadata uses exact name and absolute versioned image URL, including subdirectory hosts', () => {
   const result = tools().metadata({ name: 'Día "happy"', category: 'Animation', path: 'animated/wave.webp?v=abc' }, 'https://example.org/gallery/?q=happy#pose');
-  assert.deepEqual(JSON.parse(JSON.stringify(result)), { name: 'Día "happy"', imageUrl: 'https://example.org/gallery/animated/wave.webp?v=abc', category: 'Animation' });
+  assert.deepEqual(JSON.parse(JSON.stringify(result)), { name: 'Día "happy"', imageUrl: 'https://example.org/gallery/animated/wave.webp?v=abc', category: 'Animation', path: 'animated/wave.webp?v=abc' });
 });
 
 test('asset metadata retains its category, type and group', () => {
   const result = tools().metadata({ name: 'Winter Tree', path: 'assets/vegetation/winter/tree.webp', category: 'Assets', assetType: 'Vegetation', assetGroup: 'winter' }, 'https://example.org/');
-  assert.deepEqual(JSON.parse(JSON.stringify(result)), { name: 'Winter Tree', imageUrl: 'https://example.org/assets/vegetation/winter/tree.webp', category: 'Assets', assetType: 'Vegetation', assetGroup: 'winter' });
+  assert.deepEqual(JSON.parse(JSON.stringify(result)), { name: 'Winter Tree', imageUrl: 'https://example.org/assets/vegetation/winter/tree.webp', category: 'Assets', assetType: 'Vegetation', assetGroup: 'winter', path: 'assets/vegetation/winter/tree.webp' });
 });
 
 test('stored ZIP has correct CRC, UTF-8 filenames, offsets and byte-identical payloads', async () => {
@@ -63,6 +63,7 @@ test('selection threshold, bulk JSON, clipboard and failed ZIP handling', async 
   }
   const context = vm.createContext({
     Uint8Array, Uint32Array, DataView, TextEncoder, Blob, URL, AbortController,
+    window: { phantoCatalog: [] },
     document: { baseURI: 'https://example.org/gallery/' }, node,
     grid: { querySelectorAll: () => [] },
     navigator: { clipboard: { writeText: async text => copied.push(text) } },
@@ -83,8 +84,8 @@ test('selection threshold, bulk JSON, clipboard and failed ZIP handling', async 
   assert.deepEqual(copied, ['One']);
   node('bulk-json').click();
   assert.deepEqual(JSON.parse(await downloads[0].blob.text()), [
-    { name: 'One', imageUrl: 'https://example.org/gallery/a.webp', category: 'Activities' },
-    { name: 'Two', imageUrl: 'https://example.org/gallery/b.webp', category: 'Assets', assetType: 'Toys', assetGroup: 'car' }
+    { name: 'One', imageUrl: 'https://example.org/gallery/a.webp', category: 'Activities', id: 'a', path: 'a.webp' },
+    { name: 'Two', imageUrl: 'https://example.org/gallery/b.webp', category: 'Assets', assetType: 'Toys', assetGroup: 'car', id: 'b', path: 'b.webp' }
   ]);
   await node('bulk-zip').click();
   assert.equal(downloads[1].name, 'phanto-selection.zip');

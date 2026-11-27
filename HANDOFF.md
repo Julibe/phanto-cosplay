@@ -1,8 +1,20 @@
 # Phanto project handoff
 
-**Single source of truth for project continuity. Current version: v0.0.1. Last reviewed: 2026-11-26 20:52 America/Bogota.**
+**Single source of truth for project continuity. Current version: v0.0.2. Last reviewed: 2026-11-26 20:52 America/Bogota.**
 
 Every AI agent must read this file before changing the project and update it after significant implementation. The user's current instructions override this document. Specialized reference documents explain mechanisms; they do not override the decisions here.
+
+## v0.0.2 — Full catalog JSON and reachable portal chooser
+
+- Date: 2026-11-27 (America/Bogota). Branch: main. Previous: v0.0.1. Status: implemented; rendered validation pending.
+- Summary/Completed: single and bulk JSON now export every original catalog field (including tags, IDs, category, release date, franchise/emotion, aliases, animation metadata and path when present), plus absolute imageUrl. Runtime search-derived fields are excluded by resolving the raw catalog entry.
+- Previously Pending — Resolved: none of the earlier visual tasks is declared resolved without rendering. Export schema implementation extended per user request.
+- Previously Pending — Outstanding: all53 TASK/LEGACY rows below retain their IDs/status/origins. TASK-005 includes validating these closer menu offsets and the new300ms pointer-leave grace period. TASK-001 mobile layout remains pending.
+- In Progress: no other implementation. New Pending: rendered verification of portal hover bridge and bulk/filter stacking (TASK-005).
+- Issues/Resolutions: bulk chooser offset146px exceeded65px hover bridge, so the menu vanished while crossing. Reduced chooser offset58px, bulk pill92→60px, filter154→122px; extended pointer bridge to160px and added cancellable300ms close delay.
+- Decisions: full original catalog metadata, shared single/bulk schema; preserve original WebP paths/revisions. No new assets or UI redesign. White-opacity backdrop blur and six-item row retained.
+- Validation: export unit tests and JS syntax checks; no browser/live deployment claim. Version metadata synchronized.
+- Next steps: carry forward consolidated backlog below; validate TASK-005 when authorized before marking visual behavior verified.
 
 ## v0.0.1 — Versioned continuity baseline and backlog reconciliation
 

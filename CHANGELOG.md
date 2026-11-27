@@ -2,6 +2,12 @@
 
 Newest version first. Detailed status and persistent backlog IDs live in [HANDOFF.md](HANDOFF.md). Previous development is unversioned Git history; do not invent release numbers for it.
 
+## [0.0.2] — 2026-11-27
+
+- Export all original catalog fields and tags plus absolute imageUrl in single/bulk JSON.
+- Reduce menu spacing, extend hover bridge and add300ms cancellable close delay.
+- Retain all backlog items; rendered UI verification remains pending.
+
 ## [0.0.1] — 2026-11-26
 
 ### Added
