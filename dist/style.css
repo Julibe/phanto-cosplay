@@ -172,6 +172,15 @@ main.wrap { padding-top: clamp(12px, 3vw, 32px) }
   transition: border-color .2s, background-color .2s;
 }
 .card:hover, .card:focus-within { border-color: #ffffff6b }
+.card.is-selected { border-color: #ffffffe6; box-shadow: inset 0 0 0 2px #ffffff59 }
+.pose-selection { position: absolute; z-index: 2; top: 3px; left: 3px; width: 44px; height: 44px; display: grid; place-items: center; cursor: pointer }
+.select-pose { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer }
+.selection-check { display: grid; place-items: center; width: 27px; height: 27px; border: 1px solid #ffffffb3; border-radius: 8px; background: #ffffff26; color: var(--ink); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); pointer-events: none }
+.selection-check i { visibility: hidden; font-size: .8rem }
+.select-pose:checked + .selection-check { background: #ffffff59; box-shadow: inset 0 0 0 1px #ffffff80 }
+.select-pose:checked + .selection-check i { visibility: visible }
+.select-pose:focus-visible + .selection-check { outline: 2px solid #ffffff; outline-offset: 3px }
+.pose-selection:hover .selection-check { background: #ffffff3d }
 .picture {
   position: relative;
   display: grid;
@@ -206,7 +215,7 @@ main.wrap { padding-top: clamp(12px, 3vw, 32px) }
 .new-tag {
   position: absolute;
   top: 9px;
-  left: 9px;
+  left: 49px;
   padding: 4px 10px 3px;
   border-radius: 999px;
   background: var(--glass-deep);
@@ -252,6 +261,7 @@ main.wrap { padding-top: clamp(12px, 3vw, 32px) }
 .card h3 { font-size: 1.25rem; line-height: 1.05; overflow-wrap: anywhere }
 .card-body p { margin-top: 2px; color: var(--muted); font-size: .66rem; line-height: 1.35; overflow-wrap: anywhere }
 .actions { display: flex; flex: none; justify-content: flex-end; gap: 4px }
+.actions .icon-control { flex: 0 0 36px }
 .icon-control { display: inline-grid; place-items: center; border: 0; text-decoration: none; line-height: 1 }
 .actions .icon-control { width: 36px; height: 42px; border-radius: 999px; color: #ffffffeb; font-size: .83rem }
 .actions .icon-control:hover { background: #ffffff1b; color: var(--accent) }
@@ -379,6 +389,13 @@ kbd { color: var(--muted); border: 1px solid var(--line); border-radius: 5px; pa
   backdrop-filter: var(--glass-blur);
   box-shadow: 0 8px 25px #ffffff0a;
 }
+.bulk-actions { position: absolute; bottom: calc(100% + 92px); left: 50%; translate: -50% 0; display: flex; align-items: center; gap: 6px; width: max-content; max-width: calc(100vw - 26px); padding: 5px 7px 5px 13px; border: 1px solid var(--line); border-radius: 999px; background: #ffffff22; color: var(--ink); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); box-shadow: inset 0 1px #ffffff26; z-index: 3 }
+.bulk-actions span { min-width: 0; max-width: 120px; overflow: hidden; text-overflow: ellipsis; font-size: .7rem; white-space: nowrap }
+.bulk-actions button { display: inline-flex; flex: none; align-items: center; justify-content: center; gap: 6px; min-height: 42px; padding: 6px 8px; border: 1px solid #ffffff35; border-radius: 999px; background: #ffffff1f; color: var(--ink); font-size: .72rem }
+.bulk-actions button:hover:not(:disabled), .bulk-actions button:focus-visible { background: #ffffff3d }
+.bulk-actions button:disabled { opacity: .5; cursor: progress }
+.search-dock:has(.bulk-actions:not([hidden])) .filters { bottom: calc(100% + 154px); max-height: max(95px, calc(100dvh - 340px)) }
+.search-dock:has(.bulk-actions:not([hidden])) .portal-menu { margin-bottom: 146px }
 .categories, .selects { display: flex; flex-wrap: wrap; gap: 7px }
 .categories button,.selects select { min-height: 42px; padding: 6px 11px; border: 1px solid var(--line); border-radius: 11px; background: #ffffff1f; font-size: .75rem }
 .categories button[aria-pressed=true] { color: var(--ink); background: #ffffff3d; border-color: #ffffffb3; font-weight: 700 }

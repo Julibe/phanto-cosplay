@@ -224,6 +224,90 @@ function downloadFile(href, filename, container = document.body) {
   link.remove();
 }
 
+const selectedPoses = new Map();
+let bulkExporting = false;
+
+function poseMetadata(pose) {
+  return PhantoAssetTools.metadata(pose, document.baseURI);
+}
+
+async function copyPoseText(text, label) {
+  if (!navigator.clipboard?.writeText) {
+    notify('Text copy is unavailable here. Use HTTPS or localhost.');
+    return;
+  }
+  try {
+    await navigator.clipboard.writeText(text);
+    notify(label + ' copied!');
+  } catch {
+    notify('Couldn’t copy ' + label.toLowerCase() + '. Check clipboard permission.');
+  }
+}
+
+function downloadBlob(blob, name) {
+  const href = URL.createObjectURL(blob);
+  downloadFile(href, name);
+  setTimeout(() => URL.revokeObjectURL(href), 60000);
+}
+
+function syncSelection() {
+  node('bulk-actions').hidden = selectedPoses.size < 2;
+  node('selection-count').textContent = selectedPoses.size + ' selected';
+  node('bulk-zip').disabled = bulkExporting;
+  node('bulk-json').disabled = bulkExporting;
+  node('bulk-actions').setAttribute('aria-busy', String(bulkExporting));
+  for (const input of grid.querySelectorAll('.select-pose')) {
+    input.checked = selectedPoses.has(input.dataset.poseId);
+    input.closest('.card').classList.toggle('is-selected', input.checked);
+  }
+}
+
+node('clear-selection').addEventListener('click', () => {
+  selectedPoses.clear();
+  syncSelection();
+});
+
+node('bulk-json').addEventListener('click', () => {
+  if (selectedPoses.size < 2) return;
+  const items = [...selectedPoses.values()].map(poseMetadata);
+  downloadBlob(new Blob([JSON.stringify(items, null, 2) + '\n'], { type: 'application/json' }), 'phanto-selection.json');
+  notify(items.length + ' poses exported as JSON.');
+});
+
+node('bulk-zip').addEventListener('click', async () => {
+  if (bulkExporting || selectedPoses.size < 2) return;
+  const snapshot = [...selectedPoses.values()];
+  const files = new Array(snapshot.length);
+  const controller = new AbortController();
+  let next = 0, completed = 0, totalBytes = 0;
+  bulkExporting = true;
+  syncSelection();
+  try {
+    // Bound concurrency and memory; never silently omit a failed image.
+    await Promise.all(Array.from({ length: Math.min(4, snapshot.length) }, async () => {
+      while (next < snapshot.length) {
+        const index = next++, pose = snapshot[index];
+        const response = await fetch(pose.path, { signal: controller.signal });
+        if (!response.ok) throw new Error('One of the selected images could not be loaded.');
+        const data = new Uint8Array(await response.arrayBuffer());
+        totalBytes += data.length;
+        if (totalBytes > 500 * 1024 * 1024) throw new Error('Selection exceeds 500 MB. Export a smaller selection.');
+        files[index] = { name: pose.id + '.webp', data };
+        completed++;
+        node('selection-count').textContent = 'Preparing ' + completed + '/' + snapshot.length;
+      }
+    }));
+    downloadBlob(PhantoAssetTools.zip(files), 'phanto-selection.zip');
+    notify(snapshot.length + ' WebPs packaged as ZIP.');
+  } catch (error) {
+    controller.abort();
+    notify('ZIP failed. ' + error.message);
+  } finally {
+    bulkExporting = false;
+    syncSelection();
+  }
+});
+
 // Clipboards hold still images, so animated poses copy their first frame.
 function stillPath(pose) {
   return pose.animation?.frames[0] ?? pose.path;
@@ -598,6 +682,16 @@ function showMore(limit = pageSize) {
   const batch = document.createDocumentFragment();
   for (const pose of matches.slice(shown, shown + limit)) {
     const card = node('card').content.cloneNode(true);
+    const selection = card.querySelector('.select-pose');
+    selection.dataset.poseId = pose.id;
+    selection.setAttribute('aria-label', 'Select ' + pose.name);
+    selection.checked = selectedPoses.has(pose.id);
+    card.querySelector('.card').classList.toggle('is-selected', selection.checked);
+    selection.addEventListener('change', () => {
+      if (selection.checked) selectedPoses.set(pose.id, pose);
+      else selectedPoses.delete(pose.id);
+      syncSelection();
+    });
     const picture = card.querySelector('.picture');
     const image = picture.querySelector('img');
     if (imageWindow) {
@@ -630,7 +724,13 @@ function showMore(limit = pageSize) {
       editButton.querySelector('i').className = 'icon fa-solid fa-film';
     }
     editButton.addEventListener('click', () => openEditor(pose));
-    const share = card.querySelector('.actions button:not(.edit-pose)');
+    const copyTitle = card.querySelector('.copy-title');
+    copyTitle.setAttribute('aria-label', 'Copy title: ' + pose.name);
+    copyTitle.addEventListener('click', () => copyPoseText(pose.name, 'Title'));
+    const copyJson = card.querySelector('.copy-json');
+    copyJson.setAttribute('aria-label', 'Copy JSON for ' + pose.name);
+    copyJson.addEventListener('click', () => copyPoseText(JSON.stringify(poseMetadata(pose), null, 2), 'JSON'));
+    const share = card.querySelector('.share-pose');
     share.setAttribute('aria-label', 'Share ' + pose.name);
     share.addEventListener('click', () => openShare(pose));
     batch.append(card);

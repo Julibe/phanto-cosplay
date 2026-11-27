@@ -23,7 +23,7 @@ export function versionAssets() {
   buildApi(poses, root);
   const entry = new URL('index.html', root);
   const html = readFileSync(entry, 'utf8');
-  const updated = html.replace(/((?:src|href)=")(app\.js|catalog\.(?:js|json)|hero\.js|background\.js|pwa\.js|manifest\.webmanifest|style\.css|utilities\.css)(?:\?v=[a-f0-9]+)?(?=")/g,
+  const updated = html.replace(/((?:src|href)=")(asset-tools\.js|app\.js|catalog\.(?:js|json)|hero\.js|background\.js|pwa\.js|manifest\.webmanifest|style\.css|utilities\.css)(?:\?v=[a-f0-9]+)?(?=")/g,
     (_, attribute, name) => {
       const hash = createHash('sha256').update(readFileSync(new URL(name, root))).digest('hex').slice(0, 12);
       return attribute + name + '?v=' + hash;

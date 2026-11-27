@@ -2,6 +2,7 @@
   "name": "phanto-cosplay",
   "private": true,
   "scripts": {
+    "test:asset-tools": "node --test tools/asset-tools.test.mjs",
     "build:css": "tailwindcss -i tailwind.css -o dist/utilities.css --minify",
     "build:icons": "node copy-icons.mjs",
     "organize:images": "node pose-assets.mjs",
